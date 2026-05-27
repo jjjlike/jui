@@ -445,11 +445,12 @@ TEST(ButtonRenderWidgetTest, MouseDownUp_PressedState) {
 }
 
 TEST(ButtonRenderWidgetTest, Measure) {
-    // 验证: Button 的 measure 返回 {80, 32}
+    // 验证: Button 根据文字动态计算尺寸，dwrite=nullptr 时使用默认估算 80
+    // width = max(60, textW(80) + 24) = 104, height = 32
     auto w = std::make_shared<Widget>("b", WidgetType::Button);
     ButtonRenderWidget rw(w);
     Size s = rw.measure(nullptr);
-    EXPECT_FLOAT_EQ(s.w, 80.0f);
+    EXPECT_FLOAT_EQ(s.w, 104.0f);
     EXPECT_FLOAT_EQ(s.h, 32.0f);
 }
 
@@ -475,11 +476,11 @@ TEST(CheckBoxRenderWidgetTest, MouseDown_TogglesCheck) {
 }
 
 TEST(CheckBoxRenderWidgetTest, Measure) {
-    // 验证: CheckBox 的 measure 返回 {120, 24}
+    // 验证: CheckBox 无文字时最小宽度 100，高度 24
     auto w = std::make_shared<Widget>("cb", WidgetType::CheckBox);
     CheckBoxRenderWidget rw(w);
     Size s = rw.measure(nullptr);
-    EXPECT_FLOAT_EQ(s.w, 120.0f);
+    EXPECT_FLOAT_EQ(s.w, 100.0f);
     EXPECT_FLOAT_EQ(s.h, 24.0f);
 }
 
@@ -502,13 +503,13 @@ TEST(ContainerRenderWidgetTest, Measure) {
 // ============================================================
 
 TEST(DividerRenderWidgetTest, Measure) {
-    // 验证: Divider 的 measure 返回 {bounds.w, 1}
+    // 验证: Divider 宽度跟随 bounds，高度 8（含上下间距）
     auto w = std::make_shared<Widget>("d", WidgetType::Divider);
     DividerRenderWidget rw(w);
     rw.setBounds({0, 0, 600, 0});
     Size s = rw.measure(nullptr);
     EXPECT_FLOAT_EQ(s.w, 600.0f);
-    EXPECT_FLOAT_EQ(s.h, 1.0f);
+    EXPECT_FLOAT_EQ(s.h, 8.0f);
 }
 
 // ============================================================

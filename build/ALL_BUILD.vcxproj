@@ -186,6 +186,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{911A76EB-E11A-3642-9CDB-0B11DA2F829F}</Project>
       <Name>jui</Name>
     </ProjectReference>
+    <ProjectReference Include="F:\ai\laoba\jui\build\examples\jui_hello.vcxproj">
+      <Project>{D1F3A8EB-E6E2-312D-8CE1-F64FEC475F57}</Project>
+      <Name>jui_hello</Name>
+    </ProjectReference>
     <ProjectReference Include="F:\ai\laoba\jui\build\jui_tests.vcxproj">
       <Project>{953D508D-1FA8-31D8-8CDC-B8E51209B809}</Project>
       <Name>jui_tests</Name>

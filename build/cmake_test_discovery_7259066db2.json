@@ -1240,17 +1240,17 @@
         {
           "name": "CanFocus",
           "file": "F:\\ai\\laoba\\jui\\tests\\test_render_widget.cpp",
-          "line": 460
+          "line": 461
         },
         {
           "name": "MouseDown_TogglesCheck",
           "file": "F:\\ai\\laoba\\jui\\tests\\test_render_widget.cpp",
-          "line": 467
+          "line": 468
         },
         {
           "name": "Measure",
           "file": "F:\\ai\\laoba\\jui\\tests\\test_render_widget.cpp",
-          "line": 477
+          "line": 478
         }
       ]
     },
@@ -1261,7 +1261,7 @@
         {
           "name": "Measure",
           "file": "F:\\ai\\laoba\\jui\\tests\\test_render_widget.cpp",
-          "line": 490
+          "line": 491
         }
       ]
     },
@@ -1272,7 +1272,7 @@
         {
           "name": "Measure",
           "file": "F:\\ai\\laoba\\jui\\tests\\test_render_widget.cpp",
-          "line": 504
+          "line": 505
         }
       ]
     },
@@ -1283,12 +1283,12 @@
         {
           "name": "Measure_Default",
           "file": "F:\\ai\\laoba\\jui\\tests\\test_render_widget.cpp",
-          "line": 518
+          "line": 519
         },
         {
           "name": "Measure_ExplicitSize",
           "file": "F:\\ai\\laoba\\jui\\tests\\test_render_widget.cpp",
-          "line": 527
+          "line": 528
         }
       ]
     },

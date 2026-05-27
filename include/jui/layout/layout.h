@@ -2,6 +2,7 @@
 #include "jui/core/widget.h"
 #include <map>
 #include <memory>
+#include <functional>
 
 namespace jui {
 
@@ -12,8 +13,12 @@ namespace jui {
 
 class LayoutEngine {
 public:
+    /// widget 查找器：通过 ID 获取 WidgetPtr（通常由 Surface 提供）
+    using WidgetResolver = std::function<WidgetPtr(const std::string& id)>;
+
     // 布局计算入口
-    void layout(WidgetPtr root, const Size& containerSize);
+    void layout(WidgetPtr root, const Size& containerSize,
+                WidgetResolver resolver = nullptr);
 
     // 解析尺寸值（公开，方便测试和外部使用）
     static float resolveSize(const JValue& val, float total, float fallback = -1);
@@ -37,6 +42,7 @@ private:
     // 获取子组件列表
     std::vector<WidgetPtr> getChildWidgets(WidgetPtr parent);
 
+    WidgetResolver resolver_;
     std::map<std::string, Size> measuredSizes_;
 };
 

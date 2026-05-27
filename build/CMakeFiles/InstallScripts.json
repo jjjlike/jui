@@ -2,6 +2,7 @@
 	"InstallScripts" : 
 	[
 		"F:/ai/laoba/jui/build/cmake_install.cmake",
+		"F:/ai/laoba/jui/build/examples/cmake_install.cmake",
 		"F:/ai/laoba/jui/build/_deps/googletest-build/cmake_install.cmake",
 		"F:/ai/laoba/jui/build/_deps/googletest-build/googletest/cmake_install.cmake"
 	],

@@ -3,6 +3,8 @@ F:/ai/laoba/jui/build/CMakeFiles/jui_tests.dir
 F:/ai/laoba/jui/build/CMakeFiles/RUN_TESTS.dir
 F:/ai/laoba/jui/build/CMakeFiles/ALL_BUILD.dir
 F:/ai/laoba/jui/build/CMakeFiles/ZERO_CHECK.dir
+F:/ai/laoba/jui/build/examples/CMakeFiles/jui_hello.dir
+F:/ai/laoba/jui/build/examples/CMakeFiles/RUN_TESTS.dir
 F:/ai/laoba/jui/build/_deps/googletest-build/CMakeFiles/RUN_TESTS.dir
 F:/ai/laoba/jui/build/_deps/googletest-build/CMakeFiles/ALL_BUILD.dir
 F:/ai/laoba/jui/build/_deps/googletest-build/googletest/CMakeFiles/gtest.dir

@@ -118,9 +118,11 @@ void D2DRenderer::render() {
     renderTarget_->BeginDraw();
     renderTarget_->Clear(D2D1::ColorF(D2D1::ColorF::White));
 
-    // 遍历所有渲染控件并绘制
+    // 遍历所有渲染控件：先同步布局边界，再绘制
     for (auto& [id, rw] : renderWidgets_) {
         if (rw && rw->widget()->visible()) {
+            // 将 Widget 的布局结果同步到 RenderWidget
+            rw->setBounds(rw->widget()->layoutBounds());
             rw->paint(renderTarget_.Get(), dwriteFactory_.Get());
         }
     }

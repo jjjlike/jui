@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # UTF-8 source encoding for MSVC
 if(MSVC)
-    add_compile_options(/utf-8)
+    add_compile_options(/utf-8 /DNOMINMAX)
 endif()
 
 # jui core library

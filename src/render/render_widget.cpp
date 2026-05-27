@@ -6,6 +6,20 @@
 namespace jui {
 
 // ============================================================
+// UTF-8 → UTF-16 正确转换（修复中文乱码）
+// ============================================================
+static std::wstring utf8ToWide(const std::string& utf8) {
+    if (utf8.empty()) return L"";
+    int len = MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), static_cast<int>(utf8.size()),
+                                   nullptr, 0);
+    if (len <= 0) return L"";
+    std::wstring result(len, L'\0');
+    MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), static_cast<int>(utf8.size()),
+                         &result[0], len);
+    return result;
+}
+
+// ============================================================
 // RenderWidget 基类
 // ============================================================
 
@@ -60,13 +74,30 @@ static ComPtr<IDWriteTextFormat> makeTextFormat(
     return fmt;
 }
 
-static ComPtr<ID2D1SolidColorBrush> getColorBrush(
-    ID2D1RenderTarget* rt, const std::string& colorHex,
-    ID2D1SolidColorBrush* defaultBrush)
+/// 使用 DWrite 测量 UTF-8 文本的实际宽度
+static float measureTextWidth(IDWriteFactory* dwrite, const std::string& utf8Text,
+                               float fontSize, const std::string& fontWeight = "normal",
+                               float maxWidth = 10000.0f)
 {
-    if (defaultBrush && colorHex.empty()) return nullptr; // use default
-    (void)rt;
-    return nullptr; // 由 D2DRenderer 管理画刷
+    if (utf8Text.empty() || !dwrite) return 0;
+    std::wstring wtext = utf8ToWide(utf8Text);
+
+    DWRITE_FONT_WEIGHT fw = (fontWeight == "bold") ? DWRITE_FONT_WEIGHT_BOLD
+                                                    : DWRITE_FONT_WEIGHT_NORMAL;
+    ComPtr<IDWriteTextFormat> fmt;
+    dwrite->CreateTextFormat(L"Microsoft YaHei", nullptr, fw,
+                              DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL,
+                              fontSize, L"zh-CN", &fmt);
+    if (!fmt) return 0;
+
+    ComPtr<IDWriteTextLayout> layout;
+    dwrite->CreateTextLayout(wtext.c_str(), static_cast<UINT32>(wtext.length()),
+                              fmt.Get(), maxWidth, 10000, &layout);
+    if (!layout) return 0;
+
+    DWRITE_TEXT_METRICS metrics;
+    layout->GetMetrics(&metrics);
+    return std::ceilf(metrics.width);
 }
 
 // ============================================================
@@ -99,10 +130,9 @@ void TextRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dwrite) {
 
     if (text.empty()) return;
 
-    std::wstring wtext(text.begin(), text.end());
+    std::wstring wtext = utf8ToWide(text);  // ← 修复: 正确 UTF-8 → UTF-16
     auto fmt = createTextFormat(dwrite);
 
-    // 使用默认黑色画刷（需要从外部传入）
     D2D1_RECT_F rect = {bounds_.x, bounds_.y, bounds_.x + bounds_.w, bounds_.y + bounds_.h};
 
     ComPtr<ID2D1SolidColorBrush> brush;
@@ -113,9 +143,20 @@ void TextRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dwrite) {
 }
 
 Size TextRenderWidget::measure(IDWriteFactory* dwrite) {
+    // 使用 DWrite 精确测量文本宽度
+    std::string text;
+    auto textVal = widget_->property("text");
+    auto boundVal = widget_->boundValue("text");
+    if (boundVal.isString()) text = boundVal.asString();
+    else if (textVal.isString()) text = textVal.asString();
+
     float fontSize = widget_->property("fontSize").isNumber()
                      ? widget_->property("fontSize").asNumber() : 14.0f;
-    return {200, fontSize * 1.6f}; // 默认估算
+    std::string weight = widget_->property("fontWeight").isString()
+                         ? widget_->property("fontWeight").asString() : "normal";
+
+    float textW = dwrite ? measureTextWidth(dwrite, text, fontSize, weight) : 100;
+    return {std::max(40.0f, textW), std::max(18.0f, fontSize * 1.5f)};
 }
 
 // ============================================================
@@ -125,7 +166,6 @@ Size TextRenderWidget::measure(IDWriteFactory* dwrite) {
 TextFieldRenderWidget::TextFieldRenderWidget(WidgetPtr widget)
     : RenderWidget(widget)
 {
-    // 从 widget 属性获取初始值
     auto val = widget->property("value");
     if (val.isString()) text_ = val.asString();
 
@@ -150,7 +190,6 @@ void TextFieldRenderWidget::drawBackground(ID2D1RenderTarget* rt) {
     }
     rt->FillRectangle(rect, bgBrush.Get());
 
-    // 边框
     ComPtr<ID2D1SolidColorBrush> borderBrush;
     if (focused_) {
         rt->CreateSolidColorBrush(D2D1::ColorF(0.2f, 0.5f, 0.9f), &borderBrush);
@@ -186,13 +225,13 @@ void TextFieldRenderWidget::drawText(ID2D1RenderTarget* rt, IDWriteFactory* dwri
     };
 
     if (!text_.empty()) {
-        std::wstring wtext(text_.begin(), text_.end());
+        std::wstring wtext = utf8ToWide(text_);  // ← 修复
         ComPtr<ID2D1SolidColorBrush> textBrush;
         rt->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &textBrush);
         rt->DrawText(wtext.c_str(), static_cast<UINT32>(wtext.length()),
                       fmt.Get(), rect, textBrush.Get());
     } else if (!placeholder_.empty()) {
-        std::wstring wph(placeholder_.begin(), placeholder_.end());
+        std::wstring wph = utf8ToWide(placeholder_);  // ← 修复
         ComPtr<ID2D1SolidColorBrush> phBrush;
         rt->CreateSolidColorBrush(D2D1::ColorF(0.6f, 0.6f, 0.6f), &phBrush);
         rt->DrawText(wph.c_str(), static_cast<UINT32>(wph.length()),
@@ -232,7 +271,7 @@ float TextFieldRenderWidget::getCharPosition(IDWriteFactory* dwrite, size_t inde
     if (index > text_.length()) index = text_.length();
 
     auto fmt = createTextFormat(dwrite);
-    std::wstring wsub(text_.begin(), text_.begin() + index);
+    std::wstring wsub = utf8ToWide(text_.substr(0, index));  // ← 修复: UTF-8 子串
 
     ComPtr<IDWriteTextLayout> layout;
     dwrite->CreateTextLayout(wsub.c_str(), static_cast<UINT32>(wsub.length()),
@@ -248,7 +287,7 @@ size_t TextFieldRenderWidget::getCharIndexFromPoint(IDWriteFactory* dwrite, floa
     if (text_.empty()) return 0;
 
     auto fmt = createTextFormat(dwrite);
-    std::wstring wtext(text_.begin(), text_.end());
+    std::wstring wtext = utf8ToWide(text_);  // ← 修复
 
     ComPtr<IDWriteTextLayout> layout;
     dwrite->CreateTextLayout(wtext.c_str(), static_cast<UINT32>(wtext.length()),
@@ -263,8 +302,6 @@ size_t TextFieldRenderWidget::getCharIndexFromPoint(IDWriteFactory* dwrite, floa
 }
 
 void TextFieldRenderWidget::onMouseDown(float x, float y) {
-    // 需要一个 DWrite Factory 来计算字符索引
-    // 这里简化处理，光标移到末尾
     selectionStart_ = selectionEnd_ = text_.length();
     dragging_ = true;
 }
@@ -277,9 +314,7 @@ void TextFieldRenderWidget::onMouseMove(float x, float y) {
 
 void TextFieldRenderWidget::onChar(uint32_t ch) {
     if (!focused_) return;
-    // 过滤控制字符
     if (ch >= 32 && ch != 127) {
-        // 如果有选区，先删除选区
         if (selectionStart_ != selectionEnd_) {
             size_t start = (std::min)(selectionStart_, selectionEnd_);
             size_t end = (std::max)(selectionStart_, selectionEnd_);
@@ -288,7 +323,6 @@ void TextFieldRenderWidget::onChar(uint32_t ch) {
             selectionStart_ = selectionEnd_ = cursorPos_;
         }
 
-        // 插入宽字符
         wchar_t wch = static_cast<wchar_t>(ch);
         char mb[4] = {0};
         if (wch <= 0x7F) {
@@ -365,7 +399,6 @@ void ButtonRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dwrite) {
     D2D1_RECT_F rect = {bounds_.x, bounds_.y, bounds_.x + bounds_.w, bounds_.y + bounds_.h};
     float radius = 4;
 
-    // 背景
     ComPtr<ID2D1SolidColorBrush> bgBrush;
     D2D1_COLOR_F bgColor = pressed_
         ? D2D1::ColorF(0.15f, 0.45f, 0.85f)
@@ -376,13 +409,12 @@ void ButtonRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dwrite) {
     D2D1_ROUNDED_RECT roundedRect = {rect, radius, radius};
     rt->FillRoundedRectangle(roundedRect, bgBrush.Get());
 
-    // 文字
     std::string text;
     auto tv = widget_->property("text");
     if (tv.isString()) text = tv.asString();
     if (text.empty()) text = "Button";
 
-    std::wstring wtext(text.begin(), text.end());
+    std::wstring wtext = utf8ToWide(text);  // ← 修复
     auto fmt = makeTextFormat(dwrite, 14, L"Microsoft YaHei",
                                DWRITE_FONT_WEIGHT_NORMAL, "center");
 
@@ -394,7 +426,14 @@ void ButtonRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dwrite) {
 }
 
 Size ButtonRenderWidget::measure(IDWriteFactory* dwrite) {
-    return {80, 32};
+    // 根据文字宽度动态计算按钮宽度
+    std::string text;
+    auto tv = widget_->property("text");
+    if (tv.isString()) text = tv.asString();
+    if (text.empty()) text = "Button";
+
+    float textW = dwrite ? measureTextWidth(dwrite, text, 14) : 80;
+    return {std::max(60.0f, textW + 24), 32};
 }
 
 bool ButtonRenderWidget::hitTest(float x, float y) const {
@@ -422,7 +461,6 @@ void CheckBoxRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dwrite) 
     D2D1_RECT_F boxRect = {boxX, boxY, boxX + boxSize, boxY + boxSize};
     float radius = 3;
 
-    // 复选框背景
     ComPtr<ID2D1SolidColorBrush> boxBg;
     D2D1_COLOR_F bgColor = checked_
         ? D2D1::ColorF(0.2f, 0.5f, 0.9f)
@@ -430,12 +468,10 @@ void CheckBoxRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dwrite) 
     rt->CreateSolidColorBrush(bgColor, &boxBg);
     rt->FillRoundedRectangle(D2D1_ROUNDED_RECT{boxRect, radius, radius}, boxBg.Get());
 
-    // 边框
     ComPtr<ID2D1SolidColorBrush> borderBrush;
     rt->CreateSolidColorBrush(D2D1::ColorF(0.6f, 0.6f, 0.6f), &borderBrush);
     rt->DrawRoundedRectangle(D2D1_ROUNDED_RECT{boxRect, radius, radius}, borderBrush.Get());
 
-    // 勾选标记
     if (checked_) {
         ComPtr<ID2D1SolidColorBrush> checkBrush;
         rt->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &checkBrush);
@@ -448,13 +484,12 @@ void CheckBoxRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dwrite) 
         rt->DrawLine(p2, p3, checkBrush.Get(), 1.5f);
     }
 
-    // 标签文字
     std::string label;
     auto lv = widget_->property("text");
     if (lv.isString()) label = lv.asString();
 
     if (!label.empty()) {
-        std::wstring wlabel(label.begin(), label.end());
+        std::wstring wlabel = utf8ToWide(label);  // ← 修复
         auto fmt = makeTextFormat(dwrite, 13, L"Microsoft YaHei");
         D2D1_RECT_F textRect = {boxX + boxSize + 6, bounds_.y,
                                  bounds_.x + bounds_.w, bounds_.y + bounds_.h};
@@ -466,7 +501,15 @@ void CheckBoxRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dwrite) 
 }
 
 Size CheckBoxRenderWidget::measure(IDWriteFactory* dwrite) {
-    return {120, 24};
+    std::string label;
+    auto lv = widget_->property("text");
+    if (lv.isString()) label = lv.asString();
+
+    float labelW = 0;
+    if (dwrite && !label.empty()) {
+        labelW = measureTextWidth(dwrite, label, 13) + 22 + 6; // box + gap
+    }
+    return {std::max(100.0f, labelW), 24};
 }
 
 void CheckBoxRenderWidget::onMouseDown(float x, float y) {
@@ -482,13 +525,11 @@ void ContainerRenderWidget::drawBackground(ID2D1RenderTarget* rt) {
 
     switch (widget_->type()) {
         case WidgetType::Card: {
-            // 卡片背景
             ComPtr<ID2D1SolidColorBrush> bg;
             rt->CreateSolidColorBrush(D2D1::ColorF(0.98f, 0.98f, 0.98f), &bg);
             D2D1_ROUNDED_RECT rr = {rect, 8, 8};
             rt->FillRoundedRectangle(rr, bg.Get());
 
-            // 卡片阴影/边框
             ComPtr<ID2D1SolidColorBrush> border;
             rt->CreateSolidColorBrush(D2D1::ColorF(0.85f, 0.85f, 0.85f), &border);
             rt->DrawRoundedRectangle(rr, border.Get(), 1.0f);
@@ -501,13 +542,12 @@ void ContainerRenderWidget::drawBackground(ID2D1RenderTarget* rt) {
             break;
         }
         default:
-            break; // Row/Column 无背景
+            break;
     }
 }
 
 void ContainerRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dwrite) {
     drawBackground(rt);
-    // 子控件由 D2DRenderer 统一遍历渲染，这里不递归
 }
 
 Size ContainerRenderWidget::measure(IDWriteFactory* dwrite) {
@@ -526,7 +566,7 @@ void DividerRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dwrite) {
 }
 
 Size DividerRenderWidget::measure(IDWriteFactory* dwrite) {
-    return {bounds_.w, 1};
+    return {bounds_.w, 8}; // 加一些垂直间距
 }
 
 // ============================================================
@@ -536,19 +576,16 @@ Size DividerRenderWidget::measure(IDWriteFactory* dwrite) {
 void ImageRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dwrite) {
     D2D1_RECT_F rect = {bounds_.x, bounds_.y, bounds_.x + bounds_.w, bounds_.y + bounds_.h};
 
-    // 占位矩形（灰色背景 + 图标文字）
     ComPtr<ID2D1SolidColorBrush> bg;
     rt->CreateSolidColorBrush(D2D1::ColorF(0.93f, 0.93f, 0.93f), &bg);
     rt->FillRectangle(rect, bg.Get());
 
-    // 占位文字
-    std::wstring wtxt = L"🖼";
+    // 站位文字（不依赖编码）
     auto fmt = makeTextFormat(dwrite, 24, L"Microsoft YaHei",
                                DWRITE_FONT_WEIGHT_NORMAL, "center");
     ComPtr<ID2D1SolidColorBrush> txtBrush;
     rt->CreateSolidColorBrush(D2D1::ColorF(0.6f, 0.6f, 0.6f), &txtBrush);
-    rt->DrawText(wtxt.c_str(), static_cast<UINT32>(wtxt.length()),
-                  fmt.Get(), rect, txtBrush.Get());
+    rt->DrawText(L"[IMG]", 5, fmt.Get(), rect, txtBrush.Get());
 }
 
 Size ImageRenderWidget::measure(IDWriteFactory* dwrite) {

@@ -1,0 +1,634 @@
+Running main() from F:\ai\laoba\jui\build\_deps\googletest-src\googletest\src\gtest_main.cc
+[==========] Running 281 tests from 22 test suites.
+[----------] Global test environment set-up.
+[----------] 41 tests from JValueTest
+[ RUN      ] JValueTest.DefaultConstructor_IsNull
+[       OK ] JValueTest.DefaultConstructor_IsNull (0 ms)
+[ RUN      ] JValueTest.NullptrConstructor_IsNull
+[       OK ] JValueTest.NullptrConstructor_IsNull (0 ms)
+[ RUN      ] JValueTest.StringConstructor_CRawString
+[       OK ] JValueTest.StringConstructor_CRawString (0 ms)
+[ RUN      ] JValueTest.StringConstructor_StdString
+[       OK ] JValueTest.StringConstructor_StdString (0 ms)
+[ RUN      ] JValueTest.StringConstructor_Empty
+[       OK ] JValueTest.StringConstructor_Empty (0 ms)
+[ RUN      ] JValueTest.StringConstructor_UTF8
+[       OK ] JValueTest.StringConstructor_UTF8 (0 ms)
+[ RUN      ] JValueTest.NumberConstructor_Double
+[       OK ] JValueTest.NumberConstructor_Double (0 ms)
+[ RUN      ] JValueTest.NumberConstructor_Int
+[       OK ] JValueTest.NumberConstructor_Int (0 ms)
+[ RUN      ] JValueTest.NumberConstructor_AsInt_Truncation
+[       OK ] JValueTest.NumberConstructor_AsInt_Truncation (0 ms)
+[ RUN      ] JValueTest.NumberConstructor_Negative
+[       OK ] JValueTest.NumberConstructor_Negative (0 ms)
+[ RUN      ] JValueTest.NumberConstructor_Zero
+[       OK ] JValueTest.NumberConstructor_Zero (0 ms)
+[ RUN      ] JValueTest.BooleanConstructor_True
+[       OK ] JValueTest.BooleanConstructor_True (0 ms)
+[ RUN      ] JValueTest.BooleanConstructor_False
+[       OK ] JValueTest.BooleanConstructor_False (0 ms)
+[ RUN      ] JValueTest.FromPath_IsPath
+[       OK ] JValueTest.FromPath_IsPath (0 ms)
+[ RUN      ] JValueTest.FromPath_EmptyPath
+[       OK ] JValueTest.FromPath_EmptyPath (0 ms)
+[ RUN      ] JValueTest.FromArray_Empty
+[       OK ] JValueTest.FromArray_Empty (0 ms)
+[ RUN      ] JValueTest.FromArray_WithElements
+[       OK ] JValueTest.FromArray_WithElements (0 ms)
+[ RUN      ] JValueTest.FromArray_Mutable
+[       OK ] JValueTest.FromArray_Mutable (0 ms)
+[ RUN      ] JValueTest.FromObject_Empty
+[       OK ] JValueTest.FromObject_Empty (0 ms)
+[ RUN      ] JValueTest.FromObject_WithFields
+[       OK ] JValueTest.FromObject_WithFields (0 ms)
+[ RUN      ] JValueTest.Object_Set_OnNonObject
+[       OK ] JValueTest.Object_Set_OnNonObject (0 ms)
+[ RUN      ] JValueTest.Object_Set_MultipleKeys
+[       OK ] JValueTest.Object_Set_MultipleKeys (0 ms)
+[ RUN      ] JValueTest.Object_Set_Overwrite
+[       OK ] JValueTest.Object_Set_Overwrite (0 ms)
+[ RUN      ] JValueTest.Object_Has_Existent
+[       OK ] JValueTest.Object_Has_Existent (0 ms)
+[ RUN      ] JValueTest.Object_Has_NonExistent
+[       OK ] JValueTest.Object_Has_NonExistent (0 ms)
+[ RUN      ] JValueTest.Object_Has_OnNonObject
+[       OK ] JValueTest.Object_Has_OnNonObject (0 ms)
+[ RUN      ] JValueTest.Object_Get_Existent
+[       OK ] JValueTest.Object_Get_Existent (0 ms)
+[ RUN      ] JValueTest.Object_Get_NonExistent_ReturnsNull
+[       OK ] JValueTest.Object_Get_NonExistent_ReturnsNull (0 ms)
+[ RUN      ] JValueTest.Object_Get_OnNonObject_ReturnsNull
+[       OK ] JValueTest.Object_Get_OnNonObject_ReturnsNull (0 ms)
+[ RUN      ] JValueTest.Object_Size_Empty
+[       OK ] JValueTest.Object_Size_Empty (0 ms)
+[ RUN      ] JValueTest.Object_Size_NonEmpty
+[       OK ] JValueTest.Object_Size_NonEmpty (0 ms)
+[ RUN      ] JValueTest.Array_Push_OnNonArray
+[       OK ] JValueTest.Array_Push_OnNonArray (0 ms)
+[ RUN      ] JValueTest.Array_Push_Multiple
+[       OK ] JValueTest.Array_Push_Multiple (0 ms)
+[ RUN      ] JValueTest.Array_Size_Empty
+[       OK ] JValueTest.Array_Size_Empty (0 ms)
+[ RUN      ] JValueTest.Array_Size_NonEmpty
+[       OK ] JValueTest.Array_Size_NonEmpty (0 ms)
+[ RUN      ] JValueTest.Size_OnNonContainer
+[       OK ] JValueTest.Size_OnNonContainer (0 ms)
+[ RUN      ] JValueTest.Null_IsOnlyNull
+[       OK ] JValueTest.Null_IsOnlyNull (0 ms)
+[ RUN      ] JValueTest.String_IsOnlyString
+[       OK ] JValueTest.String_IsOnlyString (0 ms)
+[ RUN      ] JValueTest.Number_IsOnlyNumber
+[       OK ] JValueTest.Number_IsOnlyNumber (0 ms)
+[ RUN      ] JValueTest.Boolean_IsOnlyBoolean
+[       OK ] JValueTest.Boolean_IsOnlyBoolean (0 ms)
+[ RUN      ] JValueTest.Path_IsOnlyPath
+[       OK ] JValueTest.Path_IsOnlyPath (0 ms)
+[----------] 41 tests from JValueTest (2 ms total)
+
+[----------] 5 tests from RectTest
+[ RUN      ] RectTest.DefaultConstructor_Zeros
+[       OK ] RectTest.DefaultConstructor_Zeros (0 ms)
+[ RUN      ] RectTest.IsEmpty_PositiveDimensions
+[       OK ] RectTest.IsEmpty_PositiveDimensions (0 ms)
+[ RUN      ] RectTest.IsEmpty_ZeroWidth
+[       OK ] RectTest.IsEmpty_ZeroWidth (0 ms)
+[ RUN      ] RectTest.IsEmpty_ZeroHeight
+[       OK ] RectTest.IsEmpty_ZeroHeight (0 ms)
+[ RUN      ] RectTest.IsEmpty_NegativeDimensions
+[       OK ] RectTest.IsEmpty_NegativeDimensions (0 ms)
+[----------] 5 tests from RectTest (0 ms total)
+
+[----------] 2 tests from SizeTest
+[ RUN      ] SizeTest.DefaultConstructor_Zeros
+[       OK ] SizeTest.DefaultConstructor_Zeros (0 ms)
+[ RUN      ] SizeTest.ValueInitialization
+[       OK ] SizeTest.ValueInitialization (0 ms)
+[----------] 2 tests from SizeTest (0 ms total)
+
+[----------] 1 test from PointTest
+[ RUN      ] PointTest.DefaultConstructor_Zeros
+[       OK ] PointTest.DefaultConstructor_Zeros (0 ms)
+[----------] 1 test from PointTest (0 ms total)
+
+[----------] 2 tests from WidgetStyleTest
+[ RUN      ] WidgetStyleTest.Defaults
+[       OK ] WidgetStyleTest.Defaults (0 ms)
+[ RUN      ] WidgetStyleTest.MarginPadding_Sets
+[       OK ] WidgetStyleTest.MarginPadding_Sets (0 ms)
+[----------] 2 tests from WidgetStyleTest (0 ms total)
+
+[----------] 3 tests from ChildrenTest
+[ RUN      ] ChildrenTest.DefaultMode_Explicit
+[       OK ] ChildrenTest.DefaultMode_Explicit (0 ms)
+[ RUN      ] ChildrenTest.ExplicitList_Add
+[       OK ] ChildrenTest.ExplicitList_Add (0 ms)
+[ RUN      ] ChildrenTest.Template_DataBinding
+[       OK ] ChildrenTest.Template_DataBinding (0 ms)
+[----------] 3 tests from ChildrenTest (0 ms total)
+
+[----------] 34 tests from WidgetTest
+[ RUN      ] WidgetTest.Constructor_Id
+[       OK ] WidgetTest.Constructor_Id (0 ms)
+[ RUN      ] WidgetTest.Constructor_Type_Text
+[       OK ] WidgetTest.Constructor_Type_Text (0 ms)
+[ RUN      ] WidgetTest.Constructor_Type_Button
+[       OK ] WidgetTest.Constructor_Type_Button (0 ms)
+[ RUN      ] WidgetTest.Constructor_Type_TextField
+[       OK ] WidgetTest.Constructor_Type_TextField (0 ms)
+[ RUN      ] WidgetTest.Constructor_Type_CheckBox
+[       OK ] WidgetTest.Constructor_Type_CheckBox (0 ms)
+[ RUN      ] WidgetTest.Constructor_Type_Image
+[       OK ] WidgetTest.Constructor_Type_Image (0 ms)
+[ RUN      ] WidgetTest.Constructor_Type_Row
+[       OK ] WidgetTest.Constructor_Type_Row (0 ms)
+[ RUN      ] WidgetTest.Constructor_Type_Column
+[       OK ] WidgetTest.Constructor_Type_Column (0 ms)
+[ RUN      ] WidgetTest.Constructor_Type_Card
+[       OK ] WidgetTest.Constructor_Type_Card (0 ms)
+[ RUN      ] WidgetTest.Constructor_Type_List
+[       OK ] WidgetTest.Constructor_Type_List (0 ms)
+[ RUN      ] WidgetTest.Constructor_Type_Divider
+[       OK ] WidgetTest.Constructor_Type_Divider (0 ms)
+[ RUN      ] WidgetTest.Constructor_Type_Custom
+[       OK ] WidgetTest.Constructor_Type_Custom (0 ms)
+[ RUN      ] WidgetTest.SetProperty_String
+[       OK ] WidgetTest.SetProperty_String (0 ms)
+[ RUN      ] WidgetTest.SetProperty_Number
+[       OK ] WidgetTest.SetProperty_Number (0 ms)
+[ RUN      ] WidgetTest.SetProperty_Boolean
+[       OK ] WidgetTest.SetProperty_Boolean (0 ms)
+[ RUN      ] WidgetTest.Property_NonExistent_ReturnsNull
+[       OK ] WidgetTest.Property_NonExistent_ReturnsNull (0 ms)
+[ RUN      ] WidgetTest.SetProperty_Overwrite
+[       OK ] WidgetTest.SetProperty_Overwrite (0 ms)
+[ RUN      ] WidgetTest.Properties_ReturnsAll
+[       OK ] WidgetTest.Properties_ReturnsAll (0 ms)
+[ RUN      ] WidgetTest.SetChildren_Explicit
+[       OK ] WidgetTest.SetChildren_Explicit (0 ms)
+[ RUN      ] WidgetTest.SetChildren_Template
+[       OK ] WidgetTest.SetChildren_Template (0 ms)
+[ RUN      ] WidgetTest.Children_DefaultEmpty
+[       OK ] WidgetTest.Children_DefaultEmpty (0 ms)
+[ RUN      ] WidgetTest.BoundValue_SetGet
+[       OK ] WidgetTest.BoundValue_SetGet (0 ms)
+[ RUN      ] WidgetTest.BoundValue_NonExistent_ReturnsNull
+[       OK ] WidgetTest.BoundValue_NonExistent_ReturnsNull (0 ms)
+[ RUN      ] WidgetTest.BoundValue_Multiple
+[       OK ] WidgetTest.BoundValue_Multiple (0 ms)
+[ RUN      ] WidgetTest.LayoutBounds_SetGet
+[       OK ] WidgetTest.LayoutBounds_SetGet (0 ms)
+[ RUN      ] WidgetTest.LayoutBounds_DefaultEmpty
+[       OK ] WidgetTest.LayoutBounds_DefaultEmpty (0 ms)
+[ RUN      ] WidgetTest.Action_SetGet
+[       OK ] WidgetTest.Action_SetGet (0 ms)
+[ RUN      ] WidgetTest.Action_DefaultEmpty
+[       OK ] WidgetTest.Action_DefaultEmpty (0 ms)
+[ RUN      ] WidgetTest.Visible_DefaultTrue
+[       OK ] WidgetTest.Visible_DefaultTrue (0 ms)
+[ RUN      ] WidgetTest.Visible_SetFalse
+[       OK ] WidgetTest.Visible_SetFalse (0 ms)
+[ RUN      ] WidgetTest.Visible_Toggle
+[       OK ] WidgetTest.Visible_Toggle (0 ms)
+[ RUN      ] WidgetTest.Enabled_DefaultTrue
+[       OK ] WidgetTest.Enabled_DefaultTrue (0 ms)
+[ RUN      ] WidgetTest.Enabled_SetFalse
+[       OK ] WidgetTest.Enabled_SetFalse (0 ms)
+[ RUN      ] WidgetTest.FullWidget_Populated
+[       OK ] WidgetTest.FullWidget_Populated (0 ms)
+[----------] 34 tests from WidgetTest (1 ms total)
+
+[----------] 2 tests from WidgetPtrTest
+[ RUN      ] WidgetPtrTest.SharedPtr_Usage
+[       OK ] WidgetPtrTest.SharedPtr_Usage (0 ms)
+[ RUN      ] WidgetPtrTest.NullPtr_Check
+[       OK ] WidgetPtrTest.NullPtr_Check (0 ms)
+[----------] 2 tests from WidgetPtrTest (0 ms total)
+
+[----------] 26 tests from DataModelTest
+[ RUN      ] DataModelTest.SetValue_SimplePath
+[       OK ] DataModelTest.SetValue_SimplePath (0 ms)
+[ RUN      ] DataModelTest.SetValue_NestedPath
+[       OK ] DataModelTest.SetValue_NestedPath (0 ms)
+[ RUN      ] DataModelTest.SetValue_Number
+[       OK ] DataModelTest.SetValue_Number (0 ms)
+[ RUN      ] DataModelTest.SetValue_Boolean
+[       OK ] DataModelTest.SetValue_Boolean (0 ms)
+[ RUN      ] DataModelTest.GetValue_NonExistent_ReturnsNull
+[       OK ] DataModelTest.GetValue_NonExistent_ReturnsNull (0 ms)
+[ RUN      ] DataModelTest.SetValue_Overwrite
+[       OK ] DataModelTest.SetValue_Overwrite (0 ms)
+[ RUN      ] DataModelTest.SetValue_MultiplePaths
+[       OK ] DataModelTest.SetValue_MultiplePaths (0 ms)
+[ RUN      ] DataModelTest.UpdateContents_BasePathRoot
+[       OK ] DataModelTest.UpdateContents_BasePathRoot (0 ms)
+[ RUN      ] DataModelTest.UpdateContents_BasePathRoot_Slash
+[       OK ] DataModelTest.UpdateContents_BasePathRoot_Slash (0 ms)
+[ RUN      ] DataModelTest.UpdateContents_BasePath_SubPath
+[       OK ] DataModelTest.UpdateContents_BasePath_SubPath (0 ms)
+[ RUN      ] DataModelTest.UpdateContents_BasePathTrailingSlash
+[       OK ] DataModelTest.UpdateContents_BasePathTrailingSlash (0 ms)
+[ RUN      ] DataModelTest.UpdateContents_EmptyBasePath
+[       OK ] DataModelTest.UpdateContents_EmptyBasePath (0 ms)
+[ RUN      ] DataModelTest.UpdateContents_MixedTypes
+[       OK ] DataModelTest.UpdateContents_MixedTypes (0 ms)
+[ RUN      ] DataModelTest.UpdateContents_EmptyList
+[       OK ] DataModelTest.UpdateContents_EmptyList (0 ms)
+[ RUN      ] DataModelTest.Listener_NotifiedOnSetValue
+[       OK ] DataModelTest.Listener_NotifiedOnSetValue (0 ms)
+[ RUN      ] DataModelTest.Listener_NotifiedOnUpdateContents
+[       OK ] DataModelTest.Listener_NotifiedOnUpdateContents (0 ms)
+[ RUN      ] DataModelTest.Listener_MultipleListeners
+[       OK ] DataModelTest.Listener_MultipleListeners (0 ms)
+[ RUN      ] DataModelTest.Listener_NotCalledForNonExistentRead
+[       OK ] DataModelTest.Listener_NotCalledForNonExistentRead (0 ms)
+[ RUN      ] DataModelTest.Clear_RemovesAllData
+[       OK ] DataModelTest.Clear_RemovesAllData (0 ms)
+[ RUN      ] DataModelTest.Clear_EmptyModel
+[       OK ] DataModelTest.Clear_EmptyModel (0 ms)
+[ RUN      ] DataModelTest.AllData_InitiallyEmpty
+[       OK ] DataModelTest.AllData_InitiallyEmpty (0 ms)
+[ RUN      ] DataModelTest.AllData_AfterSetValue
+[       OK ] DataModelTest.AllData_AfterSetValue (0 ms)
+[ RUN      ] DataModelTest.Path_WithoutLeadingSlash
+[       OK ] DataModelTest.Path_WithoutLeadingSlash (0 ms)
+[ RUN      ] DataModelTest.Path_UnicodeValue
+[       OK ] DataModelTest.Path_UnicodeValue (0 ms)
+[ RUN      ] DataModelTest.Path_JSONPointer_TildeEncoding
+[       OK ] DataModelTest.Path_JSONPointer_TildeEncoding (0 ms)
+[ RUN      ] DataModelTest.RapidSet_Clear_Resume
+[       OK ] DataModelTest.RapidSet_Clear_Resume (0 ms)
+[----------] 26 tests from DataModelTest (1 ms total)
+
+[----------] 26 tests from SurfaceTest
+[ RUN      ] SurfaceTest.Constructor_Id
+[       OK ] SurfaceTest.Constructor_Id (0 ms)
+[ RUN      ] SurfaceTest.Constructor_EmptyId
+[       OK ] SurfaceTest.Constructor_EmptyId (0 ms)
+[ RUN      ] SurfaceTest.Constructor_DifferentIds
+[       OK ] SurfaceTest.Constructor_DifferentIds (0 ms)
+[ RUN      ] SurfaceTest.AddWidget_Single
+[       OK ] SurfaceTest.AddWidget_Single (0 ms)
+[ RUN      ] SurfaceTest.AddWidget_Multiple
+[       OK ] SurfaceTest.AddWidget_Multiple (0 ms)
+[ RUN      ] SurfaceTest.AddWidget_Overwrite
+[       OK ] SurfaceTest.AddWidget_Overwrite (0 ms)
+[ RUN      ] SurfaceTest.RemoveWidget_Existent
+[       OK ] SurfaceTest.RemoveWidget_Existent (0 ms)
+[ RUN      ] SurfaceTest.RemoveWidget_NonExistent
+[       OK ] SurfaceTest.RemoveWidget_NonExistent (0 ms)
+[ RUN      ] SurfaceTest.GetWidget_NonExistent_ReturnsNull
+[       OK ] SurfaceTest.GetWidget_NonExistent_ReturnsNull (0 ms)
+[ RUN      ] SurfaceTest.GetWidget_AfterRemove
+[       OK ] SurfaceTest.GetWidget_AfterRemove (0 ms)
+[ RUN      ] SurfaceTest.UpdateComponents_Empty
+[       OK ] SurfaceTest.UpdateComponents_Empty (0 ms)
+[ RUN      ] SurfaceTest.UpdateComponents_AddNew
+[       OK ] SurfaceTest.UpdateComponents_AddNew (0 ms)
+[ RUN      ] SurfaceTest.UpdateComponents_MixedAddAndOverwrite
+[       OK ] SurfaceTest.UpdateComponents_MixedAddAndOverwrite (0 ms)
+[ RUN      ] SurfaceTest.RootWidget_Id
+[       OK ] SurfaceTest.RootWidget_Id (0 ms)
+[ RUN      ] SurfaceTest.RootWidget_DefaultEmpty
+[       OK ] SurfaceTest.RootWidget_DefaultEmpty (0 ms)
+[ RUN      ] SurfaceTest.RootWidget_GetWidget
+[       OK ] SurfaceTest.RootWidget_GetWidget (0 ms)
+[ RUN      ] SurfaceTest.RootWidget_NotAdded_ReturnsNull
+[       OK ] SurfaceTest.RootWidget_NotAdded_ReturnsNull (0 ms)
+[ RUN      ] SurfaceTest.DataModel_Access
+[       OK ] SurfaceTest.DataModel_Access (0 ms)
+[ RUN      ] SurfaceTest.DataModel_ConstAccess
+[       OK ] SurfaceTest.DataModel_ConstAccess (0 ms)
+[ RUN      ] SurfaceTest.DataModel_IsolatedPerSurface
+[       OK ] SurfaceTest.DataModel_IsolatedPerSurface (0 ms)
+[ RUN      ] SurfaceTest.ContentSize_DefaultZero
+[       OK ] SurfaceTest.ContentSize_DefaultZero (0 ms)
+[ RUN      ] SurfaceTest.ContentSize_SetGet
+[       OK ] SurfaceTest.ContentSize_SetGet (0 ms)
+[ RUN      ] SurfaceTest.NeedsLayout_DefaultTrue
+[       OK ] SurfaceTest.NeedsLayout_DefaultTrue (0 ms)
+[ RUN      ] SurfaceTest.NeedsLayout_SetFalse
+[       OK ] SurfaceTest.NeedsLayout_SetFalse (0 ms)
+[ RUN      ] SurfaceTest.NeedsLayout_Toggle
+[       OK ] SurfaceTest.NeedsLayout_Toggle (0 ms)
+[ RUN      ] SurfaceTest.A2UI_Tree_Simulation
+[       OK ] SurfaceTest.A2UI_Tree_Simulation (0 ms)
+[----------] 26 tests from SurfaceTest (2 ms total)
+
+[----------] 2 tests from SurfacePtrTest
+[ RUN      ] SurfacePtrTest.SharedPtr_CreateUse
+[       OK ] SurfacePtrTest.SharedPtr_CreateUse (0 ms)
+[ RUN      ] SurfacePtrTest.NullPtr_Check
+[       OK ] SurfacePtrTest.NullPtr_Check (0 ms)
+[----------] 2 tests from SurfacePtrTest (0 ms total)
+
+[----------] 41 tests from JUIEngineTest
+[ RUN      ] JUIEngineTest.Constructor_Default
+[       OK ] JUIEngineTest.Constructor_Default (0 ms)
+[ RUN      ] JUIEngineTest.Destructor_NoCrash
+[       OK ] JUIEngineTest.Destructor_NoCrash (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_InvalidJson_NoCrash
+[       OK ] JUIEngineTest.ProcessMessage_InvalidJson_NoCrash (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_EmptyObject_NoCrash
+[       OK ] JUIEngineTest.ProcessMessage_EmptyObject_NoCrash (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_UnknownType_NoCrash
+[       OK ] JUIEngineTest.ProcessMessage_UnknownType_NoCrash (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_CreateSurface_DefaultId
+[       OK ] JUIEngineTest.ProcessMessage_CreateSurface_DefaultId (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_CreateSurface_CustomId
+[       OK ] JUIEngineTest.ProcessMessage_CreateSurface_CustomId (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_CreateSurface_Multiple
+[       OK ] JUIEngineTest.ProcessMessage_CreateSurface_Multiple (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_SurfaceUpdate_V08
+[       OK ] JUIEngineTest.ProcessMessage_SurfaceUpdate_V08 (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_UpdateComponents_V09
+[       OK ] JUIEngineTest.ProcessMessage_UpdateComponents_V09 (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_UpdateComponents_NoSurfaceId
+[       OK ] JUIEngineTest.ProcessMessage_UpdateComponents_NoSurfaceId (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_UpdateComponents_AutoCreateSurface
+[       OK ] JUIEngineTest.ProcessMessage_UpdateComponents_AutoCreateSurface (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_DataModelUpdate_V08
+[       OK ] JUIEngineTest.ProcessMessage_DataModelUpdate_V08 (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_UpdateDataModel_V09
+[       OK ] JUIEngineTest.ProcessMessage_UpdateDataModel_V09 (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_DataModelUpdate_NoSurface_Ignored
+[       OK ] JUIEngineTest.ProcessMessage_DataModelUpdate_NoSurface_Ignored (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_DataModelUpdate_ValueMap
+[       OK ] JUIEngineTest.ProcessMessage_DataModelUpdate_ValueMap (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_BeginRendering
+[       OK ] JUIEngineTest.ProcessMessage_BeginRendering (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_BeginRendering_NoSurface_NoCrash
+[       OK ] JUIEngineTest.ProcessMessage_BeginRendering_NoSurface_NoCrash (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_DeleteSurface
+[       OK ] JUIEngineTest.ProcessMessage_DeleteSurface (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_DeleteSurface_ClearsCurrent
+[       OK ] JUIEngineTest.ProcessMessage_DeleteSurface_ClearsCurrent (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessage_DeleteSurface_EmptyId_NoCrash
+[       OK ] JUIEngineTest.ProcessMessage_DeleteSurface_EmptyId_NoCrash (0 ms)
+[ RUN      ] JUIEngineTest.FullA2UIFlow
+[       OK ] JUIEngineTest.FullA2UIFlow (1 ms)
+[ RUN      ] JUIEngineTest.ProcessMessageStream_SingleLine
+[       OK ] JUIEngineTest.ProcessMessageStream_SingleLine (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessageStream_MultipleLines
+[       OK ] JUIEngineTest.ProcessMessageStream_MultipleLines (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessageStream_BlankLines
+[       OK ] JUIEngineTest.ProcessMessageStream_BlankLines (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessageStream_Empty
+[       OK ] JUIEngineTest.ProcessMessageStream_Empty (0 ms)
+[ RUN      ] JUIEngineTest.ProcessMessageStream_InvalidLine
+[       OK ] JUIEngineTest.ProcessMessageStream_InvalidLine (0 ms)
+[ RUN      ] JUIEngineTest.GetSurface_NonExistent_ReturnsNull
+[       OK ] JUIEngineTest.GetSurface_NonExistent_ReturnsNull (0 ms)
+[ RUN      ] JUIEngineTest.CreateSurface_And_Get
+[       OK ] JUIEngineTest.CreateSurface_And_Get (0 ms)
+[ RUN      ] JUIEngineTest.CreateSurface_Overwrite
+[       OK ] JUIEngineTest.CreateSurface_Overwrite (0 ms)
+[ RUN      ] JUIEngineTest.LoadFromFile_NonExistent
+[       OK ] JUIEngineTest.LoadFromFile_NonExistent (0 ms)
+[ RUN      ] JUIEngineTest.LoadFromFile_ExistingFile
+[       OK ] JUIEngineTest.LoadFromFile_ExistingFile (1 ms)
+[ RUN      ] JUIEngineTest.ActionCallback_Set
+[       OK ] JUIEngineTest.ActionCallback_Set (0 ms)
+[ RUN      ] JUIEngineTest.WindowEvents_NoWindow_NoCrash
+[       OK ] JUIEngineTest.WindowEvents_NoWindow_NoCrash (0 ms)
+[ RUN      ] JUIEngineTest.Render_Uninitialized_NoCrash
+[       OK ] JUIEngineTest.Render_Uninitialized_NoCrash (0 ms)
+[ RUN      ] JUIEngineTest.Render_NoSurface_NoCrash
+[       OK ] JUIEngineTest.Render_NoSurface_NoCrash (0 ms)
+[ RUN      ] JUIEngineTest.Renderer_Access
+[       OK ] JUIEngineTest.Renderer_Access (0 ms)
+[ RUN      ] JUIEngineTest.Parse_AllWidgetTypes_V08
+[       OK ] JUIEngineTest.Parse_AllWidgetTypes_V08 (1 ms)
+[ RUN      ] JUIEngineTest.Parse_UnknownType_ReturnsNull
+[       OK ] JUIEngineTest.Parse_UnknownType_ReturnsNull (0 ms)
+[ RUN      ] JUIEngineTest.Parse_Children_Template
+[       OK ] JUIEngineTest.Parse_Children_Template (0 ms)
+[ RUN      ] JUIEngineTest.Parse_Action_String
+[       OK ] JUIEngineTest.Parse_Action_String (0 ms)
+[----------] 41 tests from JUIEngineTest (14 ms total)
+
+[----------] 10 tests from RenderWidgetBaseTest
+[ RUN      ] RenderWidgetBaseTest.HitTest_Inside
+[       OK ] RenderWidgetBaseTest.HitTest_Inside (0 ms)
+[ RUN      ] RenderWidgetBaseTest.HitTest_Outside_X
+[       OK ] RenderWidgetBaseTest.HitTest_Outside_X (0 ms)
+[ RUN      ] RenderWidgetBaseTest.HitTest_Outside_Y
+[       OK ] RenderWidgetBaseTest.HitTest_Outside_Y (0 ms)
+[ RUN      ] RenderWidgetBaseTest.HitTest_OnEdge
+[       OK ] RenderWidgetBaseTest.HitTest_OnEdge (0 ms)
+[ RUN      ] RenderWidgetBaseTest.Bounds_SetGet
+[       OK ] RenderWidgetBaseTest.Bounds_SetGet (0 ms)
+[ RUN      ] RenderWidgetBaseTest.CanFocus_DefaultFalse
+[       OK ] RenderWidgetBaseTest.CanFocus_DefaultFalse (0 ms)
+[ RUN      ] RenderWidgetBaseTest.Focused_DefaultFalse
+[       OK ] RenderWidgetBaseTest.Focused_DefaultFalse (0 ms)
+[ RUN      ] RenderWidgetBaseTest.Focused_SetTrue
+[       OK ] RenderWidgetBaseTest.Focused_SetTrue (0 ms)
+[ RUN      ] RenderWidgetBaseTest.Focused_Toggle
+[       OK ] RenderWidgetBaseTest.Focused_Toggle (0 ms)
+[ RUN      ] RenderWidgetBaseTest.Widget_Access
+[       OK ] RenderWidgetBaseTest.Widget_Access (0 ms)
+[----------] 10 tests from RenderWidgetBaseTest (0 ms total)
+
+[----------] 12 tests from RenderWidgetFactoryTest
+[ RUN      ] RenderWidgetFactoryTest.Create_NullWidget_ReturnsNull
+[       OK ] RenderWidgetFactoryTest.Create_NullWidget_ReturnsNull (0 ms)
+[ RUN      ] RenderWidgetFactoryTest.Create_Text
+[       OK ] RenderWidgetFactoryTest.Create_Text (0 ms)
+[ RUN      ] RenderWidgetFactoryTest.Create_Button
+[       OK ] RenderWidgetFactoryTest.Create_Button (0 ms)
+[ RUN      ] RenderWidgetFactoryTest.Create_TextField
+[       OK ] RenderWidgetFactoryTest.Create_TextField (0 ms)
+[ RUN      ] RenderWidgetFactoryTest.Create_CheckBox
+[       OK ] RenderWidgetFactoryTest.Create_CheckBox (0 ms)
+[ RUN      ] RenderWidgetFactoryTest.Create_Row
+[       OK ] RenderWidgetFactoryTest.Create_Row (0 ms)
+[ RUN      ] RenderWidgetFactoryTest.Create_Column
+[       OK ] RenderWidgetFactoryTest.Create_Column (0 ms)
+[ RUN      ] RenderWidgetFactoryTest.Create_Card
+[       OK ] RenderWidgetFactoryTest.Create_Card (0 ms)
+[ RUN      ] RenderWidgetFactoryTest.Create_List
+[       OK ] RenderWidgetFactoryTest.Create_List (0 ms)
+[ RUN      ] RenderWidgetFactoryTest.Create_Divider
+[       OK ] RenderWidgetFactoryTest.Create_Divider (0 ms)
+[ RUN      ] RenderWidgetFactoryTest.Create_Image
+[       OK ] RenderWidgetFactoryTest.Create_Image (0 ms)
+[ RUN      ] RenderWidgetFactoryTest.Create_Custom_ReturnsNull
+[       OK ] RenderWidgetFactoryTest.Create_Custom_ReturnsNull (0 ms)
+[----------] 12 tests from RenderWidgetFactoryTest (0 ms total)
+
+[----------] 16 tests from TextFieldRenderWidgetTest
+[ RUN      ] TextFieldRenderWidgetTest.Constructor_DefaultState
+[       OK ] TextFieldRenderWidgetTest.Constructor_DefaultState (0 ms)
+[ RUN      ] TextFieldRenderWidgetTest.Constructor_ReadsWidgetProperty_Value
+[       OK ] TextFieldRenderWidgetTest.Constructor_ReadsWidgetProperty_Value (0 ms)
+[ RUN      ] TextFieldRenderWidgetTest.Constructor_ReadsWidgetProperty_Placeholder
+[       OK ] TextFieldRenderWidgetTest.Constructor_ReadsWidgetProperty_Placeholder (0 ms)
+[ RUN      ] TextFieldRenderWidgetTest.SetText
+[       OK ] TextFieldRenderWidgetTest.SetText (0 ms)
+[ RUN      ] TextFieldRenderWidgetTest.OnChar_NotFocused_Ignored
+[       OK ] TextFieldRenderWidgetTest.OnChar_NotFocused_Ignored (0 ms)
+[ RUN      ] TextFieldRenderWidgetTest.OnChar_Focused_AppendsCharacter
+[       OK ] TextFieldRenderWidgetTest.OnChar_Focused_AppendsCharacter (0 ms)
+[ RUN      ] TextFieldRenderWidgetTest.OnChar_ControlCharacter_Ignored
+[       OK ] TextFieldRenderWidgetTest.OnChar_ControlCharacter_Ignored (0 ms)
+[ RUN      ] TextFieldRenderWidgetTest.OnChar_WithSelection_Replaces
+[       OK ] TextFieldRenderWidgetTest.OnChar_WithSelection_Replaces (0 ms)
+[ RUN      ] TextFieldRenderWidgetTest.OnKeyDown_NotFocused_Ignored
+[       OK ] TextFieldRenderWidgetTest.OnKeyDown_NotFocused_Ignored (0 ms)
+[ RUN      ] TextFieldRenderWidgetTest.OnKeyDown_Backspace
+[       OK ] TextFieldRenderWidgetTest.OnKeyDown_Backspace (0 ms)
+[ RUN      ] TextFieldRenderWidgetTest.OnKeyDown_Backspace_AtStart
+[       OK ] TextFieldRenderWidgetTest.OnKeyDown_Backspace_AtStart (0 ms)
+[ RUN      ] TextFieldRenderWidgetTest.OnKeyDown_Delete
+[       OK ] TextFieldRenderWidgetTest.OnKeyDown_Delete (0 ms)
+[ RUN      ] TextFieldRenderWidgetTest.OnKeyDown_Left_MovesCursor
+[       OK ] TextFieldRenderWidgetTest.OnKeyDown_Left_MovesCursor (0 ms)
+[ RUN      ] TextFieldRenderWidgetTest.OnKeyDown_Right_MovesCursor
+[       OK ] TextFieldRenderWidgetTest.OnKeyDown_Right_MovesCursor (0 ms)
+[ RUN      ] TextFieldRenderWidgetTest.OnKeyDown_Home_End
+[       OK ] TextFieldRenderWidgetTest.OnKeyDown_Home_End (0 ms)
+[ RUN      ] TextFieldRenderWidgetTest.OnMouseDown_SetsDragging
+[       OK ] TextFieldRenderWidgetTest.OnMouseDown_SetsDragging (0 ms)
+[----------] 16 tests from TextFieldRenderWidgetTest (0 ms total)
+
+[----------] 4 tests from ButtonRenderWidgetTest
+[ RUN      ] ButtonRenderWidgetTest.CanFocus
+[       OK ] ButtonRenderWidgetTest.CanFocus (0 ms)
+[ RUN      ] ButtonRenderWidgetTest.HitTest_Inside
+[       OK ] ButtonRenderWidgetTest.HitTest_Inside (0 ms)
+[ RUN      ] ButtonRenderWidgetTest.MouseDownUp_PressedState
+[       OK ] ButtonRenderWidgetTest.MouseDownUp_PressedState (0 ms)
+[ RUN      ] ButtonRenderWidgetTest.Measure
+[       OK ] ButtonRenderWidgetTest.Measure (0 ms)
+[----------] 4 tests from ButtonRenderWidgetTest (0 ms total)
+
+[----------] 3 tests from CheckBoxRenderWidgetTest
+[ RUN      ] CheckBoxRenderWidgetTest.CanFocus
+[       OK ] CheckBoxRenderWidgetTest.CanFocus (0 ms)
+[ RUN      ] CheckBoxRenderWidgetTest.MouseDown_TogglesCheck
+[       OK ] CheckBoxRenderWidgetTest.MouseDown_TogglesCheck (0 ms)
+[ RUN      ] CheckBoxRenderWidgetTest.Measure
+[       OK ] CheckBoxRenderWidgetTest.Measure (0 ms)
+[----------] 3 tests from CheckBoxRenderWidgetTest (0 ms total)
+
+[----------] 1 test from ContainerRenderWidgetTest
+[ RUN      ] ContainerRenderWidgetTest.Measure
+[       OK ] ContainerRenderWidgetTest.Measure (0 ms)
+[----------] 1 test from ContainerRenderWidgetTest (0 ms total)
+
+[----------] 1 test from DividerRenderWidgetTest
+[ RUN      ] DividerRenderWidgetTest.Measure
+[       OK ] DividerRenderWidgetTest.Measure (0 ms)
+[----------] 1 test from DividerRenderWidgetTest (0 ms total)
+
+[----------] 2 tests from ImageRenderWidgetTest
+[ RUN      ] ImageRenderWidgetTest.Measure_Default
+[       OK ] ImageRenderWidgetTest.Measure_Default (0 ms)
+[ RUN      ] ImageRenderWidgetTest.Measure_ExplicitSize
+[       OK ] ImageRenderWidgetTest.Measure_ExplicitSize (0 ms)
+[----------] 2 tests from ImageRenderWidgetTest (0 ms total)
+
+[----------] 20 tests from D2DRendererTest
+[ RUN      ] D2DRendererTest.ParseColor_SixDigits
+[       OK ] D2DRendererTest.ParseColor_SixDigits (0 ms)
+[ RUN      ] D2DRendererTest.ParseColor_WithHash
+[       OK ] D2DRendererTest.ParseColor_WithHash (0 ms)
+[ RUN      ] D2DRendererTest.ParseColor_Black
+[       OK ] D2DRendererTest.ParseColor_Black (0 ms)
+[ RUN      ] D2DRendererTest.ParseColor_White
+[       OK ] D2DRendererTest.ParseColor_White (0 ms)
+[ RUN      ] D2DRendererTest.ParseColor_CustomAlpha
+[       OK ] D2DRendererTest.ParseColor_CustomAlpha (0 ms)
+[ RUN      ] D2DRendererTest.ParseColor_EmptyString
+[       OK ] D2DRendererTest.ParseColor_EmptyString (0 ms)
+[ RUN      ] D2DRendererTest.ParseColor_InvalidHex_Safe
+[       OK ] D2DRendererTest.ParseColor_InvalidHex_Safe (0 ms)
+[ RUN      ] D2DRendererTest.ParseColor_ShortString
+[       OK ] D2DRendererTest.ParseColor_ShortString (0 ms)
+[ RUN      ] D2DRendererTest.ParseColor_OnlyHash
+[       OK ] D2DRendererTest.ParseColor_OnlyHash (0 ms)
+[ RUN      ] D2DRendererTest.Constructor_DefaultState
+[       OK ] D2DRendererTest.Constructor_DefaultState (0 ms)
+[ RUN      ] D2DRendererTest.Destructor_NoCrash
+[       OK ] D2DRendererTest.Destructor_NoCrash (0 ms)
+[ RUN      ] D2DRendererTest.WidthHeight_DefaultZero
+[       OK ] D2DRendererTest.WidthHeight_DefaultZero (0 ms)
+[ RUN      ] D2DRendererTest.Invalidate_SetsDirty
+[       OK ] D2DRendererTest.Invalidate_SetsDirty (0 ms)
+[ RUN      ] D2DRendererTest.SetSurface_Null_NoCrash
+[       OK ] D2DRendererTest.SetSurface_Null_NoCrash (0 ms)
+[ RUN      ] D2DRendererTest.SetSurface_WithSurface
+[       OK ] D2DRendererTest.SetSurface_WithSurface (0 ms)
+[ RUN      ] D2DRendererTest.SetSurface_WithWidgets
+[       OK ] D2DRendererTest.SetSurface_WithWidgets (0 ms)
+[ RUN      ] D2DRendererTest.InputEvents_Uninitialized_NoCrash
+[       OK ] D2DRendererTest.InputEvents_Uninitialized_NoCrash (0 ms)
+[ RUN      ] D2DRendererTest.MouseDown_WithSurface_FocusTest
+[       OK ] D2DRendererTest.MouseDown_WithSurface_FocusTest (0 ms)
+[ RUN      ] D2DRendererTest.CharInput_NoFocusedWidget_NoCrash
+[       OK ] D2DRendererTest.CharInput_NoFocusedWidget_NoCrash (0 ms)
+[ RUN      ] D2DRendererTest.KeyDown_NoFocusedWidget_NoCrash
+[       OK ] D2DRendererTest.KeyDown_NoFocusedWidget_NoCrash (0 ms)
+[----------] 20 tests from D2DRendererTest (1 ms total)
+
+[----------] 27 tests from LayoutEngineTest
+[ RUN      ] LayoutEngineTest.ResolveSize_Null_UsesFallback
+[       OK ] LayoutEngineTest.ResolveSize_Null_UsesFallback (0 ms)
+[ RUN      ] LayoutEngineTest.ResolveSize_Number_ReturnsDirectValue
+[       OK ] LayoutEngineTest.ResolveSize_Number_ReturnsDirectValue (0 ms)
+[ RUN      ] LayoutEngineTest.ResolveSize_String_Percentage
+[       OK ] LayoutEngineTest.ResolveSize_String_Percentage (0 ms)
+[ RUN      ] LayoutEngineTest.ResolveSize_String_Percentage_100
+[       OK ] LayoutEngineTest.ResolveSize_String_Percentage_100 (0 ms)
+[ RUN      ] LayoutEngineTest.ResolveSize_String_Percentage_Zero
+[       OK ] LayoutEngineTest.ResolveSize_String_Percentage_Zero (0 ms)
+[ RUN      ] LayoutEngineTest.ResolveSize_String_InvalidFormat_UsesFallback
+[       OK ] LayoutEngineTest.ResolveSize_String_InvalidFormat_UsesFallback (0 ms)
+[ RUN      ] LayoutEngineTest.ResolveSize_String_Empty
+[       OK ] LayoutEngineTest.ResolveSize_String_Empty (0 ms)
+[ RUN      ] LayoutEngineTest.ResolveSize_DefaultFallback
+[       OK ] LayoutEngineTest.ResolveSize_DefaultFallback (0 ms)
+[ RUN      ] LayoutEngineTest.Layout_NullRoot_NoCrash
+[       OK ] LayoutEngineTest.Layout_NullRoot_NoCrash (0 ms)
+[ RUN      ] LayoutEngineTest.Layout_NonNullRoot_SetsBounds
+[       OK ] LayoutEngineTest.Layout_NonNullRoot_SetsBounds (0 ms)
+[ RUN      ] LayoutEngineTest.Layout_Text_GetsContainerSize
+[       OK ] LayoutEngineTest.Layout_Text_GetsContainerSize (0 ms)
+[ RUN      ] LayoutEngineTest.Layout_Button_GetsContainerSize
+[       OK ] LayoutEngineTest.Layout_Button_GetsContainerSize (0 ms)
+[ RUN      ] LayoutEngineTest.Layout_TextField_GetsContainerSize
+[       OK ] LayoutEngineTest.Layout_TextField_GetsContainerSize (0 ms)
+[ RUN      ] LayoutEngineTest.Layout_CheckBox_GetsContainerSize
+[       OK ] LayoutEngineTest.Layout_CheckBox_GetsContainerSize (0 ms)
+[ RUN      ] LayoutEngineTest.Layout_Divider_GetsContainerSize
+[       OK ] LayoutEngineTest.Layout_Divider_GetsContainerSize (0 ms)
+[ RUN      ] LayoutEngineTest.Layout_Image_GetsContainerSize
+[       OK ] LayoutEngineTest.Layout_Image_GetsContainerSize (0 ms)
+[ RUN      ] LayoutEngineTest.Layout_Card_GetsContainerSize
+[       OK ] LayoutEngineTest.Layout_Card_GetsContainerSize (0 ms)
+[ RUN      ] LayoutEngineTest.Layout_Custom_GetsContainerSize
+[       OK ] LayoutEngineTest.Layout_Custom_GetsContainerSize (0 ms)
+[ RUN      ] LayoutEngineTest.MeasureWidget_Invisible_ZeroSize
+[       OK ] LayoutEngineTest.MeasureWidget_Invisible_ZeroSize (0 ms)
+[ RUN      ] LayoutEngineTest.Layout_ExplicitWidth_RootGetsContainerWidth
+[       OK ] LayoutEngineTest.Layout_ExplicitWidth_RootGetsContainerWidth (0 ms)
+[ RUN      ] LayoutEngineTest.Layout_ExplicitHeight_RootGetsContainerHeight
+[       OK ] LayoutEngineTest.Layout_ExplicitHeight_RootGetsContainerHeight (0 ms)
+[ RUN      ] LayoutEngineTest.Layout_SmallConstraint_SizeMatches
+[       OK ] LayoutEngineTest.Layout_SmallConstraint_SizeMatches (0 ms)
+[ RUN      ] LayoutEngineTest.Layout_ShortConstraint_SizeMatches
+[       OK ] LayoutEngineTest.Layout_ShortConstraint_SizeMatches (0 ms)
+[ RUN      ] LayoutEngineTest.ArrangeCard_Padding
+[       OK ] LayoutEngineTest.ArrangeCard_Padding (0 ms)
+[ RUN      ] LayoutEngineTest.GetChildWidgets_DefaultEmpty
+[       OK ] LayoutEngineTest.GetChildWidgets_DefaultEmpty (0 ms)
+[ RUN      ] LayoutEngineTest.ResolveSize_String_NonNumericPercent
+[       OK ] LayoutEngineTest.ResolveSize_String_NonNumericPercent (0 ms)
+[ RUN      ] LayoutEngineTest.ResolveSize_String_PercentWithSpace
+[       OK ] LayoutEngineTest.ResolveSize_String_PercentWithSpace (0 ms)
+[----------] 27 tests from LayoutEngineTest (2 ms total)
+
+[----------] Global test environment tear-down
+[==========] 281 tests from 22 test suites ran. (31 ms total)
+[  PASSED  ] 281 tests.

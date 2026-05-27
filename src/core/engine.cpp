@@ -337,7 +337,12 @@ void EngineImpl::refreshLayout(SurfacePtr surface, D2DRenderer& renderer, Layout
         };
         if (containerSize.w <= 0) containerSize.w = 800;
         if (containerSize.h <= 0) containerSize.h = 600;
-        layoutEngine.layout(root, containerSize);
+
+        // 传入 Surface 的 widget 查找器，使 LayoutEngine 能解析子组件 ID
+        auto resolver = [&surface](const std::string& id) -> WidgetPtr {
+            return surface->getWidget(id);
+        };
+        layoutEngine.layout(root, containerSize, resolver);
     }
     surface->setNeedsLayout(false);
 }
