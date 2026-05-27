@@ -1,0 +1,10 @@
+^F:\AI\LAOBA\JUI\BUILD\_DEPS\GOOGLETEST-SUBBUILD\CMAKEFILES\C76198AA76137814729E78A485D59211\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SF:/ai/laoba/jui/build/_deps/googletest-subbuild -BF:/ai/laoba/jui/build/_deps/googletest-subbuild --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file F:/ai/laoba/jui/build/_deps/googletest-subbuild/googletest-populate.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
