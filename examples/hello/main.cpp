@@ -191,6 +191,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             engine.processMessage(UI_JSON_DATA);
             engine.processMessage(UI_JSON_RENDER);
 
+            // 启动定时器驱动光标闪烁动画 (16ms ≈ 60fps)
+            SetTimer(hwnd, 1, 16, nullptr);
+
             // Action 回调（使用 JSON 字符串传递上下文）
             engine.setActionCallback([](const std::string& surfaceId,
                                          const std::string& action,
@@ -203,6 +206,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             });
             return 0;
         }
+
+        case WM_TIMER:
+            InvalidateRect(hwnd, nullptr, FALSE);
+            return 0;
 
         case WM_SIZE: {
             int w = LOWORD(lParam), h = HIWORD(lParam);

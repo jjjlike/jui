@@ -398,14 +398,14 @@ Running main() from F:\ai\laoba\jui\build\_deps\googletest-src\googletest\src\gt
 [ RUN      ] JUIEngineTest.Renderer_Access
 [       OK ] JUIEngineTest.Renderer_Access (0 ms)
 [ RUN      ] JUIEngineTest.Parse_AllWidgetTypes_V08
-[       OK ] JUIEngineTest.Parse_AllWidgetTypes_V08 (1 ms)
+[       OK ] JUIEngineTest.Parse_AllWidgetTypes_V08 (2 ms)
 [ RUN      ] JUIEngineTest.Parse_UnknownType_ReturnsNull
 [       OK ] JUIEngineTest.Parse_UnknownType_ReturnsNull (0 ms)
 [ RUN      ] JUIEngineTest.Parse_Children_Template
 [       OK ] JUIEngineTest.Parse_Children_Template (0 ms)
 [ RUN      ] JUIEngineTest.Parse_Action_String
 [       OK ] JUIEngineTest.Parse_Action_String (0 ms)
-[----------] 41 tests from JUIEngineTest (14 ms total)
+[----------] 41 tests from JUIEngineTest (15 ms total)
 
 [----------] 10 tests from RenderWidgetBaseTest
 [ RUN      ] RenderWidgetBaseTest.HitTest_Inside
@@ -627,7 +627,7 @@ Running main() from F:\ai\laoba\jui\build\_deps\googletest-src\googletest\src\gt
 [       OK ] LayoutEngineTest.ResolveSize_String_NonNumericPercent (0 ms)
 [ RUN      ] LayoutEngineTest.ResolveSize_String_PercentWithSpace
 [       OK ] LayoutEngineTest.ResolveSize_String_PercentWithSpace (0 ms)
-[----------] 27 tests from LayoutEngineTest (2 ms total)
+[----------] 27 tests from LayoutEngineTest (1 ms total)
 
 [----------] Global test environment tear-down
 [==========] 281 tests from 22 test suites ran. (31 ms total)

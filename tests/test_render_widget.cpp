@@ -445,12 +445,11 @@ TEST(ButtonRenderWidgetTest, MouseDownUp_PressedState) {
 }
 
 TEST(ButtonRenderWidgetTest, Measure) {
-    // 验证: Button 根据文字动态计算尺寸，dwrite=nullptr 时使用默认估算 80
-    // width = max(60, textW(80) + 24) = 104, height = 32
+    // 验证: Button 根据文字 "Button"(6 ASCII)动态计算: 6*14*0.6=50.4, max(70,74.4)=74.4
     auto w = std::make_shared<Widget>("b", WidgetType::Button);
     ButtonRenderWidget rw(w);
     Size s = rw.measure(nullptr);
-    EXPECT_FLOAT_EQ(s.w, 104.0f);
+    EXPECT_NEAR(s.w, 74.4f, 0.5f);
     EXPECT_FLOAT_EQ(s.h, 32.0f);
 }
 

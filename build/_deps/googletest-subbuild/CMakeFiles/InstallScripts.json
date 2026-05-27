@@ -1,7 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"F:/ai/laoba/jui/build/_deps/googletest-subbuild/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
