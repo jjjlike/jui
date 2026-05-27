@@ -1,6 +1,7 @@
 #include <jui/jui.h>
 #include <windows.h>
 #include <windowsx.h>
+#include <imm.h>
 #include <string>
 
 using namespace jui;
@@ -242,6 +243,55 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
         case WM_CHAR:
             engine.onCharInput(static_cast<uint32_t>(wParam));
+            InvalidateRect(hwnd, nullptr, FALSE);
+            return 0;
+
+        case WM_IME_STARTCOMPOSITION:
+            engine.onIMEStart();
+            InvalidateRect(hwnd, nullptr, FALSE);
+            return 0;
+
+        case WM_IME_COMPOSITION: {
+            engine.onIMEStart();
+            if (lParam & GCS_RESULTSTR) {
+                HIMC hIMC = ImmGetContext(hwnd);
+                if (hIMC) {
+                    LONG len = ImmGetCompositionStringW(hIMC, GCS_RESULTSTR, nullptr, 0);
+                    if (len > 0) {
+                        std::wstring ws(len / sizeof(wchar_t), L'\0');
+                        ImmGetCompositionStringW(hIMC, GCS_RESULTSTR, &ws[0], len);
+                        int utf8Len = WideCharToMultiByte(CP_UTF8, 0, ws.c_str(), -1, nullptr, 0, nullptr, nullptr);
+                        std::string utf8(utf8Len - 1, '\0');
+                        WideCharToMultiByte(CP_UTF8, 0, ws.c_str(), -1, &utf8[0], utf8Len, nullptr, nullptr);
+                        engine.onIMEEnd(utf8);
+                    }
+                    ImmReleaseContext(hwnd, hIMC);
+                }
+            } else if (lParam & GCS_COMPSTR) {
+                HIMC hIMC = ImmGetContext(hwnd);
+                if (hIMC) {
+                    LONG len = ImmGetCompositionStringW(hIMC, GCS_COMPSTR, nullptr, 0);
+                    if (len >= 0) {
+                        std::wstring ws(len / sizeof(wchar_t), L'\0');
+                        ImmGetCompositionStringW(hIMC, GCS_COMPSTR, &ws[0], len);
+                        int utf8Len = WideCharToMultiByte(CP_UTF8, 0, ws.c_str(), -1, nullptr, 0, nullptr, nullptr);
+                        if (utf8Len > 1) {
+                            std::string utf8(utf8Len - 1, '\0');
+                            WideCharToMultiByte(CP_UTF8, 0, ws.c_str(), -1, &utf8[0], utf8Len, nullptr, nullptr);
+                            engine.onIMEComposition(utf8);
+                        } else {
+                            engine.onIMEComposition("");
+                        }
+                    }
+                    ImmReleaseContext(hwnd, hIMC);
+                }
+            }
+            InvalidateRect(hwnd, nullptr, FALSE);
+            return 0;
+        }
+
+        case WM_IME_ENDCOMPOSITION:
+            engine.onIMEEnd("");
             InvalidateRect(hwnd, nullptr, FALSE);
             return 0;
 

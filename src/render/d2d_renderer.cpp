@@ -4,10 +4,6 @@
 
 namespace jui {
 
-// ============================================================
-// D2DRenderer 实现
-// ============================================================
-
 D2DRenderer::D2DRenderer() {
     lastFrameTime_ = std::chrono::steady_clock::now();
 }
@@ -17,12 +13,10 @@ D2DRenderer::~D2DRenderer() { discardDeviceResources(); }
 bool D2DRenderer::initialize(HWND hwnd) {
     hwnd_ = hwnd;
 
-    HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED,
-                                    IID_PPV_ARGS(&d2dFactory_));
+    HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, IID_PPV_ARGS(&d2dFactory_));
     if (FAILED(hr)) return false;
 
-    hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED,
-                              __uuidof(IDWriteFactory),
+    hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory),
                               reinterpret_cast<IUnknown**>(dwriteFactory_.GetAddressOf()));
     if (FAILED(hr)) return false;
 
@@ -32,17 +26,12 @@ bool D2DRenderer::initialize(HWND hwnd) {
 
 bool D2DRenderer::createDeviceResources() {
     if (!d2dFactory_ || !hwnd_) return false;
-
-    RECT rc;
-    GetClientRect(hwnd_, &rc);
-    width_ = rc.right - rc.left;
-    height_ = rc.bottom - rc.top;
+    RECT rc; GetClientRect(hwnd_, &rc);
+    width_ = rc.right - rc.left; height_ = rc.bottom - rc.top;
 
     auto size = D2D1::SizeU(width_, height_);
     HRESULT hr = d2dFactory_->CreateHwndRenderTarget(
-        D2D1::RenderTargetProperties(),
-        D2D1::HwndRenderTargetProperties(hwnd_, size),
-        &renderTarget_);
+        D2D1::RenderTargetProperties(), D2D1::HwndRenderTargetProperties(hwnd_, size), &renderTarget_);
     if (FAILED(hr)) return false;
 
     renderTarget_->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &whiteBrush_);
@@ -51,7 +40,6 @@ bool D2DRenderer::createDeviceResources() {
     renderTarget_->CreateSolidColorBrush(D2D1::ColorF(0.2f, 0.5f, 0.9f), &blueBrush_);
     renderTarget_->CreateSolidColorBrush(D2D1::ColorF(0.94f, 0.94f, 0.94f), &lightGrayBrush_);
     renderTarget_->CreateSolidColorBrush(D2D1::ColorF(0.8f, 0.8f, 0.8f), &borderBrush_);
-
     return true;
 }
 
@@ -62,18 +50,14 @@ void D2DRenderer::discardDeviceResources() {
 }
 
 D2D1_COLOR_F D2DRenderer::parseColor(const std::string& hex, float alpha) {
-    D2D1_COLOR_F color = {0, 0, 0, alpha};
-    if (hex.empty()) return color;
-    std::string h = hex;
-    if (h[0] == '#') h = h.substr(1);
-    if (h.length() == 6) {
-        uint32_t val = 0;
-        try { val = static_cast<uint32_t>(std::stoul(h, nullptr, 16)); } catch (...) { return color; }
-        color.r = ((val >> 16) & 0xFF) / 255.0f;
-        color.g = ((val >> 8) & 0xFF) / 255.0f;
-        color.b = (val & 0xFF) / 255.0f;
-    }
-    return color;
+    D2D1_COLOR_F c = {0,0,0,alpha};
+    if (hex.empty() || hex.length() < 6) return c;
+    std::string h = (hex[0]=='#') ? hex.substr(1) : hex;
+    try {
+        uint32_t v = static_cast<uint32_t>(std::stoul(h.substr(0,6), nullptr, 16));
+        c.r=((v>>16)&0xFF)/255.0f; c.g=((v>>8)&0xFF)/255.0f; c.b=(v&0xFF)/255.0f;
+    } catch(...) {}
+    return c;
 }
 
 void D2DRenderer::setSurface(SurfacePtr surface) {
@@ -103,28 +87,28 @@ void D2DRenderer::refreshRenderWidgets() {
     renderWidgets_.clear();
     focusedWidget_.reset();
     if (!surface_) return;
-
     auto root = surface_->rootWidget();
     if (root) createRenderTree(root);
 }
 
 // ============================================================
-// render — 绘制+更新所有控件
+// render — 帧更新 + 绘制
 // ============================================================
 
 void D2DRenderer::render() {
     if (!renderTarget_ || !initialized_) return;
 
-    // 计算 delta time（用于光标闪烁等动画）
+    // delta time
     auto now = std::chrono::steady_clock::now();
     float dt = std::chrono::duration<float>(now - lastFrameTime_).count();
     lastFrameTime_ = now;
-    // 限制最大 dt 防止跳帧异常
     if (dt > 0.1f) dt = 0.016f;
 
-    // 更新所有控件的动画状态（光标闪烁等）
-    for (auto& [id, rw] : renderWidgets_) {
-        if (rw) rw->update(dt);
+    // 更新光标闪烁 (TextFieldWidgetState::updateCaret)
+    if (focusedWidget_ && focusedWidget_->state()) {
+        auto* st = focusedWidget_->state();
+        auto* tfs = dynamic_cast<TextFieldWidgetState*>(st);
+        if (tfs) tfs->updateCaret(dt);
     }
 
     renderTarget_->BeginDraw();
@@ -138,15 +122,12 @@ void D2DRenderer::render() {
     }
 
     HRESULT hr = renderTarget_->EndDraw();
-    if (hr == D2DERR_RECREATE_TARGET) {
-        discardDeviceResources();
-        createDeviceResources();
-    }
+    if (hr == D2DERR_RECREATE_TARGET) { discardDeviceResources(); createDeviceResources(); }
     needsRedraw_ = false;
 }
 
 // ============================================================
-// 输入事件 — 含 hover、IME、剪贴板、右键菜单
+// 输入事件
 // ============================================================
 
 void D2DRenderer::onSize(int w, int h) {
@@ -156,67 +137,70 @@ void D2DRenderer::onSize(int w, int h) {
 }
 
 void D2DRenderer::onMouseMove(int x, int y) {
-    float fx = static_cast<float>(x);
-    float fy = static_cast<float>(y);
+    float fx = static_cast<float>(x), fy = static_cast<float>(y);
 
-    // 清除所有 hover 状态
-    for (auto& [id, rw] : renderWidgets_) rw->setHovered(false);
+    // 清除所有 hover
+    for (auto& [id, rw] : renderWidgets_)
+        if (rw->state()) rw->state()->setHovered(false);
 
-    // 命中测试设置 hover
+    // 命中最内层可聚焦控件
     for (auto it = renderWidgets_.rbegin(); it != renderWidgets_.rend(); ++it) {
-        if (it->second->hitTest(fx, fy)) {
-            it->second->setHovered(true);
+        if (it->second->hitTest(fx, fy) && it->second->canFocus()) {
+            if (it->second->state()) it->second->state()->setHovered(true);
             break;
         }
-    }
-
-    for (auto& [id, rw] : renderWidgets_) rw->onMouseMove(fx, fy);
-
-    if (!hoveredWidgetId_.empty()) {
-        auto it = renderWidgets_.find(hoveredWidgetId_);
-        if (it != renderWidgets_.end()) needsRedraw_ = true;
     }
 }
 
 void D2DRenderer::onMouseDown(int x, int y, int button) {
-    float fx = static_cast<float>(x);
-    float fy = static_cast<float>(y);
+    float fx = static_cast<float>(x), fy = static_cast<float>(y);
 
-    // 右键菜单
-    if (button == 1) { // 右键
-        for (auto it = renderWidgets_.rbegin(); it != renderWidgets_.rend(); ++it) {
-            if (it->second->hitTest(fx, fy) && it->second->onContextMenu(fx, fy)) {
-                float cx = fx;
-                float cy = fy;
-                // 通知外部显示上下文菜单
-                if (actionCallback_) {
-                    JValue ctx = JValue::fromObject(
-                        {{"type", JValue("contextmenu")},
-                         {"sourceComponentId", JValue(it->second->widget()->id())},
-                         {"x", JValue(static_cast<double>(cx))},
-                         {"y", JValue(static_cast<double>(cy))}}
-                    );
-                }
-                needsRedraw_ = true;
-                return;
-            }
-        }
-    }
-
-    // 左键/中键: 正常处理
-    if (focusedWidget_) {
-        focusedWidget_->setFocused(false);
+    if (focusedWidget_ && focusedWidget_->state()) {
+        focusedWidget_->state()->setFocused(false);
     }
     focusedWidget_.reset();
 
+    // 穿透非聚焦容器找可聚焦控件
     for (auto it = renderWidgets_.rbegin(); it != renderWidgets_.rend(); ++it) {
         auto& rw = it->second;
-        if (rw->hitTest(fx, fy)) {
-            rw->onMouseDown(fx, fy);
-            if (rw->canFocus()) {
-                rw->setFocused(true);
-                focusedWidget_ = rw;
-            }
+        if (!rw->hitTest(fx, fy)) continue;
+
+        // 按钮状态
+        if (rw->widget()->type() == WidgetType::Button) {
+            auto* bs = dynamic_cast<ButtonWidgetState*>(rw->state());
+            if (bs) bs->press();
+        }
+
+        // 编辑框状态
+        if (rw->widget()->type() == WidgetType::TextField) {
+            auto* tfs = dynamic_cast<TextFieldWidgetState*>(rw->state());
+            if (tfs) tfs->mouseDown((GetKeyState(VK_CONTROL) & 0x8000) != 0);
+        }
+
+        // 复选框状态
+        if (rw->widget()->type() == WidgetType::CheckBox) {
+            auto* cks = dynamic_cast<CheckBoxWidgetState*>(rw->state());
+            if (cks) cks->toggle();
+        }
+        // 开关状态
+        if (rw->widget()->type() == WidgetType::Toggle) {
+            auto* ts = dynamic_cast<ToggleWidgetState*>(rw->state());
+            if (ts) ts->toggle();
+        }
+        // 下拉选择器
+        if (rw->widget()->type() == WidgetType::ChoicePicker) {
+            auto* cp = dynamic_cast<ChoicePickerWidgetState*>(rw->state());
+            if (cp) cp->toggle(); // 简单的开关逻辑
+        }
+        // 滑动条拖拽
+        if (rw->widget()->type() == WidgetType::Slider) {
+            auto* ss = dynamic_cast<SliderWidgetState*>(rw->state());
+            if (ss) ss->setDragging(true);
+        }
+
+        if (rw->canFocus()) {
+            if (rw->state()) rw->state()->setFocused(true);
+            focusedWidget_ = rw;
             break;
         }
     }
@@ -225,100 +209,99 @@ void D2DRenderer::onMouseDown(int x, int y, int button) {
 
 void D2DRenderer::onMouseUp(int x, int y, int button) {
     for (auto& [id, rw] : renderWidgets_) {
-        rw->onMouseUp(static_cast<float>(x), static_cast<float>(y));
+        auto* bs = dynamic_cast<ButtonWidgetState*>(rw->state());
+        if (bs) bs->release();
     }
     needsRedraw_ = true;
 }
 
 void D2DRenderer::onCharInput(uint32_t ch) {
-    if (focusedWidget_) {
-        focusedWidget_->onChar(ch);
+    if (!focusedWidget_) return;
+    auto* tf = dynamic_cast<TextFieldRenderWidget*>(focusedWidget_.get());
+    if (tf) {
+        tf->onChar(ch);
         needsRedraw_ = true;
     }
 }
 
 void D2DRenderer::onKeyDown(int vk) {
-    if (focusedWidget_) {
-        // Ctrl+C / Ctrl+V / Ctrl+X / Ctrl+A 剪贴板操作
-        bool ctrl = (GetKeyState(VK_CONTROL) & 0x8000) != 0;
+    if (!focusedWidget_) return;
 
-        if (ctrl && vk == 'C') {
-            if (focusedWidget_->canCopy()) {
-                std::string sel = focusedWidget_->copySelection();
-                copyToClipboard(sel);
-            }
-            return;
+    // Ctrl+C/V/X/A 剪贴板
+    bool ctrl = (GetKeyState(VK_CONTROL) & 0x8000) != 0;
+    if (ctrl) {
+        if (vk == 'C' && focusedWidget_->canCopy()) {
+            copyToClipboard(focusedWidget_->copySelection()); return;
         }
-        if (ctrl && vk == 'V') {
-            if (focusedWidget_->canPaste()) {
-                std::string txt = pasteFromClipboard();
-                focusedWidget_->pasteText(txt);
-            }
-            needsRedraw_ = true;
-            return;
+        if (vk == 'V' && focusedWidget_->canPaste()) {
+            focusedWidget_->pasteText(pasteFromClipboard());
+            needsRedraw_ = true; return;
         }
-        if (ctrl && vk == 'X') {
-            if (focusedWidget_->canCopy()) {
-                std::string sel = focusedWidget_->copySelection();
-                copyToClipboard(sel);
-                focusedWidget_->cutSelection();
-            }
-            needsRedraw_ = true;
-            return;
+        if (vk == 'X' && focusedWidget_->canCopy()) {
+            copyToClipboard(focusedWidget_->copySelection());
+            focusedWidget_->cutSelection();
+            needsRedraw_ = true; return;
         }
-        if (ctrl && vk == 'A') {
-            focusedWidget_->selectAll();
-            needsRedraw_ = true;
-            return;
-        }
+        if (vk == 'A') { focusedWidget_->selectAll(); needsRedraw_ = true; return; }
+    }
 
-        focusedWidget_->onKeyDown(vk);
+    auto* tf = dynamic_cast<TextFieldRenderWidget*>(focusedWidget_.get());
+    if (tf) {
+        tf->onKeyDown(vk);
         needsRedraw_ = true;
     }
 }
 
 void D2DRenderer::onKeyUp(int vk) {
-    if (focusedWidget_) {
-        focusedWidget_->onKeyUp(vk);
-    }
+    (void)vk;
+}
+
+// ---- IME 中文输入 ----
+void D2DRenderer::onIMEStart() {
+    if (!focusedWidget_) return;
+    auto* tf = dynamic_cast<TextFieldRenderWidget*>(focusedWidget_.get());
+    if (tf) { tf->imeStart(); needsRedraw_ = true; }
+}
+
+void D2DRenderer::onIMEComposition(const std::string& str) {
+    if (!focusedWidget_) return;
+    auto* tf = dynamic_cast<TextFieldRenderWidget*>(focusedWidget_.get());
+    if (tf) { tf->imeComposition(str); needsRedraw_ = true; }
+}
+
+void D2DRenderer::onIMEEnd(const std::string& result) {
+    if (!focusedWidget_) return;
+    auto* tf = dynamic_cast<TextFieldRenderWidget*>(focusedWidget_.get());
+    if (tf) { tf->imeEnd(result); needsRedraw_ = true; }
 }
 
 // ============================================================
-// 剪贴板辅助
+// 剪贴板
 // ============================================================
-
 void D2DRenderer::copyToClipboard(const std::string& text) {
     if (text.empty() || !OpenClipboard(hwnd_)) return;
     EmptyClipboard();
-    std::wstring wtext(text.begin(), text.end());
-    size_t size = (wtext.length() + 1) * sizeof(wchar_t);
-    HGLOBAL hGlobal = GlobalAlloc(GMEM_MOVEABLE, size);
-    if (hGlobal) {
-        memcpy(GlobalLock(hGlobal), wtext.c_str(), size);
-        GlobalUnlock(hGlobal);
-        SetClipboardData(CF_UNICODETEXT, hGlobal);
-    }
+    std::wstring w(text.begin(), text.end());
+    size_t size = (w.length() + 1) * sizeof(wchar_t);
+    HGLOBAL h = GlobalAlloc(GMEM_MOVEABLE, size);
+    if (h) { memcpy(GlobalLock(h), w.c_str(), size); GlobalUnlock(h); SetClipboardData(CF_UNICODETEXT, h); }
     CloseClipboard();
 }
 
 std::string D2DRenderer::pasteFromClipboard() {
     if (!OpenClipboard(hwnd_)) return "";
-    std::string result;
-    HANDLE hData = GetClipboardData(CF_UNICODETEXT);
-    if (hData) {
-        wchar_t* wstr = static_cast<wchar_t*>(GlobalLock(hData));
-        if (wstr) {
-            int len = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, nullptr, 0, nullptr, nullptr);
-            if (len > 0) {
-                std::vector<char> buf(len);
-                WideCharToMultiByte(CP_UTF8, 0, wstr, -1, buf.data(), len, nullptr, nullptr);
-                result = buf.data();
-            }
-            GlobalUnlock(hData);
+    std::string r;
+    HANDLE h = GetClipboardData(CF_UNICODETEXT);
+    if (h) {
+        wchar_t* ws = static_cast<wchar_t*>(GlobalLock(h));
+        if (ws) {
+            int len = WideCharToMultiByte(CP_UTF8, 0, ws, -1, nullptr, 0, nullptr, nullptr);
+            if (len > 0) { std::vector<char> buf(len); WideCharToMultiByte(CP_UTF8, 0, ws, -1, buf.data(), len, nullptr, nullptr); r = buf.data(); }
+            GlobalUnlock(h);
         }
     }
     CloseClipboard();
-    return result;
+    return r;
 }
 
 } // namespace jui

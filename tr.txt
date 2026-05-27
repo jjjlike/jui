@@ -1,5 +1,5 @@
 Running main() from F:\ai\laoba\jui\build\_deps\googletest-src\googletest\src\gtest_main.cc
-[==========] Running 281 tests from 22 test suites.
+[==========] Running 325 tests from 33 test suites.
 [----------] Global test environment set-up.
 [----------] 41 tests from JValueTest
 [ RUN      ] JValueTest.DefaultConstructor_IsNull
@@ -196,7 +196,7 @@ Running main() from F:\ai\laoba\jui\build\_deps\googletest-src\googletest\src\gt
 [       OK ] WidgetTest.Enabled_SetFalse (0 ms)
 [ RUN      ] WidgetTest.FullWidget_Populated
 [       OK ] WidgetTest.FullWidget_Populated (0 ms)
-[----------] 34 tests from WidgetTest (1 ms total)
+[----------] 34 tests from WidgetTest (3 ms total)
 
 [----------] 2 tests from WidgetPtrTest
 [ RUN      ] WidgetPtrTest.SharedPtr_Usage
@@ -258,7 +258,7 @@ Running main() from F:\ai\laoba\jui\build\_deps\googletest-src\googletest\src\gt
 [       OK ] DataModelTest.Path_JSONPointer_TildeEncoding (0 ms)
 [ RUN      ] DataModelTest.RapidSet_Clear_Resume
 [       OK ] DataModelTest.RapidSet_Clear_Resume (0 ms)
-[----------] 26 tests from DataModelTest (1 ms total)
+[----------] 26 tests from DataModelTest (2 ms total)
 
 [----------] 26 tests from SurfaceTest
 [ RUN      ] SurfaceTest.Constructor_Id
@@ -313,7 +313,7 @@ Running main() from F:\ai\laoba\jui\build\_deps\googletest-src\googletest\src\gt
 [       OK ] SurfaceTest.NeedsLayout_Toggle (0 ms)
 [ RUN      ] SurfaceTest.A2UI_Tree_Simulation
 [       OK ] SurfaceTest.A2UI_Tree_Simulation (0 ms)
-[----------] 26 tests from SurfaceTest (2 ms total)
+[----------] 26 tests from SurfaceTest (1 ms total)
 
 [----------] 2 tests from SurfacePtrTest
 [ RUN      ] SurfacePtrTest.SharedPtr_CreateUse
@@ -366,7 +366,7 @@ Running main() from F:\ai\laoba\jui\build\_deps\googletest-src\googletest\src\gt
 [ RUN      ] JUIEngineTest.ProcessMessage_DeleteSurface_EmptyId_NoCrash
 [       OK ] JUIEngineTest.ProcessMessage_DeleteSurface_EmptyId_NoCrash (0 ms)
 [ RUN      ] JUIEngineTest.FullA2UIFlow
-[       OK ] JUIEngineTest.FullA2UIFlow (1 ms)
+[       OK ] JUIEngineTest.FullA2UIFlow (2 ms)
 [ RUN      ] JUIEngineTest.ProcessMessageStream_SingleLine
 [       OK ] JUIEngineTest.ProcessMessageStream_SingleLine (0 ms)
 [ RUN      ] JUIEngineTest.ProcessMessageStream_MultipleLines
@@ -386,7 +386,7 @@ Running main() from F:\ai\laoba\jui\build\_deps\googletest-src\googletest\src\gt
 [ RUN      ] JUIEngineTest.LoadFromFile_NonExistent
 [       OK ] JUIEngineTest.LoadFromFile_NonExistent (0 ms)
 [ RUN      ] JUIEngineTest.LoadFromFile_ExistingFile
-[       OK ] JUIEngineTest.LoadFromFile_ExistingFile (1 ms)
+[       OK ] JUIEngineTest.LoadFromFile_ExistingFile (2 ms)
 [ RUN      ] JUIEngineTest.ActionCallback_Set
 [       OK ] JUIEngineTest.ActionCallback_Set (0 ms)
 [ RUN      ] JUIEngineTest.WindowEvents_NoWindow_NoCrash
@@ -398,136 +398,87 @@ Running main() from F:\ai\laoba\jui\build\_deps\googletest-src\googletest\src\gt
 [ RUN      ] JUIEngineTest.Renderer_Access
 [       OK ] JUIEngineTest.Renderer_Access (0 ms)
 [ RUN      ] JUIEngineTest.Parse_AllWidgetTypes_V08
-[       OK ] JUIEngineTest.Parse_AllWidgetTypes_V08 (2 ms)
+[       OK ] JUIEngineTest.Parse_AllWidgetTypes_V08 (4 ms)
 [ RUN      ] JUIEngineTest.Parse_UnknownType_ReturnsNull
 [       OK ] JUIEngineTest.Parse_UnknownType_ReturnsNull (0 ms)
 [ RUN      ] JUIEngineTest.Parse_Children_Template
 [       OK ] JUIEngineTest.Parse_Children_Template (0 ms)
 [ RUN      ] JUIEngineTest.Parse_Action_String
 [       OK ] JUIEngineTest.Parse_Action_String (0 ms)
-[----------] 41 tests from JUIEngineTest (15 ms total)
+[----------] 41 tests from JUIEngineTest (20 ms total)
 
-[----------] 10 tests from RenderWidgetBaseTest
-[ RUN      ] RenderWidgetBaseTest.HitTest_Inside
-[       OK ] RenderWidgetBaseTest.HitTest_Inside (0 ms)
-[ RUN      ] RenderWidgetBaseTest.HitTest_Outside_X
-[       OK ] RenderWidgetBaseTest.HitTest_Outside_X (0 ms)
-[ RUN      ] RenderWidgetBaseTest.HitTest_Outside_Y
-[       OK ] RenderWidgetBaseTest.HitTest_Outside_Y (0 ms)
-[ RUN      ] RenderWidgetBaseTest.HitTest_OnEdge
-[       OK ] RenderWidgetBaseTest.HitTest_OnEdge (0 ms)
-[ RUN      ] RenderWidgetBaseTest.Bounds_SetGet
-[       OK ] RenderWidgetBaseTest.Bounds_SetGet (0 ms)
-[ RUN      ] RenderWidgetBaseTest.CanFocus_DefaultFalse
-[       OK ] RenderWidgetBaseTest.CanFocus_DefaultFalse (0 ms)
-[ RUN      ] RenderWidgetBaseTest.Focused_DefaultFalse
-[       OK ] RenderWidgetBaseTest.Focused_DefaultFalse (0 ms)
-[ RUN      ] RenderWidgetBaseTest.Focused_SetTrue
-[       OK ] RenderWidgetBaseTest.Focused_SetTrue (0 ms)
-[ RUN      ] RenderWidgetBaseTest.Focused_Toggle
-[       OK ] RenderWidgetBaseTest.Focused_Toggle (0 ms)
-[ RUN      ] RenderWidgetBaseTest.Widget_Access
-[       OK ] RenderWidgetBaseTest.Widget_Access (0 ms)
-[----------] 10 tests from RenderWidgetBaseTest (0 ms total)
+[----------] 3 tests from RenderBaseTest
+[ RUN      ] RenderBaseTest.HitTest_Inside
+[       OK ] RenderBaseTest.HitTest_Inside (0 ms)
+[ RUN      ] RenderBaseTest.Bounds_SetGet
+[       OK ] RenderBaseTest.Bounds_SetGet (0 ms)
+[ RUN      ] RenderBaseTest.CanFocus_False
+[       OK ] RenderBaseTest.CanFocus_False (0 ms)
+[----------] 3 tests from RenderBaseTest (0 ms total)
 
-[----------] 12 tests from RenderWidgetFactoryTest
-[ RUN      ] RenderWidgetFactoryTest.Create_NullWidget_ReturnsNull
-[       OK ] RenderWidgetFactoryTest.Create_NullWidget_ReturnsNull (0 ms)
-[ RUN      ] RenderWidgetFactoryTest.Create_Text
-[       OK ] RenderWidgetFactoryTest.Create_Text (0 ms)
-[ RUN      ] RenderWidgetFactoryTest.Create_Button
-[       OK ] RenderWidgetFactoryTest.Create_Button (0 ms)
-[ RUN      ] RenderWidgetFactoryTest.Create_TextField
-[       OK ] RenderWidgetFactoryTest.Create_TextField (0 ms)
-[ RUN      ] RenderWidgetFactoryTest.Create_CheckBox
-[       OK ] RenderWidgetFactoryTest.Create_CheckBox (0 ms)
-[ RUN      ] RenderWidgetFactoryTest.Create_Row
-[       OK ] RenderWidgetFactoryTest.Create_Row (0 ms)
-[ RUN      ] RenderWidgetFactoryTest.Create_Column
-[       OK ] RenderWidgetFactoryTest.Create_Column (0 ms)
-[ RUN      ] RenderWidgetFactoryTest.Create_Card
-[       OK ] RenderWidgetFactoryTest.Create_Card (0 ms)
-[ RUN      ] RenderWidgetFactoryTest.Create_List
-[       OK ] RenderWidgetFactoryTest.Create_List (0 ms)
-[ RUN      ] RenderWidgetFactoryTest.Create_Divider
-[       OK ] RenderWidgetFactoryTest.Create_Divider (0 ms)
-[ RUN      ] RenderWidgetFactoryTest.Create_Image
-[       OK ] RenderWidgetFactoryTest.Create_Image (0 ms)
-[ RUN      ] RenderWidgetFactoryTest.Create_Custom_ReturnsNull
-[       OK ] RenderWidgetFactoryTest.Create_Custom_ReturnsNull (0 ms)
-[----------] 12 tests from RenderWidgetFactoryTest (0 ms total)
+[----------] 1 test from FactoryTest
+[ RUN      ] FactoryTest.AllTypes
+[       OK ] FactoryTest.AllTypes (0 ms)
+[----------] 1 test from FactoryTest (0 ms total)
 
-[----------] 16 tests from TextFieldRenderWidgetTest
-[ RUN      ] TextFieldRenderWidgetTest.Constructor_DefaultState
-[       OK ] TextFieldRenderWidgetTest.Constructor_DefaultState (0 ms)
-[ RUN      ] TextFieldRenderWidgetTest.Constructor_ReadsWidgetProperty_Value
-[       OK ] TextFieldRenderWidgetTest.Constructor_ReadsWidgetProperty_Value (0 ms)
-[ RUN      ] TextFieldRenderWidgetTest.Constructor_ReadsWidgetProperty_Placeholder
-[       OK ] TextFieldRenderWidgetTest.Constructor_ReadsWidgetProperty_Placeholder (0 ms)
-[ RUN      ] TextFieldRenderWidgetTest.SetText
-[       OK ] TextFieldRenderWidgetTest.SetText (0 ms)
-[ RUN      ] TextFieldRenderWidgetTest.OnChar_NotFocused_Ignored
-[       OK ] TextFieldRenderWidgetTest.OnChar_NotFocused_Ignored (0 ms)
-[ RUN      ] TextFieldRenderWidgetTest.OnChar_Focused_AppendsCharacter
-[       OK ] TextFieldRenderWidgetTest.OnChar_Focused_AppendsCharacter (0 ms)
-[ RUN      ] TextFieldRenderWidgetTest.OnChar_ControlCharacter_Ignored
-[       OK ] TextFieldRenderWidgetTest.OnChar_ControlCharacter_Ignored (0 ms)
-[ RUN      ] TextFieldRenderWidgetTest.OnChar_WithSelection_Replaces
-[       OK ] TextFieldRenderWidgetTest.OnChar_WithSelection_Replaces (0 ms)
-[ RUN      ] TextFieldRenderWidgetTest.OnKeyDown_NotFocused_Ignored
-[       OK ] TextFieldRenderWidgetTest.OnKeyDown_NotFocused_Ignored (0 ms)
-[ RUN      ] TextFieldRenderWidgetTest.OnKeyDown_Backspace
-[       OK ] TextFieldRenderWidgetTest.OnKeyDown_Backspace (0 ms)
-[ RUN      ] TextFieldRenderWidgetTest.OnKeyDown_Backspace_AtStart
-[       OK ] TextFieldRenderWidgetTest.OnKeyDown_Backspace_AtStart (0 ms)
-[ RUN      ] TextFieldRenderWidgetTest.OnKeyDown_Delete
-[       OK ] TextFieldRenderWidgetTest.OnKeyDown_Delete (0 ms)
-[ RUN      ] TextFieldRenderWidgetTest.OnKeyDown_Left_MovesCursor
-[       OK ] TextFieldRenderWidgetTest.OnKeyDown_Left_MovesCursor (0 ms)
-[ RUN      ] TextFieldRenderWidgetTest.OnKeyDown_Right_MovesCursor
-[       OK ] TextFieldRenderWidgetTest.OnKeyDown_Right_MovesCursor (0 ms)
-[ RUN      ] TextFieldRenderWidgetTest.OnKeyDown_Home_End
-[       OK ] TextFieldRenderWidgetTest.OnKeyDown_Home_End (0 ms)
-[ RUN      ] TextFieldRenderWidgetTest.OnMouseDown_SetsDragging
-[       OK ] TextFieldRenderWidgetTest.OnMouseDown_SetsDragging (0 ms)
-[----------] 16 tests from TextFieldRenderWidgetTest (0 ms total)
+[----------] 4 tests from TextFieldRenderTest
+[ RUN      ] TextFieldRenderTest.CanFocus
+[       OK ] TextFieldRenderTest.CanFocus (0 ms)
+[ RUN      ] TextFieldRenderTest.HitTest
+[       OK ] TextFieldRenderTest.HitTest (0 ms)
+[ RUN      ] TextFieldRenderTest.Measure
+[       OK ] TextFieldRenderTest.Measure (0 ms)
+[ RUN      ] TextFieldRenderTest.Clipboard
+[       OK ] TextFieldRenderTest.Clipboard (0 ms)
+[----------] 4 tests from TextFieldRenderTest (0 ms total)
 
-[----------] 4 tests from ButtonRenderWidgetTest
-[ RUN      ] ButtonRenderWidgetTest.CanFocus
-[       OK ] ButtonRenderWidgetTest.CanFocus (0 ms)
-[ RUN      ] ButtonRenderWidgetTest.HitTest_Inside
-[       OK ] ButtonRenderWidgetTest.HitTest_Inside (0 ms)
-[ RUN      ] ButtonRenderWidgetTest.MouseDownUp_PressedState
-[       OK ] ButtonRenderWidgetTest.MouseDownUp_PressedState (0 ms)
-[ RUN      ] ButtonRenderWidgetTest.Measure
-[       OK ] ButtonRenderWidgetTest.Measure (0 ms)
-[----------] 4 tests from ButtonRenderWidgetTest (0 ms total)
+[----------] 3 tests from ButtonRenderTest
+[ RUN      ] ButtonRenderTest.CanFocus
+[       OK ] ButtonRenderTest.CanFocus (0 ms)
+[ RUN      ] ButtonRenderTest.HitTest
+[       OK ] ButtonRenderTest.HitTest (0 ms)
+[ RUN      ] ButtonRenderTest.Measure
+[       OK ] ButtonRenderTest.Measure (0 ms)
+[----------] 3 tests from ButtonRenderTest (0 ms total)
 
-[----------] 3 tests from CheckBoxRenderWidgetTest
-[ RUN      ] CheckBoxRenderWidgetTest.CanFocus
-[       OK ] CheckBoxRenderWidgetTest.CanFocus (0 ms)
-[ RUN      ] CheckBoxRenderWidgetTest.MouseDown_TogglesCheck
-[       OK ] CheckBoxRenderWidgetTest.MouseDown_TogglesCheck (0 ms)
-[ RUN      ] CheckBoxRenderWidgetTest.Measure
-[       OK ] CheckBoxRenderWidgetTest.Measure (0 ms)
-[----------] 3 tests from CheckBoxRenderWidgetTest (0 ms total)
+[----------] 2 tests from CheckBoxRenderTest
+[ RUN      ] CheckBoxRenderTest.CanFocus
+[       OK ] CheckBoxRenderTest.CanFocus (0 ms)
+[ RUN      ] CheckBoxRenderTest.Measure
+[       OK ] CheckBoxRenderTest.Measure (0 ms)
+[----------] 2 tests from CheckBoxRenderTest (0 ms total)
 
-[----------] 1 test from ContainerRenderWidgetTest
-[ RUN      ] ContainerRenderWidgetTest.Measure
-[       OK ] ContainerRenderWidgetTest.Measure (0 ms)
-[----------] 1 test from ContainerRenderWidgetTest (0 ms total)
+[----------] 1 test from ToggleRenderTest
+[ RUN      ] ToggleRenderTest.CanFocus
+[       OK ] ToggleRenderTest.CanFocus (0 ms)
+[----------] 1 test from ToggleRenderTest (0 ms total)
 
-[----------] 1 test from DividerRenderWidgetTest
-[ RUN      ] DividerRenderWidgetTest.Measure
-[       OK ] DividerRenderWidgetTest.Measure (0 ms)
-[----------] 1 test from DividerRenderWidgetTest (0 ms total)
+[----------] 1 test from ChoicePickerRenderTest
+[ RUN      ] ChoicePickerRenderTest.CanFocus
+[       OK ] ChoicePickerRenderTest.CanFocus (0 ms)
+[----------] 1 test from ChoicePickerRenderTest (0 ms total)
 
-[----------] 2 tests from ImageRenderWidgetTest
-[ RUN      ] ImageRenderWidgetTest.Measure_Default
-[       OK ] ImageRenderWidgetTest.Measure_Default (0 ms)
-[ RUN      ] ImageRenderWidgetTest.Measure_ExplicitSize
-[       OK ] ImageRenderWidgetTest.Measure_ExplicitSize (0 ms)
-[----------] 2 tests from ImageRenderWidgetTest (0 ms total)
+[----------] 2 tests from SliderRenderTest
+[ RUN      ] SliderRenderTest.CanFocus
+[       OK ] SliderRenderTest.CanFocus (0 ms)
+[ RUN      ] SliderRenderTest.HitTest_Expanded
+[       OK ] SliderRenderTest.HitTest_Expanded (0 ms)
+[----------] 2 tests from SliderRenderTest (0 ms total)
+
+[----------] 1 test from ContainerRenderTest
+[ RUN      ] ContainerRenderTest.Measure
+[       OK ] ContainerRenderTest.Measure (0 ms)
+[----------] 1 test from ContainerRenderTest (0 ms total)
+
+[----------] 1 test from DividerRenderTest
+[ RUN      ] DividerRenderTest.Measure
+[       OK ] DividerRenderTest.Measure (0 ms)
+[----------] 1 test from DividerRenderTest (0 ms total)
+
+[----------] 1 test from ImageRenderTest
+[ RUN      ] ImageRenderTest.Measure
+[       OK ] ImageRenderTest.Measure (0 ms)
+[----------] 1 test from ImageRenderTest (0 ms total)
 
 [----------] 20 tests from D2DRendererTest
 [ RUN      ] D2DRendererTest.ParseColor_SixDigits
@@ -629,6 +580,176 @@ Running main() from F:\ai\laoba\jui\build\_deps\googletest-src\googletest\src\gt
 [       OK ] LayoutEngineTest.ResolveSize_String_PercentWithSpace (0 ms)
 [----------] 27 tests from LayoutEngineTest (1 ms total)
 
+[----------] 5 tests from WidgetStateBaseTest
+[ RUN      ] WidgetStateBaseTest.Focus_Toggle
+[       OK ] WidgetStateBaseTest.Focus_Toggle (0 ms)
+[ RUN      ] WidgetStateBaseTest.Focus_DuplicateSet_NoNotify
+[       OK ] WidgetStateBaseTest.Focus_DuplicateSet_NoNotify (0 ms)
+[ RUN      ] WidgetStateBaseTest.Hover
+[       OK ] WidgetStateBaseTest.Hover (0 ms)
+[ RUN      ] WidgetStateBaseTest.Enabled_Toggle
+[       OK ] WidgetStateBaseTest.Enabled_Toggle (0 ms)
+[ RUN      ] WidgetStateBaseTest.Disabled_ClearsFocus
+[       OK ] WidgetStateBaseTest.Disabled_ClearsFocus (0 ms)
+[----------] 5 tests from WidgetStateBaseTest (0 ms total)
+
+[----------] 2 tests from TextStateTest
+[ RUN      ] TextStateTest.SetGetText
+[       OK ] TextStateTest.SetGetText (0 ms)
+[ RUN      ] TextStateTest.Overflow_Defaults
+[       OK ] TextStateTest.Overflow_Defaults (0 ms)
+[----------] 2 tests from TextStateTest (0 ms total)
+
+[----------] 43 tests from TextFieldStateTest
+[ RUN      ] TextFieldStateTest.Initial_Empty
+[       OK ] TextFieldStateTest.Initial_Empty (0 ms)
+[ RUN      ] TextFieldStateTest.Mode_ReadOnly_BlocksEdit
+[       OK ] TextFieldStateTest.Mode_ReadOnly_BlocksEdit (0 ms)
+[ RUN      ] TextFieldStateTest.Mode_ReadOnly_AllowsCursor
+[       OK ] TextFieldStateTest.Mode_ReadOnly_AllowsCursor (0 ms)
+[ RUN      ] TextFieldStateTest.SetText_MovesCursor
+[       OK ] TextFieldStateTest.SetText_MovesCursor (0 ms)
+[ RUN      ] TextFieldStateTest.HandleChar_Inserts
+[       OK ] TextFieldStateTest.HandleChar_Inserts (0 ms)
+[ RUN      ] TextFieldStateTest.HandleChar_Disabled_Ignored
+[       OK ] TextFieldStateTest.HandleChar_Disabled_Ignored (0 ms)
+[ RUN      ] TextFieldStateTest.HandleChar_ControlChar_Ignored
+[       OK ] TextFieldStateTest.HandleChar_ControlChar_Ignored (0 ms)
+[ RUN      ] TextFieldStateTest.HandleChar_MaxLengthRespected
+[       OK ] TextFieldStateTest.HandleChar_MaxLengthRespected (0 ms)
+[ RUN      ] TextFieldStateTest.InsertText_Basic
+[       OK ] TextFieldStateTest.InsertText_Basic (0 ms)
+[ RUN      ] TextFieldStateTest.InsertText_ReadOnly_Blocked
+[       OK ] TextFieldStateTest.InsertText_ReadOnly_Blocked (0 ms)
+[ RUN      ] TextFieldStateTest.Backspace_Basic
+[       OK ] TextFieldStateTest.Backspace_Basic (0 ms)
+[ RUN      ] TextFieldStateTest.Backspace_AtStart_NoOp
+[       OK ] TextFieldStateTest.Backspace_AtStart_NoOp (0 ms)
+[ RUN      ] TextFieldStateTest.DeleteForward_Basic
+[       OK ] TextFieldStateTest.DeleteForward_Basic (0 ms)
+[ RUN      ] TextFieldStateTest.DeleteForward_AtEnd_NoOp
+[       OK ] TextFieldStateTest.DeleteForward_AtEnd_NoOp (0 ms)
+[ RUN      ] TextFieldStateTest.DeleteSelection_Replaces
+[       OK ] TextFieldStateTest.DeleteSelection_Replaces (0 ms)
+[ RUN      ] TextFieldStateTest.DeleteSelection_ReadOnly_Blocked
+[       OK ] TextFieldStateTest.DeleteSelection_ReadOnly_Blocked (0 ms)
+[ RUN      ] TextFieldStateTest.Selection_SelectAll
+[       OK ] TextFieldStateTest.Selection_SelectAll (0 ms)
+[ RUN      ] TextFieldStateTest.Selection_Clear
+[       OK ] TextFieldStateTest.Selection_Clear (0 ms)
+[ RUN      ] TextFieldStateTest.Clipboard_Copy
+[       OK ] TextFieldStateTest.Clipboard_Copy (0 ms)
+[ RUN      ] TextFieldStateTest.Clipboard_Copy_NoSelection
+[       OK ] TextFieldStateTest.Clipboard_Copy_NoSelection (0 ms)
+[ RUN      ] TextFieldStateTest.Clipboard_Cut
+[       OK ] TextFieldStateTest.Clipboard_Cut (0 ms)
+[ RUN      ] TextFieldStateTest.Clipboard_Cut_ReadOnly_Blocked
+[       OK ] TextFieldStateTest.Clipboard_Cut_ReadOnly_Blocked (0 ms)
+[ RUN      ] TextFieldStateTest.Cursor_LeftRight_NoExtend
+[       OK ] TextFieldStateTest.Cursor_LeftRight_NoExtend (0 ms)
+[ RUN      ] TextFieldStateTest.Cursor_LeftRight_ExtendSelection
+[       OK ] TextFieldStateTest.Cursor_LeftRight_ExtendSelection (0 ms)
+[ RUN      ] TextFieldStateTest.Cursor_HomeEnd
+[       OK ] TextFieldStateTest.Cursor_HomeEnd (0 ms)
+[ RUN      ] TextFieldStateTest.Cursor_HomeEnd_Extend
+[       OK ] TextFieldStateTest.Cursor_HomeEnd_Extend (0 ms)
+[ RUN      ] TextFieldStateTest.Cursor_LeftAtStart_NoOp
+[       OK ] TextFieldStateTest.Cursor_LeftAtStart_NoOp (0 ms)
+[ RUN      ] TextFieldStateTest.Cursor_RightAtEnd_NoOp
+[       OK ] TextFieldStateTest.Cursor_RightAtEnd_NoOp (0 ms)
+[ RUN      ] TextFieldStateTest.KeyDown_Disabled_Ignored
+[       OK ] TextFieldStateTest.KeyDown_Disabled_Ignored (0 ms)
+[ RUN      ] TextFieldStateTest.KeyDown_ShiftArrow_Extends
+[       OK ] TextFieldStateTest.KeyDown_ShiftArrow_Extends (0 ms)
+[ RUN      ] TextFieldStateTest.IME_Start_EntersComposing
+[       OK ] TextFieldStateTest.IME_Start_EntersComposing (0 ms)
+[ RUN      ] TextFieldStateTest.IME_Start_ClearsSelection
+[       OK ] TextFieldStateTest.IME_Start_ClearsSelection (0 ms)
+[ RUN      ] TextFieldStateTest.IME_Update_StoresComposition
+[       OK ] TextFieldStateTest.IME_Update_StoresComposition (0 ms)
+[ RUN      ] TextFieldStateTest.IME_End_CommitsText
+[       OK ] TextFieldStateTest.IME_End_CommitsText (0 ms)
+[ RUN      ] TextFieldStateTest.IME_End_Empty_NoChange
+[       OK ] TextFieldStateTest.IME_End_Empty_NoChange (0 ms)
+[ RUN      ] TextFieldStateTest.IME_FullCycle
+[       OK ] TextFieldStateTest.IME_FullCycle (0 ms)
+[ RUN      ] TextFieldStateTest.Drag_MouseDownUp_Cycle
+[       OK ] TextFieldStateTest.Drag_MouseDownUp_Cycle (0 ms)
+[ RUN      ] TextFieldStateTest.Drag_CtrlClick_SelectsAll
+[       OK ] TextFieldStateTest.Drag_CtrlClick_SelectsAll (0 ms)
+[ RUN      ] TextFieldStateTest.Drag_Disabled_Ignored
+[       OK ] TextFieldStateTest.Drag_Disabled_Ignored (0 ms)
+[ RUN      ] TextFieldStateTest.Caret_Update_NotFocused_Off
+[       OK ] TextFieldStateTest.Caret_Update_NotFocused_Off (0 ms)
+[ RUN      ] TextFieldStateTest.Caret_Update_Focused_Toggles
+[       OK ] TextFieldStateTest.Caret_Update_Focused_Toggles (0 ms)
+[ RUN      ] TextFieldStateTest.Caret_BlinkMultiple
+[       OK ] TextFieldStateTest.Caret_BlinkMultiple (0 ms)
+[ RUN      ] TextFieldStateTest.ChangeNotify_Fires
+[       OK ] TextFieldStateTest.ChangeNotify_Fires (0 ms)
+[----------] 43 tests from TextFieldStateTest (2 ms total)
+
+[----------] 6 tests from ButtonStateTest
+[ RUN      ] ButtonStateTest.VisualState_Normal
+[       OK ] ButtonStateTest.VisualState_Normal (0 ms)
+[ RUN      ] ButtonStateTest.VisualState_Hovered
+[       OK ] ButtonStateTest.VisualState_Hovered (0 ms)
+[ RUN      ] ButtonStateTest.VisualState_Pressed
+[       OK ] ButtonStateTest.VisualState_Pressed (0 ms)
+[ RUN      ] ButtonStateTest.VisualState_Disabled
+[       OK ] ButtonStateTest.VisualState_Disabled (0 ms)
+[ RUN      ] ButtonStateTest.PressDisabled_Ignored
+[       OK ] ButtonStateTest.PressDisabled_Ignored (0 ms)
+[ RUN      ] ButtonStateTest.PressHover_Transition
+[       OK ] ButtonStateTest.PressHover_Transition (0 ms)
+[----------] 6 tests from ButtonStateTest (0 ms total)
+
+[----------] 2 tests from CheckBoxStateTest
+[ RUN      ] CheckBoxStateTest.Toggle_FullCycle
+[       OK ] CheckBoxStateTest.Toggle_FullCycle (0 ms)
+[ RUN      ] CheckBoxStateTest.SetCheckState
+[       OK ] CheckBoxStateTest.SetCheckState (0 ms)
+[----------] 2 tests from CheckBoxStateTest (0 ms total)
+
+[----------] 2 tests from ToggleStateTest
+[ RUN      ] ToggleStateTest.Toggle
+[       OK ] ToggleStateTest.Toggle (0 ms)
+[ RUN      ] ToggleStateTest.SetLabel
+[       OK ] ToggleStateTest.SetLabel (0 ms)
+[----------] 2 tests from ToggleStateTest (0 ms total)
+
+[----------] 5 tests from ChoicePickerStateTest
+[ RUN      ] ChoicePickerStateTest.Initial_Closed
+[       OK ] ChoicePickerStateTest.Initial_Closed (0 ms)
+[ RUN      ] ChoicePickerStateTest.OpenClose_Toggle
+[       OK ] ChoicePickerStateTest.OpenClose_Toggle (0 ms)
+[ RUN      ] ChoicePickerStateTest.SelectIndex
+[       OK ] ChoicePickerStateTest.SelectIndex (0 ms)
+[ RUN      ] ChoicePickerStateTest.SelectIndex_OutOfBounds_Ignored
+[       OK ] ChoicePickerStateTest.SelectIndex_OutOfBounds_Ignored (0 ms)
+[ RUN      ] ChoicePickerStateTest.IndexChanged_Callback
+[       OK ] ChoicePickerStateTest.IndexChanged_Callback (0 ms)
+[----------] 5 tests from ChoicePickerStateTest (0 ms total)
+
+[----------] 8 tests from SliderStateTest
+[ RUN      ] SliderStateTest.DefaultRange
+[       OK ] SliderStateTest.DefaultRange (0 ms)
+[ RUN      ] SliderStateTest.SetRange
+[       OK ] SliderStateTest.SetRange (0 ms)
+[ RUN      ] SliderStateTest.SetValue_WithinRange
+[       OK ] SliderStateTest.SetValue_WithinRange (0 ms)
+[ RUN      ] SliderStateTest.SetValue_ClampedToRange
+[       OK ] SliderStateTest.SetValue_ClampedToRange (0 ms)
+[ RUN      ] SliderStateTest.SetValue_SnapToStep
+[       OK ] SliderStateTest.SetValue_SnapToStep (0 ms)
+[ RUN      ] SliderStateTest.Drag_TempCommit
+[       OK ] SliderStateTest.Drag_TempCommit (0 ms)
+[ RUN      ] SliderStateTest.ValueChanged_Callback
+[       OK ] SliderStateTest.ValueChanged_Callback (0 ms)
+[ RUN      ] SliderStateTest.ValueChanged_NotFiredForSameValue
+[       OK ] SliderStateTest.ValueChanged_NotFiredForSameValue (0 ms)
+[----------] 8 tests from SliderStateTest (0 ms total)
+
 [----------] Global test environment tear-down
-[==========] 281 tests from 22 test suites ran. (31 ms total)
-[  PASSED  ] 281 tests.
+[==========] 325 tests from 33 test suites ran. (42 ms total)
+[  PASSED  ] 325 tests.

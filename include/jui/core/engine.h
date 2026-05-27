@@ -43,6 +43,9 @@ public:
     void onCharInput(uint32_t ch);
     void onKeyDown(int vk);
     void onKeyUp(int vk);
+    void onIMEStart();
+    void onIMEComposition(const std::string& str);
+    void onIMEEnd(const std::string& result);
 
     // Action 回调（用户交互 → 服务端）— 使用 JSON 字符串避免暴露依赖
     using ActionCallback = std::function<void(const std::string& surfaceId,

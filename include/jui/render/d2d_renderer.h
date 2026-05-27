@@ -41,6 +41,11 @@ public:
     void onKeyDown(int vk);
     void onKeyUp(int vk);
 
+    // IME 中文输入
+    void onIMEStart();
+    void onIMEComposition(const std::string& str);
+    void onIMEEnd(const std::string& result);
+
     // 事件回调
     void setActionCallback(ActionCallback cb) { actionCallback_ = std::move(cb); }
 

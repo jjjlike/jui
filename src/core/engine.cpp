@@ -231,6 +231,10 @@ WidgetPtr EngineImpl::parseWidget(const json& componentJson) {
         {"TextField", WidgetType::TextField},
         {"CheckBox", WidgetType::CheckBox},
         {"Checkbox", WidgetType::CheckBox},
+        {"Toggle", WidgetType::Toggle},
+        {"ChoicePicker", WidgetType::ChoicePicker},
+        {"Choicepicker", WidgetType::ChoicePicker},
+        {"Slider", WidgetType::Slider},
         {"Image", WidgetType::Image},
         {"Row", WidgetType::Row},
         {"Column", WidgetType::Column},
@@ -380,5 +384,8 @@ void JUIEngine::onMouseUp(int x, int y, int b)   { renderer_.onMouseUp(x, y, b);
 void JUIEngine::onCharInput(uint32_t ch)  { renderer_.onCharInput(ch); }
 void JUIEngine::onKeyDown(int vk)         { renderer_.onKeyDown(vk); }
 void JUIEngine::onKeyUp(int vk)           { renderer_.onKeyUp(vk); }
+void JUIEngine::onIMEStart()              { renderer_.onIMEStart(); }
+void JUIEngine::onIMEComposition(const std::string& s) { renderer_.onIMEComposition(s); }
+void JUIEngine::onIMEEnd(const std::string& r)         { renderer_.onIMEEnd(r); }
 
 } // namespace jui
