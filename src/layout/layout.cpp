@@ -122,7 +122,12 @@ Size LayoutEngine::measureWidget(WidgetPtr widget, const Size& constraint) {
             size.w = constraint.w;
             size.h = 32; // 只占 tab header 高度，内容区由后续控件填充
             break;
+        case WidgetType::Divider:
             size.w = constraint.w; size.h = 12;
+            break;
+        case WidgetType::List:
+            size.w = explicitW > 0 ? explicitW : 200;
+            size.h = explicitH > 0 ? explicitH : 200;
             break;
         case WidgetType::Image:
             size.w = explicitW > 0 ? explicitW : 64;

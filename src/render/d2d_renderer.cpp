@@ -150,6 +150,21 @@ void D2DRenderer::onSize(int w, int h) {
 void D2DRenderer::onMouseMove(int x, int y) {
     float fx = static_cast<float>(x), fy = static_cast<float>(y);
 
+    // List/Grid 滚动条拖拽中
+    for (auto& [id, rw] : renderWidgets_) {
+        if (rw->widget()->type() == WidgetType::List) {
+            auto* ls = dynamic_cast<ListWidgetState*>(rw->state());
+            if (ls && ls->isScrolling()) {
+                float sbH = rw->bounds().h * rw->bounds().h / (ls->itemCount() * ls->itemHeight());
+                sbH = std::max(20.0f, sbH);
+                float ratio = (fy - rw->bounds().y - sbH/2) / (rw->bounds().h - sbH);
+                ratio = std::clamp(ratio, 0.0f, 1.0f);
+                ls->setScrollOffset(ratio * ls->maxScroll());
+                needsRedraw_ = true;
+                return;
+            }
+        }
+    }
     // Slider 拖拽中：更新临时值
     for (auto& [id, rw] : renderWidgets_) {
         auto* ss = dynamic_cast<SliderWidgetState*>(rw->state());
@@ -232,12 +247,31 @@ void D2DRenderer::onMouseDown(int x, int y, int button) {
                         if (actionCallback_ && idx < ts->tabCount()) {
                             std::string tabId = ts->tab(idx).componentId;
                             actionCallback_(surface_?surface_->id():"", "tab_switch", tabId, JValue());
-                            // 回调可能已重建 render tree，必须立即返回避免访问悬空指针
                             needsRedraw_ = true;
                             return;
                         }
                     }
                 }
+            }
+        }
+        // List 滚动条点击/拖拽
+        if (rw->widget()->type() == WidgetType::List) {
+            auto* ls = dynamic_cast<ListWidgetState*>(rw->state());
+            if (ls && fx > rw->bounds().x + rw->bounds().w - 10) {
+                // 点击在滚动条区域：跳转到对应位置并启动拖拽
+                float sbH = rw->bounds().h * rw->bounds().h / (ls->itemCount() * ls->itemHeight());
+                sbH = std::max(20.0f, sbH);
+                float ratio = (fy - rw->bounds().y - sbH/2) / (rw->bounds().h - sbH);
+                ratio = std::clamp(ratio, 0.0f, 1.0f);
+                ls->setScrollOffset(ratio * ls->maxScroll());
+                ls->setScrolling(true); // 标记拖拽中，使 onMouseMove 能继续更新
+                SetCapture(hwnd_);
+                needsRedraw_ = true;
+                return; // 不设焦点，防止干扰
+            } else if (ls) {
+                // 点击在列表项区域：选中该项
+                auto* lrw = dynamic_cast<ListRenderWidget*>(rw.get());
+                if (lrw) lrw->onClick(fx, fy);
             }
         }
 
@@ -252,8 +286,12 @@ void D2DRenderer::onMouseDown(int x, int y, int button) {
 
 void D2DRenderer::onMouseUp(int x, int y, int button) {
     float fx = static_cast<float>(x), fy = static_cast<float>(y);
+    ReleaseCapture();
 
     for (auto& [id, rw] : renderWidgets_) {
+        // List 滚动结束
+        auto* ls = dynamic_cast<ListWidgetState*>(rw->state());
+        if (ls) ls->setScrolling(false);
         // Slider 拖拽提交
         auto* ss = dynamic_cast<SliderWidgetState*>(rw->state());
         if (ss && ss->isDragging()) {
