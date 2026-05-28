@@ -77,6 +77,7 @@ if(JUI_BUILD_TESTS)
         tests/test_d2d_renderer.cpp
         tests/test_layout.cpp
         tests/test_widget_state.cpp
+        tests/test_list_grid.cpp
     )
 
     add_executable(jui_tests ${TEST_SOURCES})

@@ -117,6 +117,17 @@ void D2DRenderer::render() {
     for (auto& [id, rw] : renderWidgets_) {
         if (rw && rw->widget()->visible()) {
             rw->setBounds(rw->widget()->layoutBounds());
+
+            // 同步 viewport 给 List 和 Grid（虚拟滚动依赖）
+            if (rw->widget()->type() == WidgetType::List) {
+                auto* ls = dynamic_cast<ListWidgetState*>(rw->state());
+                if (ls) ls->setViewportSize(rw->bounds().w, rw->bounds().h);
+            }
+            if (rw->widget()->type() == WidgetType::Grid) {
+                auto* gs = dynamic_cast<GridWidgetState*>(rw->state());
+                if (gs) gs->setViewportSize(rw->bounds().w, rw->bounds().h);
+            }
+
             rw->paint(renderTarget_.Get(), dwriteFactory_.Get());
         }
     }
@@ -138,6 +149,18 @@ void D2DRenderer::onSize(int w, int h) {
 
 void D2DRenderer::onMouseMove(int x, int y) {
     float fx = static_cast<float>(x), fy = static_cast<float>(y);
+
+    // Slider 拖拽中：更新临时值
+    for (auto& [id, rw] : renderWidgets_) {
+        auto* ss = dynamic_cast<SliderWidgetState*>(rw->state());
+        if (ss && ss->isDragging()) {
+            float ratio = std::clamp((fx - rw->bounds().x - 8) / (rw->bounds().w - 16), 0.0f, 1.0f);
+            float val = ss->minValue() + ratio * (ss->maxValue() - ss->minValue());
+            ss->setTempValue(val);
+            needsRedraw_ = true;
+            return;
+        }
+    }
 
     // 清除所有 hover
     for (auto& [id, rw] : renderWidgets_)
@@ -195,7 +218,27 @@ void D2DRenderer::onMouseDown(int x, int y, int button) {
         // 滑动条拖拽
         if (rw->widget()->type() == WidgetType::Slider) {
             auto* ss = dynamic_cast<SliderWidgetState*>(rw->state());
-            if (ss) ss->setDragging(true);
+            if (ss) { ss->setDragging(true); SetCapture(hwnd_); }
+        }
+        // Tabs 切换
+        if (rw->widget()->type() == WidgetType::Tabs) {
+            auto* ts = dynamic_cast<TabsWidgetState*>(rw->state());
+            if (ts) {
+                float relY = fy - rw->bounds().y;
+                if (relY <= ts->headerHeight()) {
+                    int idx = ts->hitTabHeader(fx - rw->bounds().x, rw->bounds().w);
+                    if (idx >= 0) {
+                        ts->setActiveIndex(idx);
+                        if (actionCallback_ && idx < ts->tabCount()) {
+                            std::string tabId = ts->tab(idx).componentId;
+                            actionCallback_(surface_?surface_->id():"", "tab_switch", tabId, JValue());
+                            // 回调可能已重建 render tree，必须立即返回避免访问悬空指针
+                            needsRedraw_ = true;
+                            return;
+                        }
+                    }
+                }
+            }
         }
 
         if (rw->canFocus()) {
@@ -208,9 +251,34 @@ void D2DRenderer::onMouseDown(int x, int y, int button) {
 }
 
 void D2DRenderer::onMouseUp(int x, int y, int button) {
+    float fx = static_cast<float>(x), fy = static_cast<float>(y);
+
     for (auto& [id, rw] : renderWidgets_) {
+        // Slider 拖拽提交
+        auto* ss = dynamic_cast<SliderWidgetState*>(rw->state());
+        if (ss && ss->isDragging()) {
+            ss->setDragging(false); // commitTemp inside
+            ReleaseCapture();
+            // 触发回调通知值变化
+            if (actionCallback_) {
+                std::string src = rw->widget()->id();
+                float val = ss->value();
+                JValue ctx = JValue(static_cast<double>(val));
+                actionCallback_(surface_ ? surface_->id() : "", "slider_change", src, ctx);
+            }
+            needsRedraw_ = true;
+        }
+
         auto* bs = dynamic_cast<ButtonWidgetState*>(rw->state());
-        if (bs) bs->release();
+        if (bs) {
+            bool wasPressed = (bs->visualState() == ButtonWidgetState::VisualState::Pressed);
+            bs->release();
+            if (wasPressed && rw->hitTest(fx, fy) && actionCallback_) {
+                std::string act = rw->widget()->action();
+                std::string src = rw->widget()->id();
+                actionCallback_(surface_ ? surface_->id() : "", act, src, JValue());
+            }
+        }
     }
     needsRedraw_ = true;
 }
@@ -254,6 +322,21 @@ void D2DRenderer::onKeyDown(int vk) {
 
 void D2DRenderer::onKeyUp(int vk) {
     (void)vk;
+}
+
+// ---- 鼠标滚轮 ----
+void D2DRenderer::onMouseWheel(float delta) {
+    for (auto& [id, rw] : renderWidgets_) {
+        if (rw->widget()->type() == WidgetType::List) {
+            auto* lrw = dynamic_cast<ListRenderWidget*>(rw.get());
+            if (lrw) lrw->onScroll(delta);
+        }
+        if (rw->widget()->type() == WidgetType::Grid) {
+            auto* grw = dynamic_cast<GridRenderWidget*>(rw.get());
+            if (grw) grw->onScrollY(delta);
+        }
+    }
+    needsRedraw_ = true;
 }
 
 // ---- IME 中文输入 ----

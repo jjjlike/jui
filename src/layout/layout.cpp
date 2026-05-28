@@ -115,7 +115,13 @@ Size LayoutEngine::measureWidget(WidgetPtr widget, const Size& constraint) {
         case WidgetType::Slider:
             size.w = 150; size.h = 24;
             break;
-        case WidgetType::Divider:
+        case WidgetType::Grid:
+            size.w = 400; size.h = 200;
+            break;
+        case WidgetType::Tabs:
+            size.w = constraint.w;
+            size.h = 32; // 只占 tab header 高度，内容区由后续控件填充
+            break;
             size.w = constraint.w; size.h = 12;
             break;
         case WidgetType::Image:
@@ -125,7 +131,6 @@ Size LayoutEngine::measureWidget(WidgetPtr widget, const Size& constraint) {
         case WidgetType::Row: size = measureRow(widget, constraint); break;
         case WidgetType::Column: size = measureColumn(widget, constraint); break;
         case WidgetType::Card: size = measureCard(widget, constraint); break;
-        case WidgetType::List: size = measureColumn(widget, constraint); size.h = std::max(size.h, 100.0f); break;
         default: break;
     }
 
@@ -176,7 +181,6 @@ void LayoutEngine::arrangeWidget(WidgetPtr widget, const Rect& bounds) {
         case WidgetType::Row: arrangeRow(widget, bounds); break;
         case WidgetType::Column: arrangeColumn(widget, bounds); break;
         case WidgetType::Card: arrangeCard(widget, bounds); break;
-        case WidgetType::List: arrangeColumn(widget, bounds); break;
         default: break;
     }
 }

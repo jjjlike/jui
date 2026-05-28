@@ -43,6 +43,7 @@ public:
     void onCharInput(uint32_t ch);
     void onKeyDown(int vk);
     void onKeyUp(int vk);
+    void onMouseWheel(float delta);
     void onIMEStart();
     void onIMEComposition(const std::string& str);
     void onIMEEnd(const std::string& result);
@@ -53,7 +54,15 @@ public:
                                                const std::string& sourceComponentId,
                                                const std::string& contextJson)>;
     void setActionCallback(ActionCallback cb) {
-        actionCallback_ = std::move(cb);
+        actionCallback_ = cb;
+        // 同步到 D2DRenderer（适配 JValue → string）
+        renderer_.setActionCallback([cb](const std::string& s, const std::string& a,
+                                          const std::string& c, const JValue& v) {
+            std::string ctx;
+            if (v.isNumber()) ctx = std::to_string(static_cast<int>(v.asNumber()));
+            else if (v.isString()) ctx = v.asString();
+            cb(s, a, c, ctx);
+        });
     }
 
     // Surface 管理

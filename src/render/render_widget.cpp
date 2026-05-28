@@ -89,8 +89,11 @@ RenderWidgetPtr RenderWidgetFactory::create(WidgetPtr widget) {
         case WidgetType::Toggle:       return std::make_shared<ToggleRenderWidget>(widget);
         case WidgetType::ChoicePicker: return std::make_shared<ChoicePickerRenderWidget>(widget);
         case WidgetType::Slider:       return std::make_shared<SliderRenderWidget>(widget);
+        case WidgetType::Grid:         return std::make_shared<GridRenderWidget>(widget);
+        case WidgetType::Tabs:         return std::make_shared<TabsRenderWidget>(widget);
+        case WidgetType::List:         return std::make_shared<ListRenderWidget>(widget);
         case WidgetType::Row: case WidgetType::Column:
-        case WidgetType::Card: case WidgetType::List:
+        case WidgetType::Card:
             return std::make_shared<ContainerRenderWidget>(widget);
         case WidgetType::Divider:      return std::make_shared<DividerRenderWidget>(widget);
         case WidgetType::Image:        return std::make_shared<ImageRenderWidget>(widget);
@@ -465,8 +468,8 @@ void SliderRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dw) {
     ComPtr<ID2D1SolidColorBrush> tb; rt->CreateSolidColorBrush(D2D1::ColorF(0.85f,0.85f,0.85f),&tb);
     rt->FillRoundedRectangle(D2D1_ROUNDED_RECT{track,trackH/2,trackH/2},tb.Get());
 
-    // 已填充轨道
-    float ratio=(s().value()-s().minValue())/(s().maxValue()-s().minValue());
+    // 已填充轨道（拖拽中用 displayValue）
+    float ratio=(s().displayValue()-s().minValue())/(s().maxValue()-s().minValue());
     if(ratio>0){
         D2D1_RECT_F fill={trackX,trackY,trackX+trackW*ratio,trackY+trackH};
         ComPtr<ID2D1SolidColorBrush> fb; rt->CreateSolidColorBrush(D2D1::ColorF(0.18f,0.48f,0.88f),&fb);
@@ -503,9 +506,9 @@ void ContainerRenderWidget::drawBackground(ID2D1RenderTarget* rt) {
             ComPtr<ID2D1SolidColorBrush> bd; rt->CreateSolidColorBrush(D2D1::ColorF(0.85f,0.85f,0.85f),&bd);
             rt->DrawRoundedRectangle(D2D1_ROUNDED_RECT{r,8,8},bd.Get(),1.0f);
             break;}
-        case WidgetType::List:{
-            ComPtr<ID2D1SolidColorBrush> bg; rt->CreateSolidColorBrush(D2D1::ColorF(0.97f,0.97f,0.97f),&bg);
-            rt->FillRectangle(r,bg.Get()); break;}
+        case WidgetType::List:
+        // 旧式 List 容器（非 ListRenderWidget）
+        break;
         default: break;
     }
 }
@@ -539,4 +542,297 @@ Size ImageRenderWidget::measure(IDWriteFactory*) {
     return {w,h};
 }
 
+// ============================================================
+// ListRenderWidget — 虚拟滚动列表
+// ============================================================
+ListRenderWidget::ListRenderWidget(WidgetPtr widget) : RenderWidget(widget) {
+    auto st = std::make_unique<ListWidgetState>();
+    auto c = widget->property("itemCount"); if(c.isNumber()) st->setItemCount(c.asInt());
+    auto h = widget->property("itemHeight"); if(h.isNumber()) st->setItemHeight(static_cast<float>(h.asNumber()));
+    st->setSelectionMode(ListWidgetState::SelectionMode::Single);
+    state_ = std::move(st);
+}
+
+void ListRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dw) {
+    if(!rt||!dw) return;
+    // 背景
+    D2D1_RECT_F bg={bounds_.x,bounds_.y,bounds_.x+bounds_.w,bounds_.y+bounds_.h};
+    ComPtr<ID2D1SolidColorBrush> bb; rt->CreateSolidColorBrush(D2D1::ColorF(0.98f,0.98f,0.98f),&bb);
+    rt->FillRectangle(bg,bb.Get());
+    ComPtr<ID2D1SolidColorBrush> br; rt->CreateSolidColorBrush(D2D1::ColorF(0.85f,0.85f,0.85f),&br);
+    rt->DrawRectangle(bg,br.Get(),1.0f);
+
+    // 裁剪区域
+    rt->PushAxisAlignedClip(bg,D2D1_ANTIALIAS_MODE_ALIASED);
+
+    auto fmt=makeTextFormat(dw,13,L"Microsoft YaHei",DWRITE_FONT_WEIGHT_NORMAL,"left");
+    float ih=s().itemHeight();
+
+    // 只渲染可见项（虚拟滚动核心）
+    for(int i=s().visibleStart();i<s().visibleEnd();i++){
+        float y=bounds_.y+s().itemY(i);
+        D2D1_RECT_F ir={bounds_.x+2,y,bounds_.x+bounds_.w-2,y+ih};
+
+        // 选中高亮
+        if(s().isSelected(i)){
+            ComPtr<ID2D1SolidColorBrush> sb; rt->CreateSolidColorBrush(D2D1::ColorF(0.9f,0.95f,1.0f),&sb);
+            rt->FillRectangle(ir,sb.Get());
+        }
+
+        // 文字
+        std::string txt=s().itemText(i);
+        D2D1_COLOR_F tc=s().isSelected(i)?D2D1::ColorF(0.1f,0.3f,0.7f):D2D1::ColorF(0.2f,0.2f,0.2f);
+        ComPtr<ID2D1SolidColorBrush> tb; rt->CreateSolidColorBrush(tc,&tb);
+        auto w=utf8ToWide(txt);
+        D2D1_RECT_F tr={ir.left+8,ir.top,ir.right-4,ir.bottom};
+        rt->DrawText(w.c_str(),static_cast<UINT32>(w.length()),fmt.Get(),tr,tb.Get());
+
+        // 分隔线
+        ComPtr<ID2D1SolidColorBrush> dl; rt->CreateSolidColorBrush(D2D1::ColorF(0.9f,0.9f,0.9f),&dl);
+        rt->DrawLine({ir.left,y+ih-1},{ir.right,y+ih-1},dl.Get(),0.5f);
+    }
+
+    rt->PopAxisAlignedClip();
+
+    // 滚动条指示器
+    float ratio=s().scrollRatio();
+    float sbW=6,sbX=bounds_.x+bounds_.w-sbW-2;
+    float sbH=std::max(20.0f,bounds_.h*bounds_.h/(s().itemCount()*ih));
+    float sbY=bounds_.y+ratio*(bounds_.h-sbH);
+    D2D1_ROUNDED_RECT sr={{sbX,sbY,sbX+sbW,sbY+sbH},3,3};
+    ComPtr<ID2D1SolidColorBrush> sb; rt->CreateSolidColorBrush(D2D1::ColorF(0.76f,0.76f,0.76f),&sb);
+    rt->FillRoundedRectangle(sr,sb.Get());
+}
+
+Size ListRenderWidget::measure(IDWriteFactory* dw) {
+    float w=widget_->property("width").isNumber()?widget_->property("width").asNumber():200.0f;
+    float h=widget_->property("height").isNumber()?widget_->property("height").asNumber():200.0f;
+    s().setViewportSize(w,h);
+    return {w,h};
+}
+
+bool ListRenderWidget::hitTest(float x, float y) const {
+    return x>=bounds_.x&&x<=bounds_.x+bounds_.w&&y>=bounds_.y&&y<=bounds_.y+bounds_.h;
+}
+
+void ListRenderWidget::onScroll(float dy) { s().scrollBy(dy); }
+
+void ListRenderWidget::onClick(float x, float y) {
+    float relY=y-bounds_.y;
+    int idx=static_cast<int>((relY+s().scrollOffset())/s().itemHeight());
+    if(idx>=0&&idx<s().itemCount()){
+        s().selectIndex(idx);
+    }
+}
+
+// ============================================================
+// GridRenderWidget — 表格控件
+// ============================================================
+GridRenderWidget::GridRenderWidget(WidgetPtr widget) : RenderWidget(widget) {
+    auto st = std::make_unique<GridWidgetState>();
+
+    // 从 widget 属性读取列定义
+    auto colCount = widget->property("colCount");
+    auto titles = widget->property("colTitles");
+    auto widths = widget->property("colWidths");
+    if (colCount.isNumber() && titles.isArray() && widths.isArray()) {
+        int n = colCount.asInt();
+        std::vector<GridWidgetState::Column> cols;
+        for (int i = 0; i < n && i < static_cast<int>(titles.asArray().size())
+             && i < static_cast<int>(widths.asArray().size()); i++) {
+            cols.push_back({titles.asArray()[i].asString(), static_cast<float>(widths.asArray()[i].asNumber())});
+        }
+        st->setColumns(cols);
+    }
+
+    // 行数
+    auto rc = widget->property("rowCount");
+    if (rc.isNumber()) st->setRowCount(rc.asInt());
+
+    state_ = std::move(st);
+}
+
+void GridRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dw) {
+    if(!rt||!dw) return;
+
+    // 裁剪区域
+    D2D1_RECT_F clip={bounds_.x,bounds_.y,bounds_.x+bounds_.w,bounds_.y+bounds_.h};
+    rt->PushAxisAlignedClip(clip,D2D1_ANTIALIAS_MODE_ALIASED);
+
+    auto fmt=makeTextFormat(dw,12,L"Microsoft YaHei",DWRITE_FONT_WEIGHT_NORMAL,"left");
+    auto hdrFmt=makeTextFormat(dw,12,L"Microsoft YaHei",DWRITE_FONT_WEIGHT_BOLD,"center");
+    float hh=s().headerHeight(), rh=s().rowHeight();
+    float sx=s().scrollX(), sy=s().scrollY();
+    float x0=bounds_.x-sx, y0=bounds_.y;
+
+    // 表头（固定不动）
+    float hx=bounds_.x;
+    for(int c=0;c<s().columnCount();c++){
+        float cw=s().columns()[c].width;
+        D2D1_RECT_F hr={hx,y0,hx+cw,y0+hh};
+        ComPtr<ID2D1SolidColorBrush> hb; rt->CreateSolidColorBrush(D2D1::ColorF(0.93f,0.93f,0.93f),&hb);
+        rt->FillRectangle(hr,hb.Get());
+        // 可能有排序箭头
+        D2D1_COLOR_F htc=(c==s().sortColumn())?D2D1::ColorF(0.15f,0.42f,0.78f):D2D1::ColorF(0.15f,0.15f,0.15f);
+        ComPtr<ID2D1SolidColorBrush> htb; rt->CreateSolidColorBrush(htc,&htb);
+        std::string t=s().columns()[c].title+(c==s().sortColumn()?(s().sortAsc()?" ^":" v"):"");
+        auto wt=utf8ToWide(t);
+        rt->DrawText(wt.c_str(),static_cast<UINT32>(wt.length()),hdrFmt.Get(),hr,htb.Get());
+        ComPtr<ID2D1SolidColorBrush> lb; rt->CreateSolidColorBrush(D2D1::ColorF(0.75f,0.75f,0.75f),&lb);
+        rt->DrawLine({hx+cw,y0},{hx+cw,y0+hh},lb.Get(),1.0f);
+        hx+=cw;
+    }
+    // 表头下边框
+    ComPtr<ID2D1SolidColorBrush> hbr; rt->CreateSolidColorBrush(D2D1::ColorF(0.6f,0.6f,0.6f),&hbr);
+    rt->DrawLine({bounds_.x,y0+hh},{hx,y0+hh},hbr.Get(),1.5f);
+
+    // 数据行（虚拟滚动核心——只渲染可见行）
+    for(int r=s().visibleRowStart();r<s().visibleRowEnd();r++){
+        float ry=bounds_.y+hh-sy+rh*r;
+        float rx=bounds_.x-sx;
+        for(int c=0;c<s().columnCount();c++){
+            float cw=s().columns()[c].width;
+            D2D1_RECT_F cr={rx,ry,rx+cw,ry+rh};
+
+            // 选中高亮
+            if(r==s().selectedRow()&&c==s().selectedCol()){
+                ComPtr<ID2D1SolidColorBrush> sb; rt->CreateSolidColorBrush(D2D1::ColorF(0.88f,0.94f,1.0f),&sb);
+                rt->FillRectangle(cr,sb.Get());
+            }
+
+            std::string txt=s().cellText(r,c);
+            D2D1_COLOR_F tc=D2D1::ColorF(0.2f,0.2f,0.2f);
+            ComPtr<ID2D1SolidColorBrush> tb; rt->CreateSolidColorBrush(tc,&tb);
+            auto wt=utf8ToWide(txt);
+            D2D1_RECT_F tr={cr.left+4,cr.top,cr.right-2,cr.bottom};
+            rt->DrawText(wt.c_str(),static_cast<UINT32>(wt.length()),fmt.Get(),tr,tb.Get());
+
+            // 单元格边框
+            ComPtr<ID2D1SolidColorBrush> lb; rt->CreateSolidColorBrush(D2D1::ColorF(0.92f,0.92f,0.92f),&lb);
+            rt->DrawLine({rx+cw,ry},{rx+cw,ry+rh},lb.Get(),0.5f);
+            rt->DrawLine({rx,ry+rh},{rx+cw,ry+rh},lb.Get(),0.5f);
+            rx+=cw;
+        }
+    }
+
+    rt->PopAxisAlignedClip();
+}
+
+Size GridRenderWidget::measure(IDWriteFactory* dw) {
+    float w=widget_->property("width").isNumber()?widget_->property("width").asNumber():400.0f;
+    float h=widget_->property("height").isNumber()?widget_->property("height").asNumber():200.0f;
+    s().setViewportSize(w,h);
+    return {w,h};
+}
+
+bool GridRenderWidget::hitTest(float x, float y) const {
+    return x>=bounds_.x&&x<=bounds_.x+bounds_.w&&y>=bounds_.y&&y<=bounds_.y+bounds_.h;
+}
+
+void GridRenderWidget::onScrollX(float dx) { s().setScroll(s().scrollX()+dx,s().scrollY()); }
+void GridRenderWidget::onScrollY(float dy) { s().setScroll(s().scrollX(),s().scrollY()+dy); }
+
+void GridRenderWidget::onClick(float x, float y) {
+    float relY=y-bounds_.y-s().headerHeight()+s().scrollY();
+    float relX=x-bounds_.x+s().scrollX();
+    int row=static_cast<int>(relY/s().rowHeight());
+    if(row<0||row>=s().rowCount()) return;
+    int col=-1; float cx=0;
+    for(int c=0;c<s().columnCount();c++){cx+=s().columns()[c].width; if(relX<cx){col=c;break;}}
+    if(col>=0) s().setSelection(row,col);
+}
+
+// ============================================================
+// TabsRenderWidget — 选项卡控件
+// ============================================================
+TabsRenderWidget::TabsRenderWidget(WidgetPtr widget) : RenderWidget(widget) {
+    auto st = std::make_unique<TabsWidgetState>();
+
+    // 从 widget 的 tabs 属性读取 tab 列表
+    auto tabsProp = widget->property("tabs");
+    if (tabsProp.isArray()) {
+        std::vector<TabsWidgetState::Tab> tabs;
+        for (auto& item : tabsProp.asArray()) {
+            if (item.isObject()) {
+                TabsWidgetState::Tab tab;
+                tab.title = item.get("title").asString();
+                tab.componentId = item.get("id").asString();
+                tabs.push_back(tab);
+            }
+        }
+        st->setTabs(tabs);
+    }
+
+    // 读取初始激活的 Tab
+    auto activeProp = widget->property("activeIndex");
+    if (activeProp.isNumber()) {
+        st->setActiveIndex(activeProp.asInt());
+    }
+
+    state_ = std::move(st);
+}
+
+void TabsRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dw) {
+    if(!rt||!dw) return;
+    int n=s().tabCount(); if(n==0) return;
+    float hh=s().headerHeight();
+    float tabW=bounds_.w/n;
+
+    // Tab 头背景
+    D2D1_RECT_F hbg={bounds_.x,bounds_.y,bounds_.x+bounds_.w,bounds_.y+hh};
+    ComPtr<ID2D1SolidColorBrush> hbr; rt->CreateSolidColorBrush(D2D1::ColorF(0.95f,0.95f,0.95f),&hbr);
+    rt->FillRectangle(hbg,hbr.Get());
+
+    auto fmt=makeTextFormat(dw,13,L"Microsoft YaHei",DWRITE_FONT_WEIGHT_NORMAL,"center");
+    auto actFmt=makeTextFormat(dw,13,L"Microsoft YaHei",DWRITE_FONT_WEIGHT_BOLD,"center");
+
+    for(int i=0;i<n;i++){
+        float tx=bounds_.x+i*tabW;
+        D2D1_RECT_F tr={tx,bounds_.y,tx+tabW,bounds_.y+hh};
+        bool active=(i==s().activeIndex());
+
+        // 激活Tab背景
+        if(active){
+            ComPtr<ID2D1SolidColorBrush> ab; rt->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White),&ab);
+            rt->FillRectangle(tr,ab.Get());
+        }
+
+        // 文字
+        D2D1_COLOR_F tc=active?D2D1::ColorF(0.15f,0.42f,0.78f):D2D1::ColorF(0.35f,0.35f,0.35f);
+        ComPtr<ID2D1SolidColorBrush> tb; rt->CreateSolidColorBrush(tc,&tb);
+        auto w=utf8ToWide(s().tab(i).title);
+        rt->DrawText(w.c_str(),static_cast<UINT32>(w.length()),(active?actFmt:fmt).Get(),tr,tb.Get());
+
+        // 分隔线
+        if(i>0){
+            ComPtr<ID2D1SolidColorBrush> lb; rt->CreateSolidColorBrush(D2D1::ColorF(0.82f,0.82f,0.82f),&lb);
+            rt->DrawLine({tx,bounds_.y+6},{tx,bounds_.y+hh-6},lb.Get(),1.0f);
+        }
+    }
+
+    // 底部活动指示条
+    float ax=bounds_.x+s().activeIndex()*tabW;
+    D2D1_RECT_F ai={ax+4,bounds_.y+hh-3,ax+tabW-4,bounds_.y+hh};
+    ComPtr<ID2D1SolidColorBrush> ab; rt->CreateSolidColorBrush(D2D1::ColorF(0.15f,0.42f,0.78f),&ab);
+    rt->FillRectangle(ai,ab.Get());
+
+    // 底部分隔线
+    ComPtr<ID2D1SolidColorBrush> lb; rt->CreateSolidColorBrush(D2D1::ColorF(0.75f,0.75f,0.75f),&lb);
+    rt->DrawLine({bounds_.x,bounds_.y+hh},{bounds_.x+bounds_.w,bounds_.y+hh},lb.Get(),1.0f);
+}
+
+Size TabsRenderWidget::measure(IDWriteFactory* dw) {
+    float w=widget_->property("width").isNumber()?widget_->property("width").asNumber():400.0f;
+    return {w, 32};
+}
+
+bool TabsRenderWidget::hitTest(float x, float y) const {
+    return x>=bounds_.x&&x<=bounds_.x+bounds_.w&&y>=bounds_.y&&y<=bounds_.y+bounds_.h;
+}
+
+int TabsRenderWidget::hitTabHeader(float x) const {
+    return s().hitTabHeader(x - bounds_.x, bounds_.w);
+}
+
 } // namespace jui
+

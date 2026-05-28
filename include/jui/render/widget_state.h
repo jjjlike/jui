@@ -387,8 +387,12 @@ public:
     // 拖拽中临时值（不触发回调）
     void setTempValue(float v) { temp_ = std::clamp(v, min_, max_); notify(); }
     void commitTemp() { setValue(temp_); }
+    // 显示值：拖拽中返回 temp_，否则返回 value_
+    float displayValue() const { return dragging_ ? temp_ : value_; }
+
     bool isDragging() const { return dragging_; }
     void setDragging(bool d) {
+        if (d && !dragging_) temp_ = value_;  // 拖拽开始时 temp_ 初始化为当前值
         if (!d && dragging_) commitTemp();
         dragging_ = d;
     }
@@ -404,4 +408,185 @@ private:
     ValueChanged onValueChanged_;
 };
 
+// ============================================================
+// ListWidgetState — 列表控件状态（虚拟滚动）
+// ============================================================
+class ListWidgetState : public WidgetState {
+public:
+    enum class SelectionMode { None, Single, Multiple };
+    using ItemProvider = std::function<std::string(int)>;
+    using SelectCallback = std::function<void(int)>;
+
+    // 数据
+    void setItemCount(int n) { count_ = n; recalcScroll(); notify(); }
+    int itemCount() const { return count_; }
+    void setItemHeight(float h) { itemH_ = h; recalcScroll(); notify(); }
+    float itemHeight() const { return itemH_; }
+    void setItemProvider(ItemProvider f) { provider_ = std::move(f); }
+    std::string itemText(int i) const { return provider_ ? provider_(i) : "Item " + std::to_string(i); }
+
+    // 滚动
+    float scrollOffset() const { return offset_; }
+    float maxScroll() const { return std::max(0.0f, count_ * itemH_ - viewportH_); }
+    float scrollRatio() const { float m=maxScroll(); return m>0?offset_/m:0; }
+    void setViewportSize(float w, float h) { viewportW_=w; viewportH_=h; recalcScroll(); }
+    float viewportHeight() const { return viewportH_; }
+    void scrollBy(float dy) { setScrollOffset(offset_+dy); }
+    void setScrollOffset(float o) {
+        float prev=offset_; offset_=std::clamp(o,0.0f,maxScroll());
+        if(offset_!=prev) notify();
+    }
+    void scrollToIndex(int i) { setScrollOffset(i*itemH_); }
+
+    // 虚拟可见范围（性能核心）——返回 [firstVisible, lastVisible)
+    int visibleStart() const { return static_cast<int>(offset_/itemH_); }
+    int visibleCount() const { return static_cast<int>(viewportH_/itemH_)+2; }
+    int visibleEnd() const { return std::min(visibleStart()+visibleCount(),count_); }
+    float itemY(int i) const { return i*itemH_-offset_; }
+    bool isItemVisible(int i) const { return i>=visibleStart()&&i<visibleEnd(); }
+
+    // 选中
+    SelectionMode selectionMode() const { return selMode_; }
+    void setSelectionMode(SelectionMode m) { selMode_=m; }
+    int selectedIndex() const { return selIdx_; }
+    void selectIndex(int i) { selIdx_=i; if(onSelect_)onSelect_(i); notify(); }
+    void clearSelection() { selIdx_=-1; notify(); }
+    bool isSelected(int i) const { return selIdx_==i; }
+    void onSelect(SelectCallback cb) { onSelect_=std::move(cb); }
+
+    // 触摸/拖拽
+    bool isScrolling() const { return scrolling_; }
+    void setScrolling(bool s) { scrolling_=s; }
+
+private:
+    void recalcScroll() { if(offset_>maxScroll()) offset_=maxScroll(); }
+    int count_=0, selIdx_=-1;
+    float offset_=0, itemH_=32, viewportW_=200, viewportH_=200;
+    SelectionMode selMode_=SelectionMode::Single;
+    bool scrolling_=false;
+    ItemProvider provider_;
+    SelectCallback onSelect_;
+};
+
+// ============================================================
+// GridWidgetState — 表格/网格控件状态
+// ============================================================
+class GridWidgetState : public WidgetState {
+public:
+    // 列定义
+    struct Column { std::string title; float width=80; };
+    void setColumns(const std::vector<Column>& cols) { cols_=cols; recalc(); }
+    const std::vector<Column>& columns() const { return cols_; }
+    int columnCount() const { return static_cast<int>(cols_.size()); }
+
+    // 行数据
+    void setRowCount(int n) { rowCount_=n; recalc(); }
+    int rowCount() const { return rowCount_; }
+    using CellProvider = std::function<std::string(int row, int col)>;
+    void setCellProvider(CellProvider f) { cellProvider_=std::move(f); }
+    std::string cellText(int r, int c) const { return cellProvider_?cellProvider_(r,c):""; }
+
+    // 尺寸
+    void setViewportSize(float w, float h) { viewportW_=w; viewportH_=h; recalc(); }
+    float headerHeight() const { return 28; }
+    float rowHeight() const { return 24; }
+    float totalWidth() const { return totalW_; }
+    float totalHeight() const { return rowCount_*rowHeight()+headerHeight(); }
+
+    // 滚动
+    float scrollX() const { return sx_; }
+    float scrollY() const { return sy_; }
+    void setScroll(float x, float y) {
+        sx_=std::clamp(x,0.0f,std::max(0.0f,totalW_-viewportW_));
+        sy_=std::clamp(y,0.0f,std::max(0.0f,totalHeight()-viewportH_));
+        notify();
+    }
+    void scrollBy(float dx, float dy) { setScroll(sx_+dx,sy_+dy); }
+
+    // 可见范围（性能核心）
+    int visibleRowStart() const { return static_cast<int>(std::max(0.0f,sy_-headerHeight())/rowHeight()); }
+    int visibleRowEnd() const { return std::min(visibleRowStart()+static_cast<int>(viewportH_/rowHeight())+2,rowCount_); }
+
+    // 选中
+    void setSelection(int r, int c) { selR_=r; selC_=c; notify(); }
+    int selectedRow() const { return selR_; }
+    int selectedCol() const { return selC_; }
+
+    // 排序
+    int sortColumn() const { return sortCol_; }
+    bool sortAsc() const { return sortAsc_; }
+    void toggleSort(int col) {
+        if(sortCol_==col) sortAsc_=!sortAsc_; else { sortCol_=col; sortAsc_=true; }
+        notify();
+    }
+
+private:
+    void recalc() { totalW_=0; for(auto&c:cols_)totalW_+=c.width; }
+    std::vector<Column> cols_;
+    int rowCount_=0, selR_=-1, selC_=-1, sortCol_=-1;
+    float sx_=0, sy_=0, totalW_=0, viewportW_=400, viewportH_=200;
+    bool sortAsc_=true;
+    CellProvider cellProvider_;
+};
+
+// ============================================================
+// TabsWidgetState — 选项卡控件状态
+// ============================================================
+class TabsWidgetState : public WidgetState {
+public:
+    using TabCallback = std::function<void(int)>;
+
+    // 每个 Tab: 标题 + 对应的组件 ID
+    struct Tab { std::string title; std::string componentId; };
+
+    void setTabs(const std::vector<Tab>& tabs) {
+        tabs_ = tabs;
+        if (active_ >= static_cast<int>(tabs_.size())) active_ = 0;
+        updateVisibility();
+        notify();
+    }
+    int tabCount() const { return static_cast<int>(tabs_.size()); }
+    const Tab& tab(int i) const { return tabs_[i]; }
+
+    int activeIndex() const { return active_; }
+    void setActiveIndex(int i) {
+        if (i >= 0 && i < static_cast<int>(tabs_.size()) && i != active_) {
+            active_ = i;
+            updateVisibility();
+            if (onTabChange_) onTabChange_(active_);
+            notify();
+        }
+    }
+    void setActiveByWidgetId(const std::string& wid) {
+        for (int i = 0; i < static_cast<int>(tabs_.size()); i++)
+            if (tabs_[i].componentId == wid) { setActiveIndex(i); return; }
+    }
+
+    // 切换回调
+    void onTabChange(TabCallback cb) { onTabChange_ = std::move(cb); }
+
+    // Tab 头高度
+    float headerHeight() const { return 32; }
+
+    // 点击 tab 头区域的某一点 → 返回对应的 tab 索引（-1 表示未命中）
+    int hitTabHeader(float x, float totalW) const {
+        float cx = 0;
+        float tabW = totalW / static_cast<float>(tabs_.size());
+        for (int i = 0; i < static_cast<int>(tabs_.size()); i++) {
+            if (x >= cx && x < cx + tabW) return i;
+            cx += tabW;
+        }
+        return -1;
+    }
+
+private:
+    void updateVisibility() {
+        // 外部需手动设置组件可见性
+    }
+    std::vector<Tab> tabs_;
+    int active_ = 0;
+    TabCallback onTabChange_;
+};
+
 } // namespace jui
+

@@ -171,6 +171,58 @@ public:
 };
 
 // ============================================================
+// ListRenderWidget — 虚拟滚动列表 (D2D)
+// ============================================================
+class ListRenderWidget : public RenderWidget {
+public:
+    explicit ListRenderWidget(WidgetPtr widget);
+    void paint(ID2D1RenderTarget* rt, IDWriteFactory* dwrite) override;
+    Size measure(IDWriteFactory* dwrite) override;
+    bool canFocus() const override { return true; }
+    bool hitTest(float x, float y) const override;
+    void onScroll(float dy);
+    void onClick(float x, float y);
+    void setSurface(void* s) { (void)s; } // 预留接口
+
+
+private:
+    ListWidgetState& s() { return static_cast<ListWidgetState&>(*state_); }
+    const ListWidgetState& s() const { return static_cast<const ListWidgetState&>(*state_); }
+};
+
+// ============================================================
+// GridRenderWidget — 表格控件 (D2D)
+// ============================================================
+class TabsRenderWidget : public RenderWidget {
+public:
+    explicit TabsRenderWidget(WidgetPtr widget);
+    void paint(ID2D1RenderTarget* rt, IDWriteFactory* dwrite) override;
+    Size measure(IDWriteFactory* dwrite) override;
+    bool canFocus() const override { return true; }
+    bool hitTest(float x, float y) const override;
+    int hitTabHeader(float x) const;
+private:
+    TabsWidgetState& s() { return static_cast<TabsWidgetState&>(*state_); }
+    const TabsWidgetState& s() const { return static_cast<const TabsWidgetState&>(*state_); }
+};
+
+class GridRenderWidget : public RenderWidget {
+public:
+    explicit GridRenderWidget(WidgetPtr widget);
+    void paint(ID2D1RenderTarget* rt, IDWriteFactory* dwrite) override;
+    Size measure(IDWriteFactory* dwrite) override;
+    bool canFocus() const override { return true; }
+    bool hitTest(float x, float y) const override;
+    void onScrollX(float dx);
+    void onScrollY(float dy);
+    void onClick(float x, float y);
+
+private:
+    GridWidgetState& s() { return static_cast<GridWidgetState&>(*state_); }
+    const GridWidgetState& s() const { return static_cast<const GridWidgetState&>(*state_); }
+};
+
+// ============================================================
 // ToggleRenderWidget — 开关控件 (D2D)
 // ============================================================
 class ToggleRenderWidget : public RenderWidget {

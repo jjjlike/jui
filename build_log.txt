@@ -1,0 +1,9 @@
+MSBuild version 17.3.1+2badb37d1 for .NET Framework
+  gtest.vcxproj -> F:\ai\laoba\jui\build\lib\Debug\gtest.lib
+  gtest_main.vcxproj -> F:\ai\laoba\jui\build\lib\Debug\gtest_main.lib
+  engine.cpp
+  jui.vcxproj -> F:\ai\laoba\jui\build\Debug\jui.lib
+  main.cpp
+  jui_hello.vcxproj -> F:\ai\laoba\jui\build\examples\Debug\jui_hello.exe
+  test_engine.cpp
+  jui_tests.vcxproj -> F:\ai\laoba\jui\build\Debug\jui_tests.exe

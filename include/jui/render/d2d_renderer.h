@@ -40,6 +40,7 @@ public:
     void onCharInput(uint32_t ch);
     void onKeyDown(int vk);
     void onKeyUp(int vk);
+    void onMouseWheel(float delta);
 
     // IME 中文输入
     void onIMEStart();

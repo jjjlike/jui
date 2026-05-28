@@ -22,6 +22,8 @@ enum class WidgetType {
     Toggle,
     ChoicePicker,
     Slider,
+    Grid,
+    Tabs,
     Image,
     Row,
     Column,

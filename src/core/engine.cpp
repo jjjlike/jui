@@ -197,6 +197,16 @@ JValue EngineImpl::parseValue(const json& jv) {
     if (jv.is_number_float()) return JValue(jv.get<double>());
     if (jv.is_number_integer()) return JValue(static_cast<int>(jv.get<int>()));
     if (jv.is_boolean()) return JValue(jv.get<bool>());
+    if (jv.is_array()) {
+        JValue arr = JValue::fromArray({});
+        for (auto& item : jv) arr.push(parseValue(item));
+        return arr;
+    }
+    if (jv.is_object()) {
+        JValue obj = JValue::fromObject({});
+        for (auto& [k, v] : jv.items()) obj.set(k, parseValue(v));
+        return obj;
+    }
     return JValue();
 }
 
@@ -235,6 +245,9 @@ WidgetPtr EngineImpl::parseWidget(const json& componentJson) {
         {"ChoicePicker", WidgetType::ChoicePicker},
         {"Choicepicker", WidgetType::ChoicePicker},
         {"Slider", WidgetType::Slider},
+        {"List", WidgetType::List},
+        {"Grid", WidgetType::Grid},
+        {"Tabs", WidgetType::Tabs},
         {"Image", WidgetType::Image},
         {"Row", WidgetType::Row},
         {"Column", WidgetType::Column},
@@ -384,6 +397,7 @@ void JUIEngine::onMouseUp(int x, int y, int b)   { renderer_.onMouseUp(x, y, b);
 void JUIEngine::onCharInput(uint32_t ch)  { renderer_.onCharInput(ch); }
 void JUIEngine::onKeyDown(int vk)         { renderer_.onKeyDown(vk); }
 void JUIEngine::onKeyUp(int vk)           { renderer_.onKeyUp(vk); }
+void JUIEngine::onMouseWheel(float d)     { renderer_.onMouseWheel(d); }
 void JUIEngine::onIMEStart()              { renderer_.onIMEStart(); }
 void JUIEngine::onIMEComposition(const std::string& s) { renderer_.onIMEComposition(s); }
 void JUIEngine::onIMEEnd(const std::string& r)         { renderer_.onIMEEnd(r); }
