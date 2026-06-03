@@ -88,7 +88,7 @@
         "include/jui/render/*_state.h"
       ],
       "targetDoc": "docs/README.md",
-      "targetSection": "## 模块清单",
+      "targetSection": "## 11. 模块清单",
       "generator": "module_list"
     }
   ],
