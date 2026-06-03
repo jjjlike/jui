@@ -1,0 +1,102 @@
+{
+  "version": "1.0",
+  "description": "JUI 文档自动同步配置 — 定义监听范围与目标文档的映射规则",
+
+  "watchers": [
+    {
+      "name": "core_interfaces",
+      "description": "核心接口变更 → 更新 API 文档",
+      "watchPatterns": [
+        "include/jui/core/iwidget_tree.h",
+        "include/jui/core/idata_model.h",
+        "include/jui/core/widget_types.h",
+        "include/jui/core/geometry.h"
+      ],
+      "targetDoc": "docs/API_REFERENCE.md",
+      "targetSection": "## 核心接口",
+      "generator": "interface_doc"
+    },
+    {
+      "name": "render_interfaces",
+      "description": "渲染接口变更 → 更新 API 文档",
+      "watchPatterns": [
+        "include/jui/render/irender_target.h",
+        "include/jui/render/iwidget_state.h"
+      ],
+      "targetDoc": "docs/API_REFERENCE.md",
+      "targetSection": "## 渲染接口",
+      "generator": "interface_doc"
+    },
+    {
+      "name": "input_interfaces",
+      "description": "输入接口变更 → 更新 API 文档",
+      "watchPatterns": [
+        "include/jui/input/iinput_dispatcher.h"
+      ],
+      "targetDoc": "docs/API_REFERENCE.md",
+      "targetSection": "## 输入接口",
+      "generator": "interface_doc"
+    },
+    {
+      "name": "layout_interfaces",
+      "description": "布局接口变更 → 更新 API 文档",
+      "watchPatterns": [
+        "include/jui/layout/ilayout_engine.h"
+      ],
+      "targetDoc": "docs/API_REFERENCE.md",
+      "targetSection": "## 布局接口",
+      "generator": "interface_doc"
+    },
+    {
+      "name": "eventbus",
+      "description": "EventBus 接口变更 → 更新 API 文档",
+      "watchPatterns": [
+        "include/jui/bus/ievent_bus.h",
+        "include/jui/bus/event_bus.h",
+        "include/jui/bus/service_locator.h"
+      ],
+      "targetDoc": "docs/API_REFERENCE.md",
+      "targetSection": "## 事件总线",
+      "generator": "interface_doc"
+    },
+    {
+      "name": "widget_types",
+      "description": "Widget 类型枚举变更 → 更新变更日志和使用手册",
+      "watchPatterns": [
+        "include/jui/core/widget_types.h"
+      ],
+      "targetDoc": "docs/CHANGELOG.md",
+      "targetSection": "## Widget 类型",
+      "generator": "enum_changelog"
+    },
+    {
+      "name": "engine_header",
+      "description": "引擎 API 变更 → 更新 CHANGELOG",
+      "watchPatterns": [
+        "include/jui/core/engine.h"
+      ],
+      "targetDoc": "docs/CHANGELOG.md",
+      "targetSection": "## 引擎 API",
+      "generator": "api_changelog"
+    },
+    {
+      "name": "readme_modules",
+      "description": "模块列表变更 → 更新 README 模块清单",
+      "watchPatterns": [
+        "include/jui/bus/",
+        "include/jui/render/state_*.h",
+        "include/jui/render/*_state.h"
+      ],
+      "targetDoc": "docs/README.md",
+      "targetSection": "## 模块清单",
+      "generator": "module_list"
+    }
+  ],
+
+  "globalSettings": {
+    "cacheFile": ".doc_sync_cache.json",
+    "logFile": "doc_sync.log",
+    "maxLogLines": 500,
+    "hashAlgorithm": "sha256"
+  }
+}

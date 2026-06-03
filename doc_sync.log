@@ -1,0 +1,38 @@
+[2026-06-03 20:32:11] [INFO] === Document Auto-Sync Started ===
+[2026-06-03 20:32:11] [WARN] Creating new document: F:\ai\laoba\jui\docs\API_REFERENCE.md
+[2026-06-03 20:32:11] [INFO] [core_interfaces] Updated docs\API_REFERENCE.md → '## 核心接口'
+[2026-06-03 20:32:11] [INFO] Section '## 渲染接口' not found, appending to F:\ai\laoba\jui\docs\API_REFERENCE.md
+[2026-06-03 20:32:11] [INFO] [render_interfaces] Updated docs\API_REFERENCE.md → '## 渲染接口'
+[2026-06-03 20:32:11] [INFO] Section '## 输入接口' not found, appending to F:\ai\laoba\jui\docs\API_REFERENCE.md
+[2026-06-03 20:32:11] [INFO] [input_interfaces] Updated docs\API_REFERENCE.md → '## 输入接口'
+[2026-06-03 20:32:11] [INFO] Section '## 布局接口' not found, appending to F:\ai\laoba\jui\docs\API_REFERENCE.md
+[2026-06-03 20:32:11] [INFO] [layout_interfaces] Updated docs\API_REFERENCE.md → '## 布局接口'
+[2026-06-03 20:32:11] [INFO] Section '## 事件总线' not found, appending to F:\ai\laoba\jui\docs\API_REFERENCE.md
+[2026-06-03 20:32:11] [INFO] [eventbus] Updated docs\API_REFERENCE.md → '## 事件总线'
+[2026-06-03 20:32:11] [WARN] Creating new document: F:\ai\laoba\jui\docs\CHANGELOG.md
+[2026-06-03 20:32:11] [INFO] [widget_types] Updated docs\CHANGELOG.md → '## Widget 类型'
+[2026-06-03 20:32:11] [INFO] Section '## 引擎 API' not found, appending to F:\ai\laoba\jui\docs\CHANGELOG.md
+[2026-06-03 20:32:11] [INFO] [engine_header] Updated docs\CHANGELOG.md → '## 引擎 API'
+[2026-06-03 20:32:11] [WARN] Creating new document: F:\ai\laoba\jui\docs\README.md
+[2026-06-03 20:32:11] [INFO] [readme_modules] Updated docs\README.md → '## 模块清单'
+[2026-06-03 20:32:11] [INFO] Sync complete: updated=8, skipped=0, failed=0
+[2026-06-03 20:47:08] [INFO] === Document Auto-Sync Started ===
+[2026-06-03 20:47:08] [INFO] [core_interfaces] Updated docs\API_REFERENCE.md → '## 核心接口'
+[2026-06-03 20:47:08] [INFO] [render_interfaces] Updated docs\API_REFERENCE.md → '## 渲染接口'
+[2026-06-03 20:47:08] [INFO] [input_interfaces] Updated docs\API_REFERENCE.md → '## 输入接口'
+[2026-06-03 20:47:08] [INFO] [layout_interfaces] Updated docs\API_REFERENCE.md → '## 布局接口'
+[2026-06-03 20:47:08] [INFO] [eventbus] Updated docs\API_REFERENCE.md → '## 事件总线'
+[2026-06-03 20:47:08] [INFO] [widget_types] Updated docs\CHANGELOG.md → '## Widget 类型'
+[2026-06-03 20:47:08] [INFO] [engine_header] Updated docs\CHANGELOG.md → '## 引擎 API'
+[2026-06-03 20:47:08] [INFO] [readme_modules] Updated docs\README.md → '## 模块清单'
+[2026-06-03 20:47:08] [INFO] Sync complete: updated=8, skipped=0, failed=0
+[2026-06-03 20:47:22] [INFO] === Document Auto-Sync Started ===
+[2026-06-03 20:47:22] [INFO] [core_interfaces] No changes, skipped
+[2026-06-03 20:47:22] [INFO] [render_interfaces] No changes, skipped
+[2026-06-03 20:47:22] [INFO] [input_interfaces] No changes, skipped
+[2026-06-03 20:47:22] [INFO] [layout_interfaces] No changes, skipped
+[2026-06-03 20:47:22] [INFO] [eventbus] No changes, skipped
+[2026-06-03 20:47:22] [INFO] [widget_types] No changes, skipped
+[2026-06-03 20:47:22] [INFO] [engine_header] No changes, skipped
+[2026-06-03 20:47:22] [INFO] [readme_modules] No changes, skipped
+[2026-06-03 20:47:22] [INFO] Check mode: all documents up to date

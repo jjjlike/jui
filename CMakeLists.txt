@@ -131,3 +131,33 @@ if(JUI_BUILD_TESTS)
     include(GoogleTest)
     gtest_discover_tests(jui_tests)
 endif()
+
+# ============================================================
+# Documentation Auto-Sync (Python tool)
+#   cmake --build build --target doc_sync          # 检查并更新
+#   cmake --build build --target doc_sync_check    # 仅检查（CI）
+# ============================================================
+find_program(PYTHON_EXE python3 python NAMES python3 python)
+if(PYTHON_EXE)
+    add_custom_target(doc_sync
+        COMMAND ${PYTHON_EXE} "${CMAKE_SOURCE_DIR}/tools/doc_sync.py"
+        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+        COMMENT "Running documentation auto-sync..."
+        VERBATIM
+    )
+    add_custom_target(doc_sync_check
+        COMMAND ${PYTHON_EXE} "${CMAKE_SOURCE_DIR}/tools/doc_sync.py" --check
+        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+        COMMENT "Checking documentation up-to-date..."
+        VERBATIM
+    )
+    add_custom_target(doc_sync_test
+        COMMAND ${PYTHON_EXE} -m pytest "${CMAKE_SOURCE_DIR}/tests/test_doc_sync.py" -v
+            || ${PYTHON_EXE} "${CMAKE_SOURCE_DIR}/tests/test_doc_sync.py"
+        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+        COMMENT "Running doc sync unit tests..."
+        VERBATIM
+    )
+else()
+    message(WARNING "Python not found — doc_sync targets disabled")
+endif()
