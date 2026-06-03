@@ -76,7 +76,7 @@ static const char* UI_JSON = R"({
             "c2title","c2desc"
         ]}}}},
         {"id":"c2title","component":{"Text":{"text":{"literalString":"操作 面板"},"fontSize":{"literalNumber":18},"fontWeight":{"literalString":"bold"}}}},
-        {"id":"c2desc","component":{"Text":{"text":{"literalString":"Card、Row、Column 可任意嵌套组合，构建丰富的布局层次。"},"fontSize":{"literalNumber":12},"textColor":{"literalString":"#555555"}}}}
+        {"id":"c2desc","component":{"Text":{"text":{"literalString":"Card、Row、Column 可任意嵌套组合，构建丰富的布局层次。"},"fontSize":{"literalNumber":12},"textColor":{"literalString":"#5555FF"}}}}
     ]}})";
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
