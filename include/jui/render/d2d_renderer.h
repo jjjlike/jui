@@ -1,6 +1,8 @@
 #pragma once
 #include "render_widget.h"
 #include "jui/core/surface.h"
+#include "iwidget_renderer.h"
+
 #include <windows.h>
 #include <d2d1.h>
 #include <dwrite.h>
@@ -60,6 +62,13 @@ public:
         return (it != renderWidgets_.end()) ? it->second.get() : nullptr;
     }
 
+    // ──── 可插拔渲染器 ────
+    /// 设置渲染器注册表（nullptr = 恢复内置渲染）
+    void setRendererRegistry(std::shared_ptr<render::RendererRegistry> reg) {
+        customRenderer_ = std::move(reg);
+    }
+    std::shared_ptr<render::RendererRegistry> rendererRegistry() const { return customRenderer_; }
+
     // 颜色解析
     static D2D1_COLOR_F parseColor(const std::string& hex, float alpha = 1.0f);
 
@@ -86,6 +95,7 @@ private:
     std::map<std::string, RenderWidgetPtr> renderWidgets_;
     RenderWidgetPtr focusedWidget_;
     std::string hoveredWidgetId_;
+    std::shared_ptr<render::RendererRegistry> customRenderer_;  ///< 可选自定义渲染器
 
     // 时间（用于光标闪烁 delta）
     std::chrono::steady_clock::time_point lastFrameTime_;

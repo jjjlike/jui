@@ -1,4 +1,6 @@
 #include "jui/render/d2d_renderer.h"
+#include "jui/render/iwidget_renderer.h"
+#include "jui/render/d2d_adapter.h"
 #include "jui/test/debug_logger.h"
 #include <algorithm>
 #include <chrono>
@@ -142,6 +144,26 @@ void D2DRenderer::render() {
                 rw->bounds().x, rw->bounds().y, rw->bounds().w, rw->bounds().h);
 
             rw->paint(renderTarget_.Get(), dwriteFactory_.Get());
+
+            // ──── 自定义渲染器叠加层（如 TestRenderer）────
+            if (customRenderer_) {
+                auto* cr = customRenderer_->get(rw->widget()->type());
+                if (cr) {
+                    // 提取文本和状态
+                    std::string text;
+                    auto tv = rw->widget()->property("text");
+                    if (tv.isString()) text = tv.asString();
+                    bool enabled = rw->widget()->enabled();
+                    bool hovered = rw->state() ? rw->state()->hovered() : false;
+                    bool pressed = false;
+                    if (auto* bs = dynamic_cast<ButtonWidgetState*>(rw->state()))
+                        pressed = bs->visualState() == ButtonWidgetState::VisualState::Pressed;
+
+                    // 创建临时 IRenderTarget 适配器
+                    render::D2DRenderTargetAdapter adapter(renderTarget_.Get(), dwriteFactory_.Get());
+                    cr->paint(adapter, rw->bounds(), text, enabled, hovered, pressed, 0);
+                }
+            }
         }
     }
 

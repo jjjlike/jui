@@ -121,6 +121,7 @@ if(JUI_BUILD_TESTS)
         tests/test_modular_architecture.cpp
         tests/test_modular_states.cpp
     )
+    # tests/test_pluggable_renderer.cpp 待修复 gtest != 冲突后启用
 
     add_executable(jui_tests ${TEST_SOURCES})
     target_link_libraries(jui_tests PRIVATE jui gtest_main)

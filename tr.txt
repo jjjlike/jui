@@ -1,8 +1,8 @@
 Running main() from F:\ai\laoba\jui\build\_deps\googletest-src\googletest\src\gtest_main.cc
-[DIAG] Scn1_InitialLayout: PASSED — 77586 log entries, 13 widgets verified.
+[DIAG] Scn1_InitialLayout: PASSED — 29946 log entries, 13 widgets verified.
 [RESIZE] Before: 504x361 → After: 504x361
-[STATS] Total entries: 21466, Widgets: 13, Measure: 13, Arrange: 13, Paint: 13936, PaintText: 7504
+[STATS] Total entries: 7266, Widgets: 13, Measure: 13, Arrange: 13, Paint: 4706, PaintText: 2534
 [DIAG] #888888 vs White: CR=1.8:1 — below WCAG AA 3:1 minimum
 [COLOR FIX] #555555 CR=2.73913:1 vs #888888 CR=1.8:1
-[==========] 461 tests from 49 test suites ran. (693705 ms total)
+[==========] 461 tests from 49 test suites ran. (412470 ms total)
 [  PASSED  ] 461 tests.

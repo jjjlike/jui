@@ -1,19 +1,3 @@
 #pragma once
-#include <vector>
-#include <string>
-
-namespace jui {
-
-enum class WidgetType {
-    Text, Button, TextField, CheckBox, Toggle,
-    ChoicePicker, Slider, List, Grid, Tabs,
-    Image, Divider, Row, Column, Card,
-    Unknown
-};
-
-struct Children {
-    enum Mode { Explicit, None } mode = None;
-    std::vector<std::string> explicitList;
-};
-
-} // namespace jui
+// WidgetType 和 Children 已在 widget.h 中定义，此文件留作兼容引用
+#include "jui/core/widget.h"

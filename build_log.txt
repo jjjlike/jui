@@ -1,95 +1,59 @@
+CMake is re-running because F:/ai/laoba/jui/build/CMakeFiles/generate.stamp is out-of-date.
+  the file 'F:/ai/laoba/jui/CMakeLists.txt'
+  is newer than 'F:/ai/laoba/jui/build/CMakeFiles/generate.stamp.depend'
+  result='-1'
+-- Selecting Windows SDK version 10.0.26100.0 to target Windows 10.0.19045.
+CMake Warning (dev) at C:/Program Files/CMake/share/cmake-4.3/Modules/FetchContent.cmake:1386 (message):
+  The DOWNLOAD_EXTRACT_TIMESTAMP option was not given and policy CMP0135 is
+  not set.  The policy's OLD behavior will be used.  When using a URL
+  download, the timestamps of extracted files should preferably be that of
+  the time of extraction, otherwise code that depends on the extracted
+  contents might not be rebuilt if the URL changes.  The OLD behavior
+  preserves the timestamps from the archive instead, but this is usually not
+  what you want.  Update your project to the NEW behavior or specify the
+  DOWNLOAD_EXTRACT_TIMESTAMP option with a value of true to avoid this
+  robustness issue.
+Call Stack (most recent call first):
+  CMakeLists.txt:92 (FetchContent_Declare)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Configuring done (5.4s)
+-- Generating done (0.3s)
+-- Build files have been written to: F:/ai/laoba/jui/build
 MSBuild version 17.3.1+2badb37d1 for .NET Framework
   gtest.vcxproj -> F:\ai\laoba\jui\build\lib\Debug\gtest.lib
   gtest_main.vcxproj -> F:\ai\laoba\jui\build\lib\Debug\gtest_main.lib
-  driver.cpp
-F:\ai\laoba\jui\include\jui/core/geometry.h(4,13): error C2011: “jui::Rect”:“struct”类型重定义 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/geometry.h(5,13): error C2011: “jui::Size”:“struct”类型重定义 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(41): message : 参见“jui::Size”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/geometry.h(8,13): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/geometry.h(8,20): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/geometry.h(8,27): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/geometry.h(8,34): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/geometry.h(8,41): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/geometry.h(8,48): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/geometry.h(8,55): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/geometry.h(8,62): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget_types.h(7,23): error C2011: “jui::WidgetType”:“enum”类型重定义 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(17): message : 参见“jui::WidgetType”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget_types.h(14,17): error C2011: “jui::Children”:“struct”类型重定义 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(69): message : 参见“jui::Children”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/surface.h(70,10): error C2079: “jui::Surface::contentSize_”使用未定义的 struct“jui::Size” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/surface.h(70,28): error C2440: “初始化”: 无法从“initializer list”转换为“int” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/surface.h(70,22): message : 初始值设定项包含过多元素 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/surface.h(70,28): error C2439: “jui::Surface::contentSize_”: 未能初始化成员 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/surface.h(70): message : 参见“jui::Surface::contentSize_”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/surface.h(59,10): error C2027: 使用了未定义类型“jui::Size” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(41): message : 参见“jui::Size”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui\render\render_widget.h(54,10): error C2079: “jui::RenderWidget::bounds_”使用未定义的 struct“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui\render\render_widget.h(31,47): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui\render\render_widget.h(32,32): error C2440: “return”: 无法从“const int”转换为“const jui::Rect &” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui\render\render_widget.h(32,32): message : 原因如下: 无法从“const int”转换为“const jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui\render\render_widget.h(32,32): message : 未定义类型 "jui::Rect" 的使用 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36,8): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui\test\validator.h(142,19): error C2079: “jui::test::UiValidator::WidgetSnapshot::bounds”使用未定义的 struct“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui\test\validator.h(142,34): error C2440: “初始化”: 无法从“initializer list”转换为“int” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui\test\validator.h(142,25): message : 初始值设定项包含过多元素 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui\test\validator.h(142,34): error C2439: “jui::test::UiValidator::WidgetSnapshot::bounds”: 未能初始化成员 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui\test\validator.h(142): message : 参见“jui::test::UiValidator::WidgetSnapshot::bounds”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(36,1): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(169,27): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(170,27): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(171,81): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(171,92): error C2660: “jui::JUIEngine::onMouseDown”: 函数不接受 2 个参数 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/engine.h(41,10): message : 参见“jui::JUIEngine::onMouseDown”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(185,22): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(185,33): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(186,19): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(186,25): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(293,20): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(297,40): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(308,32): error C2027: 使用了未定义类型“jui::WidgetType” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(17): message : 参见“jui::WidgetType”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(308,38): error C2065: “Custom”: 未声明的标识符 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(310,40): error C2027: 使用了未定义类型“jui::WidgetType” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(17): message : 参见“jui::WidgetType”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(310,46): error C2065: “Custom”: 未声明的标识符 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(341,10): error C2079: “ra”使用未定义的 struct“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(341,15): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(341,13): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(341,32): error C2079: “rb”使用未定义的 struct“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(341,37): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(341,35): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(347,10): error C2079: “rp”使用未定义的 struct“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(347,15): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(347,13): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(347,37): error C2079: “rc”使用未定义的 struct“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(347,42): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\src\test\driver.cpp(347,40): error C2027: 使用了未定义类型“jui::Rect” [F:\ai\laoba\jui\build\jui.vcxproj]
-F:\ai\laoba\jui\include\jui/core/widget.h(36): message : 参见“jui::Rect”的声明 [F:\ai\laoba\jui\build\jui.vcxproj]
+  jui.vcxproj -> F:\ai\laoba\jui\build\Debug\jui.lib
+  jui_example_01_hello_window.vcxproj -> F:\ai\laoba\jui\build\Debug\jui_example_01_hello_window.exe
+  jui_example_02_hello_button.vcxproj -> F:\ai\laoba\jui\build\Debug\jui_example_02_hello_button.exe
+  jui_example_03_layout_demo.vcxproj -> F:\ai\laoba\jui\build\Debug\jui_example_03_layout_demo.exe
+  jui_example_04_form_demo.vcxproj -> F:\ai\laoba\jui\build\Debug\jui_example_04_form_demo.exe
+  jui_example_05_controls_demo.vcxproj -> F:\ai\laoba\jui\build\Debug\jui_example_05_controls_demo.exe
+  jui_example_06_tabs_demo.vcxproj -> F:\ai\laoba\jui\build\Debug\jui_example_06_tabs_demo.exe
+  jui_example_07_list_demo.vcxproj -> F:\ai\laoba\jui\build\Debug\jui_example_07_list_demo.exe
+  jui_example_08_grid_demo.vcxproj -> F:\ai\laoba\jui\build\Debug\jui_example_08_grid_demo.exe
+  jui_example_09_binding_demo.vcxproj -> F:\ai\laoba\jui\build\Debug\jui_example_09_binding_demo.exe
+  jui_example_10_full_app.vcxproj -> F:\ai\laoba\jui\build\Debug\jui_example_10_full_app.exe
+  jui_hello.vcxproj -> F:\ai\laoba\jui\build\Debug\jui_hello.exe
+  test_modular_architecture.cpp
+F:\ai\laoba\jui\build\_deps\googletest-src\googletest\include\gtest/gtest.h(1457,1): error C2678: 二进制“!=”: 没有找到接受“const T1”类型的左操作数的运算符(或没有可接受的转换) [F:\ai\laoba\jui\build\jui_tests.vcxproj]
+          with
+          [
+              T1=jui::Rect
+          ]
+F:\ai\laoba\jui\build\_deps\googletest-src\googletest\include\gtest/gtest.h(1372,13): message : 可能是“bool testing::internal::operator !=(testing::internal::faketype,testing::internal::faketype)” [F:\ai\laoba\jui\build\jui_tests.vcxproj]
+F:\ai\laoba\jui\build\_deps\googletest-src\googletest\include\gtest/gtest.h(1457,1): message : 尝试匹配参数列表“(const T1, const T2)”时 [F:\ai\laoba\jui\build\jui_tests.vcxproj]
+          with
+          [
+              T1=jui::Rect
+          ]
+          and
+          [
+              T2=jui::Rect
+          ]
+F:\ai\laoba\jui\tests\test_modular_architecture.cpp(127): message : 查看对正在编译的函数 模板 实例化“testing::AssertionResult testing::internal::CmpHelperNE<jui::Rect,jui::Rect>(const char *,const char *,const T1 &,const T2 &)”的引用 [F:\ai\laoba\jui\build\jui_tests.vcxproj]
+          with
+          [
+              T1=jui::Rect,
+              T2=jui::Rect
+          ]
