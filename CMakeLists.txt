@@ -118,6 +118,8 @@ if(JUI_BUILD_TESTS)
         tests/test_text_visibility.cpp
         tests/test_inspector.cpp
         tests/test_all_examples_inspect.cpp
+        tests/test_modular_architecture.cpp
+        tests/test_modular_states.cpp
     )
 
     add_executable(jui_tests ${TEST_SOURCES})
