@@ -1,14 +1,39 @@
 /**
  * @example 05_controls_demo.cpp
  * @brief 示例05 — 控件合集：CheckBox复选框 + Toggle开关 + Slider滑动条
- * 
+ *
  * 【学习目标】
  *   - CheckBox 的声明与 checked 状态读取
  *   - Toggle 开关控件
  *   - Slider 滑动条 + action 回调联动文字更新
- * 
+ *
  * 【覆盖控件】CheckBox, Toggle, Slider, Text, Column
  * 【难度】★★☆☆☆
+ *
+ * ╔══════════════════════════════════════════════════════╗
+ * ║          界面视觉结构（窗口 480×480 px）              ║
+ * ╠══════════════════════════════════════════════════════╣
+ * ║  Column "root"                                       ║
+ * ║  ┌──────────────────────────────────────────────┐    ║
+ * ║  │ Text "title": "Controls" (18px Bold)         │    ║
+ * ║  │                                              │    ║
+ * ║  │ [  ]  CheckBox "cb1": "Agree"  (□未勾选)    │    ║
+ * ║  │ [✓]  CheckBox "cb2": "Subscribe" (☑已勾选)  │    ║
+ * ║  │                                              │    ║
+ * ║  │ [●────────] Toggle "tg1": "Notify"  (●开着) │    ║
+ * ║  │                                              │    ║
+ * ║  │ Text "txt1": "Vol 50%"                       │    ║
+ * ║  │ Slider "sl1": ──==●══════════  (50%)         │    ║
+ * ║  │        ← 拖拽触发 slider_change → 更新 txt1 ←    ║
+ * ║  │                                              │    ║
+ * ║  │ Text "txt2": "Bright 80%"                     │    ║
+ * ║  │ Slider "sl2": ──=====●══════  (80%)           │    ║
+ * ║  │        ← 拖拽触发 slider_change → 更新 txt2 ←    ║
+ * ║  └──────────────────────────────────────────────┘    ║
+ * ║                                                      ║
+ * ║  组件层级: root→[title,cb1,cb2,tg1,txt1,sl1,txt2,sl2]║
+ * ║  交互: CheckBox 点击切换 ☑/☐, Slider 拖拽值联动标签   ║
+ * ╚══════════════════════════════════════════════════════╝
  */
 
 #include <jui/jui.h>
