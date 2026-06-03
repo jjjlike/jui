@@ -906,6 +906,128 @@ if (action == "slider_change" && !ctx.empty()) {
 2. **确认 `processMessage` 格式正确** — JSON 字符串必须有效，使用 `R"JSON(...)JSON"` 避免转义问题
 3. **确认页面切换时的安全返回** — 在 Tabs 回调后，`onMouseDown` 必须 `return` 避免访问已销毁的 render tree
 4. **确认 Divider 类型** — 目前 Divider 的 layout 代码已修复（之前为死代码）
+5. **使用 DebugLogger 诊断** — 开启 DebugLogger 记录 Layout/Paint 全流程（见 5.9）
+
+### 5.9 调试日志系统 (DebugLogger)
+
+JUI 提供了专供自动化测试和调试的日志系统 `DebugLogger`。它能记录 Layout（Measure + Arrange）和 Paint 阶段的控件区域、文本内容、颜色等详细信息，支持按控件ID过滤和全局开关。
+
+#### 5.9.1 基本用法
+
+```cpp
+#include "jui/test/test.h"
+using namespace jui::test;
+
+// 1. 开启日志
+DebugLogger::instance().enable(true);
+
+// 2. 可选：只记录特定控件
+DebugLogger::instance().addWidgetFilter("txt");
+DebugLogger::instance().addWidgetFilter("btn1");
+
+// 3. 加载并渲染 UI（日志自动记录）
+engine.processMessage(R"({"createSurface":{"surfaceId":"main"}})");
+engine.processMessage(R"({... surfaceUpdate ...})");
+engine.processMessage(R"({"beginRendering":{"surfaceId":"main","root":"root","width":800,"height":600}})");
+engine.render();
+
+// 4. 关闭日志
+DebugLogger::instance().enable(false);
+
+// 5. 检索日志
+auto txtLogs = DebugLogger::instance().getLogs("txt");
+for (const auto& entry : txtLogs) {
+    std::cout << entry.toString() << std::endl;
+}
+
+// 6. 导出全部日志
+std::string dump = DebugLogger::instance().exportToString();
+DebugLogger::instance().exportToFile("layout_debug.log");
+```
+
+#### 5.9.2 日志阶段说明
+
+| 阶段 (stage) | 位置 | 记录内容 |
+|:--|:--|:--|
+| `Measure` | `layout.cpp:measureWidget()` | 控件测量的尺寸 (Local 坐标系) |
+| `Arrange` | `layout.cpp:arrangeWidget()` | 控件最终布局位置和尺寸 (Screen 坐标系) |
+| `Paint` | `d2d_renderer.cpp:render()` | 绘制时的 bounds (Screen 坐标系，与 Arrange 应一致) |
+| `PaintText` | `render_widget.cpp:TextRenderWidget::paint()` | 文字绘制区域、文本内容、颜色 RGB 值 |
+| `Verify` | `DebugLogger::verifyBoundsConsistency()` | Layout 与 Paint 区域不一致时的错误日志 |
+
+#### 5.9.3 日志格式示例
+
+```
+MEASURE[Local] id=txt type=1 constraint=(800,600) measured=(106,24) explicitW=-1 explicitH=-1
+ARRANGE[Screen] id=txt type=1 bounds=(0,0)-(800x24)
+PAINT[Screen] id=txt type=1 bounds=(0,0)-(800x24) visible=1
+PAINT_TEXT[D2D] id=txt text="Hello, JUI!" rect=(0,0)-(800x24) color=(0.13,0.40,0.80) fontSize=16
+```
+
+#### 5.9.4 完整配置
+
+```cpp
+DebugLogConfig cfg;
+cfg.enabled = true;                     // 全局开关（默认关闭）
+cfg.minLevel = LogLevel::Debug;         // 最低日志级别 (Debug/Info/Warning/Error)
+cfg.widgetFilters = {"txt", "btn1"};   // 控件ID白名单（空=全部）
+cfg.includeTimestamp = true;            // 包含时间戳
+cfg.includeLocation = true;             // 包含文件名和行号
+
+// 自定义输出目标
+cfg.sink = [](const LogEntry& e) {
+    std::ofstream("debug.log", std::ios::app) << e.toString() << std::endl;
+};
+
+DebugLogger::instance().setConfig(cfg);
+```
+
+#### 5.9.5 日志级别过滤
+
+```cpp
+// 只记录 Warning 及以上级别的日志（忽略 Debug/Info）
+cfg.minLevel = LogLevel::Warning;
+
+// 代码中使用不同级别的宏
+JUI_DEBUG_LOG("id", "Stage", "detailed info: %s", detail);     // Debug 级
+JUI_INFO_LOG("id", "Stage", "general info");                   // Info 级
+JUI_WARN_LOG("id", "Stage", "potential issue: %d", code);      // Warning 级
+JUI_ERROR_LOG("id", "Stage", "critical error!");               // Error 级
+```
+
+#### 5.9.6 编排到自动化测试
+
+```cpp
+// 完整示例：验证 Layout 与 API 一致性
+TEST(MyTest, LayoutConsistency) {
+    DebugLogger::instance().enable(true);
+    DebugLogger::instance().addWidgetFilter("txt");
+
+    // 加载 UI（触发 Layout 和 Render）
+    LoadMyUI();
+
+    DebugLogger::instance().enable(false);
+
+    // 从日志读取 Arrange bounds
+    auto logs = DebugLogger::instance().getLogs("txt");
+    float logX=0, logY=0, logW=0, logH=0;
+    for (auto& e : logs) {
+        if (e.stage == "Arrange") { /* 解析 bounds */ break; }
+    }
+
+    // 直接从 Widget API 交叉验证
+    auto w = surface->getWidget("txt");
+    EXPECT_NEAR(logX, w->layoutBounds().x, 0.5f);
+    EXPECT_NEAR(logY, w->layoutBounds().y, 0.5f);
+}
+```
+
+#### 5.9.7 注意事项
+
+- **默认关闭**：性能无影响，仅在需要时开启
+- **headless 限制**：无 D2D 渲染上下文时不产生 Paint/PaintText 日志（仅 Measure + Arrange）
+- **控件过滤**：设置白名单后，不在白名单中的控件不产生任何日志
+- **线程安全**：日志记录使用 mutex 保护，支持多线程调用
 
 ---
 

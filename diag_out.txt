@@ -1,0 +1,14 @@
+Total PaintText entries: 1960
+Unique text widgets: 7
+
+Widget: c1l1
+  Text   : "ÐÕÃû:"
+  Color  : RGB(0.000,0.000,0.000)  luminance=0.000  CR=21.0:1
+  Bounds : (16,43)-(44x21)  fontSize=14
+  Arrange: (16,43)-(44x21)
+  Match Layout¡úPaint: OK
+Traceback (most recent call last):
+  File "f:\ai\laoba\jui\diag_text.py", line 79, in <module>
+    print(f"  Status : {status}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'gbk' codec can't encode character '\u26a0' in position 11: illegal multibyte sequence

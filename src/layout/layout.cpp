@@ -1,4 +1,5 @@
 #include "jui/layout/layout.h"
+#include "jui/test/debug_logger.h"
 #include <algorithm>
 
 namespace jui {
@@ -145,6 +146,10 @@ Size LayoutEngine::measureWidget(WidgetPtr widget, const Size& constraint) {
     if (constraint.h > 0) size.h = (std::min)(size.h, constraint.h);
 
     measuredSizes_[widget->id()] = size;
+    JUI_DEBUG_LOG_IF(widget->id(), "Measure", jui::test::DebugLogger::instance().isEnabled(),
+        "MEASURE[Local] id=%s type=%d constraint=(%.0f,%.0f) measured=(%.0f,%.0f) explicitW=%.0f explicitH=%.0f",
+        widget->id().c_str(), static_cast<int>(widget->type()), constraint.w, constraint.h,
+        size.w, size.h, explicitW, explicitH);
     return size;
 }
 
@@ -182,6 +187,10 @@ Size LayoutEngine::measureCard(WidgetPtr widget, const Size& constraint) {
 void LayoutEngine::arrangeWidget(WidgetPtr widget, const Rect& bounds) {
     if (!widget || !widget->visible()) return;
     widget->setLayoutBounds(bounds);
+    JUI_DEBUG_LOG_IF(widget->id(), "Arrange", jui::test::DebugLogger::instance().isEnabled(),
+        "ARRANGE[Screen] id=%s type=%d bounds=(%.0f,%.0f)-(%.0fx%.0f)",
+        widget->id().c_str(), static_cast<int>(widget->type()),
+        bounds.x, bounds.y, bounds.w, bounds.h);
     switch (widget->type()) {
         case WidgetType::Row: arrangeRow(widget, bounds); break;
         case WidgetType::Column: arrangeColumn(widget, bounds); break;

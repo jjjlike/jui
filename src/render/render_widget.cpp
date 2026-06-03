@@ -2,6 +2,7 @@
  * render_widget.cpp — 纯 D2D/DWrite 渲染（状态逻辑在 WidgetState 中）
  */
 #include "jui/render/render_widget.h"
+#include "jui/test/debug_logger.h"
 #include <algorithm>
 #include <cmath>
 
@@ -122,17 +123,44 @@ ComPtr<IDWriteTextFormat> TextRenderWidget::createTextFormat(IDWriteFactory* dw)
 void TextRenderWidget::paint(ID2D1RenderTarget* rt, IDWriteFactory* dw) {
     if (!rt||!dw) return;
     std::string text = s().text();
-    if (text.empty()) return;
+    if (text.empty()) {
+        JUI_DEBUG_LOG_IF(widget_->id(), "PaintText",
+            jui::test::DebugLogger::instance().isEnabled(),
+            "PAINT_TEXT[SKIP] id=%s empty text, bounds=(%.0f,%.0f)-(%.0fx%.0f)",
+            widget_->id().c_str(), bounds_.x, bounds_.y, bounds_.w, bounds_.h);
+        return;
+    }
 
     auto fmt = createTextFormat(dw);
+    if (!fmt) {
+        JUI_WARN_LOG(widget_->id(), "PaintText",
+            "PAINT_TEXT[NULLFMT] id=%s font creation failed for \"%s\"",
+            widget_->id().c_str(), text.c_str());
+        return;
+    }
     D2D1_RECT_F r = {bounds_.x, bounds_.y, bounds_.x+bounds_.w, bounds_.y+bounds_.h};
 
     D2D1_COLOR_F color = D2D1::ColorF(D2D1::ColorF::Black);
     auto tc = widget_->property("textColor");
     if (tc.isString()) color = parseHexColor(tc.asString());
+    // 计算 WCAG 对比度用于诊断
+    float lum = color.r * 0.299f + color.g * 0.587f + color.b * 0.114f;
+    float cr = (1.0f + 0.05f) / (lum + 0.05f);
+
+    JUI_DEBUG_LOG_IF(widget_->id(), "PaintText",
+        jui::test::DebugLogger::instance().isEnabled(),
+        "PAINT_TEXT[D2D] id=%s text=\"%s\" rect=(%.0f,%.0f)-(%.0fx%.0f) color=(%.2f,%.2f,%.2f) contrast=%.1f:1 fontSize=%.0f",
+        widget_->id().c_str(), text.c_str(), r.left, r.top, r.right-r.left, r.bottom-r.top,
+        color.r, color.g, color.b, cr,
+        widget_->property("fontSize").isNumber() ? widget_->property("fontSize").asNumber() : 14.0f);
 
     ComPtr<ID2D1SolidColorBrush> br;
     rt->CreateSolidColorBrush(color, &br);
+    if (!br) {
+        JUI_WARN_LOG(widget_->id(), "PaintText",
+            "PAINT_TEXT[NULLBR] id=%s brush creation failed", widget_->id().c_str());
+        return;
+    }
     auto wtext = utf8ToWide(text);
     rt->DrawText(wtext.c_str(), static_cast<UINT32>(wtext.length()), fmt.Get(), r, br.Get());
 }

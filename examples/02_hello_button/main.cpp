@@ -88,22 +88,9 @@ JUIEngine* g_engine = nullptr;
 // ============================================================
 static const char* UI_JSON = R"({
     "surfaceUpdate":{"surfaceId":"main","components":[
-        // Column垂直布局: 标题 → 按钮行
-        {"id":"root","component":{"Column":{"children":{"explicitList":["title","btns"]}}}},
-        // Text: 提示文字，位于界面顶部
+        {"id":"root","component":{"Column":{"children":{"explicitList":["title","btn"]}}}},
         {"id":"title","component":{"Text":{"text":{"literalString":"点击下方按钮:"},"fontSize":{"literalNumber":16}}}},
-        // Row水平布局: 3个按钮并排
-        {"id":"btns","component":{"Row":{"children":{"explicitList":["btn1","btn2","btn3"]}}}},
-        //
-        //   ┌──────────┬─────────────┬──────────┐
-        //   │ btn1     │ btn2        │ btn3     │  ← 从左到右排列
-        //   │ "按钮A"  │ "点我问候"  │ "点我告别"│
-        //   │ 无回调   │ → onAction  │ → onAction│
-        //   └──────────┴─────────────┴──────────┘
-        //
-        {"id":"btn1","component":{"Button":{"text":{"literalString":"按钮A"}}}},
-        {"id":"btn2","component":{"Button":{"text":{"literalString":"点我问候"},"action":"hello"}}},
-        {"id":"btn3","component":{"Button":{"text":{"literalString":"点我告别"},"action":"bye"}}}
+        {"id":"btn","component":{"Button":{"text":{"literalString":"点我问候"},"action":"hello"}}}
     ]}})";
 
 // ============================================================
@@ -117,9 +104,7 @@ static const char* UI_JSON = R"({
 void onAction(const std::string& /*surfaceId*/, const std::string& action,
               const std::string& sourceId, const std::string& /*context*/) {
     if (action == "hello") {
-        MessageBoxA(nullptr, ("你好! 来自: " + sourceId).c_str(), "JUI Action", MB_OK);
-    } else if (action == "bye") {
-        MessageBoxA(nullptr, ("再见! 来自: " + sourceId).c_str(), "JUI Action", MB_OK);
+        MessageBoxA(nullptr, ("你好! 来自: " + sourceId).c_str(), "JUI Example 02", MB_OK);
     }
 }
 
@@ -180,14 +165,17 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nShow) {
     CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
     WNDCLASSEXW wc = {};
     wc.cbSize = sizeof(wc);
+    wc.style = CS_HREDRAW | CS_VREDRAW;
     wc.lpfnWndProc = WndProc;
     wc.hInstance = hInst;
     wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+    wc.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
     wc.lpszClassName = L"JUI_Example02";
     RegisterClassExW(&wc);
     HWND hwnd = CreateWindowExW(0, L"JUI_Example02", L"JUI Example 02: Button Interaction",
         WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 450, 300,
         nullptr, nullptr, hInst, nullptr);
+    if (!hwnd) { CoUninitialize(); return 1; }
     ShowWindow(hwnd, nShow); UpdateWindow(hwnd);
     MSG msg = {}; while (GetMessageW(&msg, nullptr, 0, 0)) { TranslateMessage(&msg); DispatchMessageW(&msg); }
     CoUninitialize();

@@ -2,5 +2,5 @@ MSBuild version 17.3.1+2badb37d1 for .NET Framework
   gtest.vcxproj -> F:\ai\laoba\jui\build\lib\Debug\gtest.lib
   gtest_main.vcxproj -> F:\ai\laoba\jui\build\lib\Debug\gtest_main.lib
   jui.vcxproj -> F:\ai\laoba\jui\build\Debug\jui.lib
-  test_all_examples.cpp
+  test_text_visibility.cpp
   jui_tests.vcxproj -> F:\ai\laoba\jui\build\Debug\jui_tests.exe

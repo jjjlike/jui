@@ -42,8 +42,9 @@ void JUIEngine::processMessage(const std::string& jsonStr) {
     try {
         json msg = json::parse(jsonStr);
         impl_->processMessage(msg, *this);
-    } catch (const std::exception&) {
-        // 解析失败，忽略
+    } catch (const std::exception& e) {
+        // 解析失败时输出错误，便于排查
+        OutputDebugStringA(("JUI processMessage parse error: " + std::string(e.what()) + "\n").c_str());
     }
 }
 

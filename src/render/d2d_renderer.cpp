@@ -1,4 +1,5 @@
 #include "jui/render/d2d_renderer.h"
+#include "jui/test/debug_logger.h"
 #include <algorithm>
 #include <chrono>
 
@@ -96,7 +97,13 @@ void D2DRenderer::refreshRenderWidgets() {
 // ============================================================
 
 void D2DRenderer::render() {
-    if (!renderTarget_ || !initialized_) return;
+    if (!initialized_) return;
+    if (!renderTarget_) {
+        // 渲染目标不存在——可能在 WM_CREATE 时窗口尺寸为 0×0 导致创建失败
+        // onSize 会在 WM_SIZE 时用有效尺寸重新创建
+        JUI_WARN_LOG("", "Render", "render() skipped: renderTarget_ is null (width=%d height=%d)", width_, height_);
+        return;
+    }
 
     // delta time
     auto now = std::chrono::steady_clock::now();
@@ -128,6 +135,12 @@ void D2DRenderer::render() {
                 if (gs) gs->setViewportSize(rw->bounds().w, rw->bounds().h);
             }
 
+            // 调试日志：Paint 阶段 bounds
+            JUI_DEBUG_LOG_IF(id, "Paint", jui::test::DebugLogger::instance().isEnabled(),
+                "PAINT[Screen] id=%s type=%d bounds=(%.0f,%.0f)-(%.0fx%.0f) visible=1",
+                id.c_str(), static_cast<int>(rw->widget()->type()),
+                rw->bounds().x, rw->bounds().y, rw->bounds().w, rw->bounds().h);
+
             rw->paint(renderTarget_.Get(), dwriteFactory_.Get());
         }
     }
@@ -143,7 +156,15 @@ void D2DRenderer::render() {
 
 void D2DRenderer::onSize(int w, int h) {
     width_ = w; height_ = h;
-    if (renderTarget_) renderTarget_->Resize(D2D1::SizeU(w, h));
+    if (renderTarget_) {
+        renderTarget_->Resize(D2D1::SizeU(w, h));
+    } else {
+        // 渲染目标首次创建失败（如 WM_CREATE 时窗口尺寸为 0×0），
+        // 在 WM_SIZE 取得有效尺寸后重新创建
+        if (w > 0 && h > 0) {
+            createDeviceResources();
+        }
+    }
     needsRedraw_ = true;
 }
 

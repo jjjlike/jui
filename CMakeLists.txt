@@ -24,6 +24,7 @@ set(JUI_SOURCES
     src/test/driver.cpp
     src/test/validator.cpp
     src/test/recorder.cpp
+    src/test/debug_logger.cpp
 )
 
 set(JUI_HEADERS
@@ -40,6 +41,7 @@ set(JUI_HEADERS
     include/jui/test/driver.h
     include/jui/test/validator.h
     include/jui/test/recorder.h
+    include/jui/test/debug_logger.h
     include/jui/test/test.h
 )
 
@@ -108,6 +110,10 @@ if(JUI_BUILD_TESTS)
         tests/test_list_grid.cpp
         tests/test_ai_integration.cpp
         tests/test_all_examples.cpp
+        tests/test_visual_coverage.cpp
+        tests/test_debug_logger.cpp
+        tests/test_blackbox_03.cpp
+        tests/test_text_visibility.cpp
     )
 
     add_executable(jui_tests ${TEST_SOURCES})
