@@ -75,6 +75,15 @@ public:
     // 获取渲染器
     D2DRenderer& renderer() { return renderer_; }
 
+    /**
+     * @brief 获取 UI 状态快照（黑盒测试数据采集）
+     * @param surfaceId 目标 Surface ID，空字符串 = 当前激活 Surface
+     * @return JSON 字符串，符合 jui-inspector-snapshot-v1 Schema
+     *         结构：{ surfaceId, timestamp, viewport, widgets[{ id, type, layout, paint, paintMatch, state, children }] }
+     * @note  零侵入 — 不修改任何内部状态；性能: O(n), n=控件数
+     */
+    std::string inspect(const std::string& surfaceId = "") const;
+
 private:
     // 内部实现（隐藏 nlohmann/json 依赖）
     std::unique_ptr<EngineImpl> impl_;

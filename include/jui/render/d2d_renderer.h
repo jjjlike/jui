@@ -54,6 +54,12 @@ public:
     int height() const { return height_; }
     void invalidate() { needsRedraw_ = true; }
 
+    // Inspector 访问器（黑盒测试数据采集）
+    const RenderWidget* getRenderWidget(const std::string& id) const {
+        auto it = renderWidgets_.find(id);
+        return (it != renderWidgets_.end()) ? it->second.get() : nullptr;
+    }
+
     // 颜色解析
     static D2D1_COLOR_F parseColor(const std::string& hex, float alpha = 1.0f);
 

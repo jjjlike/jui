@@ -25,6 +25,7 @@ set(JUI_SOURCES
     src/test/validator.cpp
     src/test/recorder.cpp
     src/test/debug_logger.cpp
+    src/inspector/inspector.cpp
 )
 
 set(JUI_HEADERS
@@ -43,6 +44,7 @@ set(JUI_HEADERS
     include/jui/test/recorder.h
     include/jui/test/debug_logger.h
     include/jui/test/test.h
+    include/jui/inspector/inspector.h
 )
 
 add_library(jui ${JUI_SOURCES} ${JUI_HEADERS})
@@ -114,6 +116,8 @@ if(JUI_BUILD_TESTS)
         tests/test_debug_logger.cpp
         tests/test_blackbox_03.cpp
         tests/test_text_visibility.cpp
+        tests/test_inspector.cpp
+        tests/test_all_examples_inspect.cpp
     )
 
     add_executable(jui_tests ${TEST_SOURCES})

@@ -1,4 +1,5 @@
 #include "jui/core/engine.h"
+#include "jui/inspector/inspector.h"
 #include <json.hpp>
 #include <sstream>
 #include <fstream>
@@ -402,5 +403,12 @@ void JUIEngine::onMouseWheel(float d)     { renderer_.onMouseWheel(d); }
 void JUIEngine::onIMEStart()              { renderer_.onIMEStart(); }
 void JUIEngine::onIMEComposition(const std::string& s) { renderer_.onIMEComposition(s); }
 void JUIEngine::onIMEEnd(const std::string& r)         { renderer_.onIMEEnd(r); }
+
+std::string JUIEngine::inspect(const std::string& surfaceId) const {
+    std::string sid = surfaceId.empty() ? currentSurfaceId_ : surfaceId;
+    auto surface = const_cast<JUIEngine*>(this)->getSurface(sid);
+    auto snap = inspector::Collector::collect(surface, renderer_);
+    return inspector::Serializer::toJson(snap);
+}
 
 } // namespace jui

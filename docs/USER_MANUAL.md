@@ -44,6 +44,7 @@
   - [5.6 List/Grid 滚动不可用](#56-listgrid-滚动不可用)
   - [5.7 Slider 拖动后程序崩溃](#57-slider-拖动后程序崩溃)
   - [5.8 程序启动/切换页面崩溃](#58-程序启动切换页面崩溃)
+- [6. Inspect API — 黑盒测试数据采集](#6-inspect-api--黑盒测试数据采集)
 - [附录 A：完整示例代码](#附录-a完整示例代码)
 - [附录 B：A2UI 组件树示例](#附录-ba2ui-组件树示例)
 
@@ -1028,6 +1029,65 @@ TEST(MyTest, LayoutConsistency) {
 - **headless 限制**：无 D2D 渲染上下文时不产生 Paint/PaintText 日志（仅 Measure + Arrange）
 - **控件过滤**：设置白名单后，不在白名单中的控件不产生任何日志
 - **线程安全**：日志记录使用 mutex 保护，支持多线程调用
+
+---
+
+## 6. Inspect API — 黑盒测试数据采集
+
+`JUIEngine::inspect()` 提供标准 JSON Schema 格式的 UI 状态快照，供 AI 自动化测试使用。
+
+### 6.1 基本用法
+
+```cpp
+JUIEngine engine;
+// ... 加载 UI ...
+std::string json = engine.inspect("main");
+// 返回 JSON: {"surfaceId":"main","timestamp":...,"viewport":...,"widgets":[...]}
+```
+
+### 6.2 JSON Schema
+
+详见 `docs/INSPECTOR_DESIGN.md`。每个 widget 包含:
+
+```json
+{
+  "id": "btn1",
+  "type": "Button",
+  "visible": true,
+  "enabled": true,
+  "layout": {"x": 0, "y": 24, "w": 70, "h": 32},
+  "paint":  {"x": 0, "y": 24, "w": 70, "h": 32},
+  "paintMatch": true,
+  "state": {"text": "Hello", "visualState": "Normal"},
+  "children": []
+}
+```
+
+### 6.3 AI 通用断言模板
+
+基于 Schema 契约，AI 可预编写：
+
+```cpp
+auto j = json::parse(engine.inspect("main"));
+
+// 检查所有控件可见
+for (auto& w : j["widgets"]) ASSERT_TRUE(w["visible"]);
+
+// 检查 Layout=Paint 一致
+for (auto& w : j["widgets"]) ASSERT_TRUE(w["paintMatch"]);
+
+// 检查控件树完整性
+std::set<std::string> ids;
+for (auto& w : j["widgets"]) ids.insert(w["id"]);
+for (auto& w : j["widgets"])
+    for (auto& c : w["children"])
+        ASSERT_TRUE(ids.count(c));
+
+// 检查必选控件存在
+auto* btn = findWidget(j, "btn");
+ASSERT_NE(btn, nullptr);
+ASSERT_EQ(btn["type"], "Button");
+```
 
 ---
 
